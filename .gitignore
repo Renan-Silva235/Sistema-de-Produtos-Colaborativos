@@ -1,0 +1,7 @@
+.vscode/
+*.pdf
+teste.py
+*.pdf
+__pycache__
+teste_pandas.py
+.env/

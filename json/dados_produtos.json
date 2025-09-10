@@ -1,43 +1,15 @@
 [{
 		"id":	1,
-		"nome":	"feijao",
+		"nome":	"Arroz",
 		"peso":	2,
-		"validade":	"12/01/2035",
-		"quantidade":	4,
-		"origem":	"sp"
+		"validade":	"01/02/2027",
+		"quantidade":	78,
+		"Origem":	"sp"
 	}, {
 		"id":	2,
-		"nome":	"arroz",
+		"nome":	"Arroz",
 		"peso":	5,
-		"validade":	"24/01/2025",
-		"quantidade":	24,
-		"origem":	"sp"
-	}, {
-		"id":	1,
-		"nome":	"feijao",
-		"peso":	2,
-		"validade":	"12/01/2035",
-		"quantidade":	15,
-		"origem":	"sp"
-	}, {
-		"id":	1,
-		"nome":	"feijao",
-		"peso":	2,
-		"validade":	"12/01/2035",
-		"quantidade":	4,
-		"origem":	"sp"
-	}, {
-		"id":	1,
-		"nome":	"feijao",
-		"peso":	2,
-		"validade":	"12/01/2035",
-		"quantidade":	4,
-		"origem":	"sp"
-	}, {
-		"id":	1,
-		"nome":	"feijao",
-		"peso":	2,
-		"validade":	"12/01/2035",
-		"quantidade":	4,
-		"origem":	"sp"
+		"validade":	"12/01/2027",
+		"quantidade":	78,
+		"Origem":	"sp"
 	}]
