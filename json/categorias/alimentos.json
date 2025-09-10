@@ -33,4 +33,18 @@
 		"validade":	"12/12/2021",
 		"quantidade":	12,
 		"Origem":	"sp"
+	}, {
+		"id":	6,
+		"nome":	"Coca Cola",
+		"peso":	"3 Ml",
+		"validade":	"12/08/2025",
+		"quantidade":	78,
+		"Origem":	"sp"
+	}, {
+		"id":	7,
+		"nome":	"Guarana",
+		"peso":	"3 L",
+		"validade":	"12/05/2025",
+		"quantidade":	7,
+		"Origem":	"sp"
 	}]

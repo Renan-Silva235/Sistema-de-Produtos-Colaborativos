@@ -2,7 +2,7 @@ from telas.gerenciadorTelas.gerenciador_telas import GerenciadorTelas
 
 def RodarPrograma():
     gerenciador = GerenciadorTelas()
-    gerenciador.iniciar("TelaInicial")
+    gerenciador.iniciar("TelaAdministrador")
 
 
 if __name__ == "__main__":

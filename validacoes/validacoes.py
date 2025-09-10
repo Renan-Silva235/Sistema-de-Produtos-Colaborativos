@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime
 
 
@@ -59,3 +60,31 @@ class Validacoes:
             return True
         except ValueError:
             return False
+
+    @staticmethod
+    def validar_peso(peso: str) -> bool:
+        """
+        Retorna True apenas se `peso` tiver o formato:
+          <número> [espaço opcional] <unidade>
+        onde unidade é uma de: g, kg, l, ml (qualquer caixa).
+        O número pode ter decimal com '.' ou ','.
+        Exemplos válidos: "500G", "0.5 kg", "250 ml", "1,25Kg"
+        Exemplos inválidos: "G500", "4 Gg", "abcKg", "123" (sem unidade)
+        """
+        if not isinstance(peso, str):
+            return False
+
+        s = peso.strip()
+        # ^...$ garante que toda a string deve casar (sem sobras)
+        pattern = re.compile(r'^([+-]?\d+(?:[.,]\d+)?)\s*(kg|g|ml|l)$', re.IGNORECASE)
+        m = pattern.fullmatch(s)
+        if not m:
+            return False
+
+        num_str = m.group(1).replace(',', '.')
+        try:
+            num = float(num_str)
+        except ValueError:
+            return False
+
+        return num > 0

@@ -1,5 +1,6 @@
 import time
-from utils.pegar_dados import pegar_dados_alimenticios
+import pandas as pd
+from utils.pegar_dados import pegar_dados_alimenticios, pegar_dados_vestuario, pegar_dados_domestico
 from utils.sistema import limpar_tela
 from funcao_salvar_json.salvarJson import salvarNoJson
 
@@ -10,8 +11,7 @@ class TelaCadastrarProdutos:
     def mostrar(self):
         """Esse método exibe a tela de cadastro de produtos no terminal."""
 
-        categorias = ["vestuario", "domestico", "alimenticio"]
-        loop = True
+        categorias = ["vestuário", "doméstico", "alimenticio"]
         continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar a tela Admin: "))
 
 
@@ -32,18 +32,16 @@ class TelaCadastrarProdutos:
             limpar_tela()
             self.gerenciador.mudar_tela("TelaCadastrarProdutos")
 
-
-        if opcao_categoria == 3:
+        if opcao_categoria == 1:
+            produtos = pegar_dados_vestuario()
+        elif opcao_categoria == 2:
+            produtos = pegar_dados_domestico()
+        else:
             produtos = pegar_dados_alimenticios()
 
-
-
-
         limpar_tela()
-        print(f"""VISUALIZAÇÃO:
-
-                {produtos}
-            """)
+        print(f"""VISUALIZAÇÃO:""")
+        print(pd.DataFrame([produtos]))
 
         loop = True
         while loop:
@@ -53,9 +51,18 @@ class TelaCadastrarProdutos:
                 print("opção inválida")
                 continue
             elif condicao == "s":
-                if opcao_categoria == 3:
+
+                if opcao_categoria == 1:
+                    salvarNoJson("json/categorias/vestuario.json", produtos)
+                    print("Produto Cadastrado com Sucesso")
+
+                elif opcao_categoria == 2:
+                    salvarNoJson("json/categorias/domesticos.json", produtos)
+                    print("Produto Cadastrado com Sucesso")
+                else:
                     salvarNoJson("json/categorias/alimentos.json", produtos)
                     print("Produto cadastrado com sucesso")
+
                 time.sleep(1)
                 limpar_tela()
                 break
