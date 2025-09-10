@@ -40,6 +40,7 @@ def pegar_dados_vestuario():
         tipo_roupa = input("Digite o tipo do vestuário (meia, calça, blusa, etc): ").title()
         marca = input("Marca do Produto: ").title()
         cor = input("Cor do Produto: ").title()
+        tamanho = input("Tamanho (M,P,G): ").title()
         quantidade = int(input("Digite a quantidade: "))
         origem = input("Digite a Origem do Produto: ").title()
     except ValueError:
@@ -52,6 +53,7 @@ def pegar_dados_vestuario():
         "tipo": tipo_roupa,
         "marca": marca,
         "cor": cor,
+        "tamanho": tamanho,
         "quantidade": quantidade,
         "origem": origem
     }
