@@ -7,6 +7,10 @@ class Validacoes:
 
 
     def validar_login(self, nivel, usuario, senha):
+        """Esse método Valida todos os dados de login que o usuário digitar, verificando
+        cada tipo, tamanho e permissão. Se retornar 'True' o usuário será direcionado para a tela
+        correspondente ao seu nível na empresa"""
+
         arquivo = None
         nivel_usuario = None
         logado = False

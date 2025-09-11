@@ -11,6 +11,8 @@ class TelaLogin:
 
 
     def mostrar(self):
+        """Esse método exibe a tela de login no terminal."""
+
         print("LOGIN")
 
         while True:
@@ -56,6 +58,7 @@ class TelaLogin:
 
         if nivel == 1:
             self.gerenciador.mudar_tela("TelaAdministrador")
+            return
         elif nivel == 2:
             print("")
             # self.tela_voluntario(TelaVoluntario)

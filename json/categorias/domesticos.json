@@ -4,4 +4,10 @@
 		"cor":	"Vermelho",
 		"quantidade":	1,
 		"origem":	"Maria"
+	}, {
+		"id":	2,
+		"produto":	"Cadeira",
+		"cor":	"Marrom",
+		"quantidade":	52,
+		"origem":	"Renan Ruibio"
 	}]

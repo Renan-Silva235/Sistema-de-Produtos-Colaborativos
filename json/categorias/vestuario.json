@@ -5,4 +5,20 @@
 		"cor":	"Branca",
 		"quantidade":	2,
 		"origem":	"Maria"
+	}, {
+		"id":	2,
+		"tipo":	"Calça",
+		"marca":	"Adidas",
+		"cor":	"Preto",
+		"tamanho":	"P",
+		"quantidade":	3,
+		"origem":	"Renan"
+	}, {
+		"id":	3,
+		"tipo":	"Tênis",
+		"marca":	"Nike",
+		"cor":	"Pretp",
+		"tamanho":	"G",
+		"quantidade":	4,
+		"origem":	"Renan"
 	}]

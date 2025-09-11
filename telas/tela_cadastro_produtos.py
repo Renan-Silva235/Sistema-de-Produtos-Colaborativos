@@ -12,11 +12,16 @@ class TelaCadastrarProdutos:
         """Esse método exibe a tela de cadastro de produtos no terminal."""
 
         categorias = ["vestuário", "doméstico", "alimenticio"]
-        continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar a tela Admin: "))
+        try:
+            continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar a tela Admin: "))
+            if continuar_ou_não == 2:
+                self.gerenciador.mudar_tela("TelaAdministrador")
+                return
+        except ValueError:
+            limpar_tela()
+            self.gerenciador.mudar_tela("TelaCadastrarProdutos")
+            return
 
-
-        if continuar_ou_não == 2:
-            self.gerenciador.mudar_tela("TelaAdministrador")
 
         print(f"""Informe a categoria do produto:
                 1- {categorias[0]}
@@ -24,7 +29,11 @@ class TelaCadastrarProdutos:
                 3- {categorias[2]}
               """)
 
-        opcao_categoria = int(input("Digite a opção corresponde a categoria do produto que você quer cadastrar: "))
+        try:
+            opcao_categoria = int(input("Digite a opção corresponde a categoria do produto que você quer cadastrar: "))
+        except ValueError:
+            limpar_tela()
+            self.gerenciador.mudar_tela("TelaCadastrarProdutos")
 
         if opcao_categoria not in [1,2,3]:
             print("opção inválida")
@@ -38,6 +47,10 @@ class TelaCadastrarProdutos:
             produtos = pegar_dados_domestico()
         else:
             produtos = pegar_dados_alimenticios()
+
+        if not produtos:
+            self.gerenciador.mudar_tela("TelaCadastrarProdutos")
+            return
 
         limpar_tela()
         print(f"""VISUALIZAÇÃO:""")
