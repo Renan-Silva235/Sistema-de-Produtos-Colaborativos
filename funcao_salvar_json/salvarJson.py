@@ -8,15 +8,15 @@ python, na função salvarNoJson abaixo, foi configurada os tipos de argumentos 
 (argstype) e o tipo de retorno que ela fornece (restype)."""
 
 # detecta o nome certo da biblioteca conforme o SO
-# if sys.platform.startswith("win"):
-#     libname = "salvarJson.dll"
-# elif sys.platform.startswith("linux"):
-#     libname = "salvarJson.so"
-# else:
-#     raise OSError("Sistema operacional não suportado")
+if sys.platform.startswith("win"):
+    libname = "salvarJson.dll"
+elif sys.platform.startswith("linux"):
+    libname = "salvarJson.so"
+else:
+    raise OSError("Sistema operacional não suportado")
 
 
-lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../build/salvarJson.so"))
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../build", libname))
 lib = ctypes.CDLL(lib_path)
 
 

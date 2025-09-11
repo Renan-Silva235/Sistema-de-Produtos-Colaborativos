@@ -103,4 +103,11 @@
 		"validade":	"06/27",
 		"quantidade":	2,
 		"Origem":	"Daniel"
+	}, {
+		"id":	16,
+		"nome":	"Banana",
+		"peso":	"100 G",
+		"validade":	"14/02/2014",
+		"quantidade":	7,
+		"Origem":	"sp"
 	}]

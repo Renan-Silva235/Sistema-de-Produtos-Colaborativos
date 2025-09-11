@@ -1,7 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <cjson/cJSON.h>
+// #include <cjson/cJSON.h>
 #include <errno.h>
+#include "cjson/cJSON.H"
+
+
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT
+#endif
+
 
 
 int gerarId(cJSON *json) {
@@ -21,7 +30,7 @@ int gerarId(cJSON *json) {
 
 
 
-void salvarNoJson(char *filename,  char *json_str) {
+EXPORT void salvarNoJson(char *filename,  char *json_str) {
     cJSON *produto = cJSON_Parse(json_str);
     if (!produto) return; // erro no parse
 
