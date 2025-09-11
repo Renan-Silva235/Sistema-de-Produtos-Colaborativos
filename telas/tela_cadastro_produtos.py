@@ -13,7 +13,7 @@ class TelaCadastrarProdutos:
 
         categorias = ["vestuário", "doméstico", "alimenticio"]
         try:
-            continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar a tela Admin: "))
+            continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
             if continuar_ou_não == 2:
                 self.gerenciador.mudar_tela("TelaAdministrador")
                 return
@@ -53,16 +53,18 @@ class TelaCadastrarProdutos:
             return
 
         limpar_tela()
-        print(f"""VISUALIZAÇÃO:""")
-        print(pd.DataFrame([produtos]))
+
 
         loop = True
         while loop:
+            print(f"""VISUALIZAÇÃO:""")
+            print(pd.DataFrame([produtos]))
             condicao = input("Deseja realmente salvar esse produto? (s/n): ").lower()
 
             if condicao not in ["s", "n"]:
-                print("opção inválida")
+                limpar_tela()
                 continue
+
             elif condicao == "s":
 
                 if opcao_categoria == 1:
