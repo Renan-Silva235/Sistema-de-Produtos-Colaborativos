@@ -1,0 +1,37 @@
+[{
+		"id":	1,
+		"produto":	"Sofá",
+		"cor":	"Vermelho",
+		"tamanho":	"grande",
+		"quantidade":	1,
+		"origem":	"Maria",
+		"id_doadores":	[]
+	}, {
+		"id":	2,
+		"produto":	"Cadeira",
+		"cor":	"Marrom",
+		"tamanho":	"grande",
+		"quantidade":	52,
+		"origem":	"Renan Ruibio",
+		"id_doadores":	[]
+	}, {
+		"id":	3,
+		"produto":	"Cama",
+		"cor":	"Preta",
+		"tamanho":	"grande",
+		"quantidade":	4,
+		"origem":	"Sp",
+		"id_doadores":	[]
+	}, {
+		"id":	4,
+		"produto":	"Abajour",
+		"cor":	"Branco",
+		"quantidade":	103,
+		"id_doadores":	[1, 2, 3]
+	}, {
+		"id":	5,
+		"produto":	"Bolde",
+		"cor":	"Cinz",
+		"quantidade":	4,
+		"id_doadores":	[1]
+	}]

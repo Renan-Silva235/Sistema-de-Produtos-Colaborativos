@@ -4,8 +4,6 @@ from datetime import datetime
 
 
 class Validacoes:
-
-
     def validar_login(self, nivel, usuario, senha):
         """Esse método Valida todos os dados de login que o usuário digitar, verificando
         cada tipo, tamanho e permissão. Se retornar 'True' o usuário será direcionado para a tela
@@ -16,13 +14,13 @@ class Validacoes:
         logado = False
 
         if nivel == 1:
-            arquivo = "json/dados_pessoais/dados_funcionarios.json"
+            arquivo = "jsons/dados_pessoais/dados_funcionarios.json"
             nivel_usuario = "Administrador"
         elif nivel == 2:
-            arquivo = "json/dados_pessoais/dados_funcionarios.json"
+            arquivo = "jsons/dados_pessoais/dados_funcionarios.json"
             nivel_usuario = "Voluntário"
         else:
-            arquivo = "json/dados_pessoais/dados_solicitantes.json"
+            arquivo = "jsons/dados_pessoais/dados_solicitantes.json"
             nivel_usuario = "Solicitante"
 
         with open(arquivo, "r", encoding="utf-8") as arq:
@@ -39,6 +37,47 @@ class Validacoes:
 
 
         return logado
+
+    @staticmethod
+    def validar_cadastro_produto(caminho_arquivo, objeto, consulta):
+        """Valida se o produto já está cadastrado na categoria correspondente."""
+
+        regras = {
+            "jsons/categorias/alimentos.json": ["nome", "peso", "validade"],
+            "jsons/categorias/domesticos.json": ["produto", "cor", "tamanho"],
+            "jsons/categorias/vestuario.json": ["tipo", "cor", "marca", "tamanho"],
+        }
+
+        campos = regras.get(caminho_arquivo)
+        if not campos:
+            return False
+
+        for consultado in consulta:
+            if all(consultado.get(campo) == objeto.get(campo) for campo in campos):
+                return consultado["id"]
+
+        return False
+
+    @staticmethod
+    def validar_cadastro_usuario(caminho_arquivo, objeto, consulta):
+        """Valida se o produto já está cadastrado na categoria correspondente."""
+
+        regras = {
+            "jsons/dados_pessoais/dados_doadores.json": ["cpf"],
+            "jsons/dados_pessoais/dados_funcionarios.json": ["cpf"],
+            "jsons/dados_pessoais/dados_solicitantes.json": ["cpf"],
+        }
+
+        campos = regras.get(caminho_arquivo)
+        if not campos:
+            return False
+
+        for consultado in consulta:
+            if all(consultado.get(campo) == objeto.get(campo) for campo in campos):
+                return True
+
+        return False
+
 
 
     @staticmethod
@@ -66,7 +105,7 @@ class Validacoes:
             return False
 
     @staticmethod
-    def validar_peso(peso: str) -> bool:
+    def validar_peso(peso):
         """
         Retorna True apenas se `peso` tiver o formato:
           <número> [espaço opcional] <unidade>
@@ -92,3 +131,40 @@ class Validacoes:
             return False
 
         return num > 0
+
+
+    @staticmethod
+    def validar_campos(*args):
+        # Retorna True somente se todos os nomes forem diferentes de ""
+        return all(arg.strip() != "" for arg in args)
+
+    @staticmethod
+    def validar_nome(nome):
+        """
+        Retorna True se o nome for válido:
+        - Apenas letras, acentos, hífen e apóstrofo
+        - Pelo menos 2 caracteres
+        """
+        nome = nome.strip()
+        if len(nome) < 2:
+            return False
+
+        # Regex: letras + acentos + hífen + apóstrofo
+        return bool(re.fullmatch(r"[A-Za-zÀ-ÿ'-]+", nome))
+
+    @staticmethod
+    def validar_telefone(telefone):
+        """
+        Retorna True se o telefone for válido:
+        - Apenas números
+        - Entre 8 e 15 dígitos (ajustável)
+        """
+        telefone = telefone.strip()
+        return telefone.isdigit() and 8 <= len(telefone) <= 15
+
+    @staticmethod
+    def validar_tamanho_vestuario(tamanho):
+        return tamanho in ["P", "M", "G", "GG"] or tamanho.isdigit()
+
+
+
