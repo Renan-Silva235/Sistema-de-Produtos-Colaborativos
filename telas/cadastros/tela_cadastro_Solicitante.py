@@ -1,75 +1,119 @@
 import time
-import pandas as pd
-from utils.pegar_dados.pegar_dados_usuario import pegar_dados_solicitantes
+from usuarios.usuario import Solicitante
+from usuarios.gerenciador import Gerenciador
 from utils.sistema.sistema import limpar_tela
-from conexoes.crud import cadastrar, consulta
-from validacoes.validacao import Validacoes
+from validacoes.validacoes_usuario import ValidacoesUsuario
+from utils.exibir_tabela.exibir import exibir_tabela
 
 class TelaCadastrarSolicitante:
-    def __init__(self, gerenciador):
-        self.gerenciador = gerenciador
-        self.json_solicitante = "jsons/dados_pessoais/dados_solicitantes.json"
+    def __init__(self, usuario):
+        self.usuario = usuario
+        self.json_solicitantes = "jsons/dados_pessoais/usuario.json"
+        self.gerenciador = Gerenciador(self.json_solicitantes)
+        self.iniciar = True
+
+
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de Doador no terminal."""
+        """Esse método exibe a tela de cadastro de um novo cliente(Solicitante) no terminal."""
 
-        try:
-            continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
-            if continuar_ou_não == 2:
-                self.gerenciador.mudar_tela("TelaMenuCadastro")
-                return
-        except ValueError:
-            limpar_tela()
-            self.gerenciador.mudar_tela("TelaCadastrarSolicitante")
-            return
+        while self.iniciar:
+            try:
+                continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
+                if continuar_ou_não not in [1, 2]:
+                    limpar_tela()
+                    continue
 
-        dados_usuario = pegar_dados_solicitantes()
+                elif continuar_ou_não == 2:
+                    limpar_tela()
+                    print("Voltando..")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    return
 
-        if not dados_usuario:
-            self.gerenciador.mudar_tela("TelaCadastrarSolicitante")
-            return
-
-        limpar_tela()
-
-
-        loop = True
-        while loop:
-            print("VISUALIZAÇÃO:")
-            print()
-            print()
-            print("Dados do candidato:")
-            print()
-            print(pd.DataFrame([dados_usuario]).to_string(index=False))
-            print()
-            print()
-            condicao = input("Deseja realmente salvar esse usuário? (s/n): ").lower()
-
-            if condicao not in ["s", "n"]:
+            except ValueError:
                 limpar_tela()
                 continue
 
-            elif condicao == "s":
-                limpar_tela()
-                consultar = consulta(self.json_solicitante)
-                validar = Validacoes.validar_cadastro_usuario(self.json_solicitante, dados_usuario, consultar)
+            print("\n\nINFORME OS DADOS DO CLIENTE:\n\n")
+            try:
+                nome = input("Nome e Sobrenome: ").title()
+                ValidacoesUsuario.validar_nome(nome)
 
-                if validar:
-                    print("Usuário já está cadastrado no sistema.")
+                idade = int(input("Idade: "))
+                ValidacoesUsuario.validar_idade(idade)
+
+                cpf = input("CPF: ")
+                ValidacoesUsuario.validar_cpf(cpf)
+
+                endereco = input("Endereço: ")
+                cidade = input("Cidade: ").title()
+                estado = input("Estado: ").title()
+
+                telefone = input("Telefone: ")
+                ValidacoesUsuario.validar_telefone(telefone)
+
+                email = input("email: ").lower()
+                ValidacoesUsuario.validar_email(email)
+
+                senha = input("Crie uma senha de 4 dígitos numéricos: ")
+                redigitar_senha = input("Digite a sua senha novamente: ")
+                ValidacoesUsuario.validar_senha(senha, redigitar_senha)
+
+            except ValueError as erro:
+                print(erro)
+                time.sleep(1.5)
+                limpar_tela()
+                continue
+
+
+            solicitante = Solicitante(nivel="Solicitante",
+                                      nome=nome,
+                                      idade=idade,
+                                      cpf=cpf,
+                                      email=email,
+                                      senha=senha,
+                                      endereco=endereco,
+                                      cidade=cidade,
+                                      estado=estado,
+                                      id_responsavel=self.usuario["id"])
+
+            limpar_tela()
+
+            while self.iniciar:
+                print("VISUALIZAÇÃO:\n\n")
+                print("Dados do cliente:\n\n")
+                exibir_tabela(solicitante.objeto(), titulo="Solicitante")
+                print("\n\n")
+
+                condicao = input("Deseja realmente salvar esse cliente? (s/n): ").lower()
+
+                if condicao not in ["s", "n"]:
+                    limpar_tela()
+                    continue
+
+                elif condicao == "s":
+                    limpar_tela()
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_doadores, solicitante.objeto(), self.gerenciador.listar())
+
+                    if validar:
+                        print("cliente já está cadastrado no sistema.")
+                        time.sleep(1.5)
+                        limpar_tela()
+                        self.iniciar = False
+                        continue
+
+                    self.gerenciador.cadastrar(solicitante)
                     time.sleep(1.5)
                     limpar_tela()
-                    break
+                    self.iniciar = False
+                    continue
+                else:
+                    limpar_tela()
+                    time.sleep(1.5)
+                    self.iniciar = False
+                    continue
 
-                cadastrar(self.json_solicitante, dados_usuario)
-                print("Usuário Cadastrado com Sucesso")
-                time.sleep(1.5)
-                limpar_tela()
-                break
-            else:
-                limpar_tela()
-                self.gerenciador.mudar_tela("TelaCadastrarSolicitante")
-                time.sleep(1.5)
-                break
+            self.iniciar = True
+            limpar_tela()
+            continue
 
-
-        limpar_tela()
-        self.gerenciador.mudar_tela("TelaCadastrarSolicitante")
-        return

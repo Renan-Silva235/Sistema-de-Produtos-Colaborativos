@@ -1,11 +1,10 @@
 import json
-from conexoes.crud import consulta
-
+from usuarios.gerenciador import Gerenciador
 class Alteracoes:
 
 
     def alterar_estoque(self, caminho_arquivo, produto_id, quantidade_alterar):
-        consulta = consulta(caminho_arquivo)
+        consulta = Gerenciador(caminho_arquivo).listar()
 
         if not consulta:
             return False
@@ -29,10 +28,7 @@ class Alteracoes:
         """Esse método atualiza o número de doações feitas pelo usuário somando o que ele já havia doado pela
         quantidade total de produtos que ele está doando no momento."""
 
-        todos_doadores = consulta("jsons/dados_pessoais/dados_doadores.json")
-
-        if not todos_doadores:
-            return False
+        todos_doadores = Gerenciador("jsons/dados_pessoais/doadores.json").listar()
 
         atualizado = False
         for doador in todos_doadores:
@@ -42,7 +38,7 @@ class Alteracoes:
                 break
 
         if atualizado:
-            with open("jsons/dados_pessoais/dados_doadores.json", "w") as arquivo:
+            with open("jsons/dados_pessoais/doadores.json", "w") as arquivo:
                 json.dump(todos_doadores, arquivo, indent=4, ensure_ascii=False)
         else:
             return False
@@ -51,7 +47,7 @@ class Alteracoes:
     def alterar_produto_existente(self, caminho_arquivo, id_produto, quantidade, id_doador):
         """Atualiza quantidade e adiciona o id do doador no produto já existente."""
 
-        consulta = consulta(caminho_arquivo)
+        consulta = Gerenciador(caminho_arquivo).listar()
 
         for item in consulta:
             if item["id"] == id_produto:
@@ -59,12 +55,12 @@ class Alteracoes:
                 item["quantidade"] += quantidade
 
                 # garante que id_doadores exista
-                if "id_doadores" not in item:
-                    item["id_doadores"] = []
+                if "id_doador" not in item:
+                    item["id_doador"] = []
 
                 # adiciona o doador se ainda não estiver
-                if id_doador not in item["id_doadores"]:
-                    item["id_doadores"].append(id_doador)
+                if id_doador not in item["id_doador"]:
+                    item["id_doador"].append(id_doador)
 
                 break
 
@@ -73,14 +69,14 @@ class Alteracoes:
         partes = []
         for item in consulta:
             # tira id_doadores temporariamente
-            id_doadores = item.pop("id_doadores", [])
+            id_doadores = item.pop("id_doador", [])
             # serializa o resto normalmente
             base = json.dumps(item, indent=4, ensure_ascii=False)
             base = base.rstrip(" \n}")  # remove } e quebras no fim
             # serializa id_doadores em linha
             id_doadores_str = json.dumps(id_doadores, separators=(",", ":"))
             # junta tudo de volta
-            final = f"{base},\n    \"id_doadores\": {id_doadores_str}\n    }}"
+            final = f"{base},\n    \"id_doador\": {id_doadores_str}\n    }}"
             partes.append(final)
 
         with open(caminho_arquivo, "w", encoding="utf-8") as f:

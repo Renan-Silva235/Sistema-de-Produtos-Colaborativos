@@ -1,96 +1,126 @@
 import time
-import pandas as pd
-from utils.pegar_dados.pegar_dados_usuario import pegar_dados_voluntario
+from utils.exibir_tabela.exibir import exibir_tabela
+from usuarios.usuario import Usuario
+from usuarios.gerenciador import Gerenciador
 from utils.sistema.sistema import limpar_tela
-from conexoes.crud import cadastrar, consulta
-from validacoes.validacao import Validacoes
+from validacoes.validacoes_usuario import ValidacoesUsuario
 
 class TelaCadastrarFuncionarioVoluntario:
-    def __init__(self, gerenciador):
-        self.gerenciador = gerenciador
-        self.json_funcionario = "jsons/dados_pessoais/dados_funcionarios.json"
+    def __init__(self, usuario):
+        self.usuario = usuario
+        self.json_funcionario = "jsons/dados_pessoais/usuario.json"
+        self.gerenciador = Gerenciador(self.json_funcionario)
+        self.iniciar = True
+
     def mostrar(self):
-        """Tela de cadastro de Funcionário ou Voluntário"""
+        """Esse método exibe a tela de cadastro de um novo cliente(Solicitante) no terminal."""
 
-        try:
-            continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
-            if continuar_ou_não == 2:
-                self.gerenciador.mudar_tela("TelaMenuCadastro")
-                return
-        except ValueError:
-            limpar_tela()
-            self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
-            return
+        while self.iniciar:
+            try:
+                continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
+                if continuar_ou_não not in [1, 2]:
+                    limpar_tela()
+                    continue
 
-        print("INFORME AS INFORMAÇÕES DO PRODUTO DOADO:")
-        print()
-        niveis = ["Administrador", "Voluntário", "Solicitante"]
+                elif continuar_ou_não == 2:
+                    limpar_tela()
+                    print("Voltando..")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    return
 
-
-        print(f"""Informe a categoria do produto:
-                1- {niveis[0]}
-                2- {niveis[1]}
-                3- {niveis[2]}
-              """)
-
-        try:
-            opcao_nivel = int(input("Digite a opção corresponde ao nível: "))
-        except ValueError:
-            limpar_tela()
-            self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
-
-        if opcao_nivel not in [1,2,3]:
-            print("opção inválida")
-            time.sleep(1)
-            limpar_tela()
-            self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
-
-        dados_usuario = pegar_dados_voluntario()
-
-        if not dados_usuario:
-            self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
-            return
-
-        dados_usuario["nivel"] = niveis[opcao_nivel - 1]
-
-        limpar_tela()
-
-        while True:
-            print("VISUALIZAÇÃO:")
-            print()
-            print()
-            print("Dados do candidato:")
-            print()
-            print(pd.DataFrame([dados_usuario]).to_string(index=False))
-            print()
-            print()
-            condicao = input("Deseja realmente salvar este registro? (s/n): ").lower()
-
-            if condicao not in ["s", "n"]:
+            except ValueError:
                 limpar_tela()
                 continue
 
-            elif condicao == "s":
-                limpar_tela()
-                consultar = consulta(self.json_funcionario)
-                validar = Validacoes.validar_cadastro_usuario(self.json_funcionario, dados_usuario, consultar)
+            niveis = ["Administrador", "Funcionário"]
 
-                if validar:
-                    print("Funcionário / Voluntário já está cadastrado no sistema.")
+            print(f"""Informe o nível do funcionário:
+                    1- {niveis[0]}
+                    2- {niveis[1]}
+                """)
+
+            try:
+                opcao_nivel = int(input("Escolha a opção correspondente ao nível do funcionário: "))
+                if opcao_nivel not in [1,2]:
+                    print("opção inválida")
                     time.sleep(1.5)
                     limpar_tela()
-                    break
+                    continue
+            except ValueError:
+                limpar_tela()
+                continue
 
-                cadastrar(self.json_funcionario, dados_usuario)
-                print("Funcionário/Voluntário cadastrado com sucesso")
+            print("\n\nINFORME OS DADOS DO NOVO FUNCIONÁRIO:\n\n")
+            try:
+                nome = input("Nome: ").title()
+                ValidacoesUsuario.validar_nome(nome)
+
+                idade = int(input("Idade: "))
+                ValidacoesUsuario.validar_idade(idade)
+
+                cpf = input("CPF: ")
+                ValidacoesUsuario.validar_cpf(cpf)
+
+                email = input("email: ").lower()
+                ValidacoesUsuario.validar_email(email)
+
+                senha = input("Crie uma senha de 4 dígitos numérica: ")
+                redigitar_senha = input("Digite a sua senha novamente: ")
+                ValidacoesUsuario.validar_senha(senha, redigitar_senha)
+
+
+            except ValueError as erro:
+                print(erro)
                 time.sleep(1.5)
                 limpar_tela()
-                break
-            else:
-                limpar_tela()
-                self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
-                time.sleep(1)
-                return
+                continue
 
-        limpar_tela()
-        self.gerenciador.mudar_tela("TelaCadastrarFuncionarioVoluntario")
+            if opcao_nivel == 1:
+                nivel_funcionario = niveis[0]
+            else:
+                nivel_funcionario = niveis[1]
+
+            usuario = Usuario(nivel=nivel_funcionario, nome=nome, idade=idade, cpf=cpf, email=email, senha=senha)
+
+
+            limpar_tela()
+
+            while self.iniciar:
+                print("VISUALIZAÇÃO:\n\n")
+                print("Dados do funcionário:\n\n")
+                exibir_tabela(usuario.objeto(), titulo="Solicitante")
+                print("\n\n")
+
+                condicao = input("Deseja realmente salvar esse cliente? (s/n): ").lower()
+
+                if condicao not in ["s", "n"]:
+                    limpar_tela()
+                    continue
+
+                elif condicao == "s":
+                    limpar_tela()
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_funcionario, usuario.objeto(), self.gerenciador.listar())
+
+                    if validar:
+                        print("Funcionário já está cadastrado no sistema.")
+                        time.sleep(1.5)
+                        limpar_tela()
+                        self.iniciar = False
+                        continue
+
+                    self.gerenciador.cadastrar(usuario)
+                    print("Funcionário já está cadastrado no sistema.")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    self.iniciar = False
+                    continue
+                else:
+                    limpar_tela()
+                    time.sleep(1.5)
+                    self.iniciar = False
+                    continue
+
+            self.iniciar = True
+            limpar_tela()
+            continue

@@ -1,9 +1,9 @@
-from telas.gerenciadorTelas.gerenciador_telas import GerenciadorTelas
+from telas.menus.tela_menu_inicial import TelaInicial
+
 
 def RodarPrograma():
-    """Essa é a função main do programa, onde o software começa a rodar"""
-    gerenciador = GerenciadorTelas()
-    gerenciador.iniciar("TelaInicial")
+    iniciar = TelaInicial()
+    iniciar.mostrar()
 
 
 if __name__ == "__main__":

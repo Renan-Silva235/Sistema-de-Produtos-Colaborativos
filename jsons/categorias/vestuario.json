@@ -1,51 +1,14 @@
 [
 {
     "id": 1,
-    "tipo": "Camiseta",
-    "marca": "Nike",
-    "cor": "Branca",
-    "tamanho": 38,
-    "quantidade": 2,
-    "origem": "Maria",
-    "id_doadores": []
-    },
-{
-    "id": 2,
-    "tipo": "Calça",
-    "marca": "Adidas",
-    "cor": "Preto",
-    "tamanho": 38,
-    "quantidade": 3,
-    "origem": "Renan",
-    "id_doadores": []
-    },
-{
-    "id": 3,
-    "tipo": "Tênis",
-    "marca": "Nike",
-    "cor": "Pretp",
-    "tamanho": 40,
-    "quantidade": 4,
-    "origem": "Renan",
-    "id_doadores": []
-    },
-{
-    "id": 4,
-    "tipo": "Meia",
+    "nome_produto": "Blusa",
     "marca": "Nike",
     "cor": "Preta",
-    "tamanho": 2,
-    "quantidade": 4,
-    "origem": "Sp",
-    "id_doadores": []
-    },
-{
-    "id": 5,
-    "tipo": "Meia",
-    "marca": "Nike",
-    "cor": "Preto",
-    "tamanho": "P",
-    "quantidade": 13,
-    "id_doadores": [1,2]
+    "tamanho": "M",
+    "quantidade": 240,
+    "id_responsavel": [
+        1
+    ],
+    "id_doador": [1,2]
     }
 ]

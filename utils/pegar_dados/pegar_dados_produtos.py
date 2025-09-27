@@ -1,4 +1,4 @@
-from validacoes.validacao import Validacoes
+from validacoes.validacoes_produtos import Validacoes
 import time
 from utils.sistema.sistema import limpar_tela
 def pegar_dados_alimenticios():

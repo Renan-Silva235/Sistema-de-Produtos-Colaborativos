@@ -1,54 +1,78 @@
 import time
-import json
 from utils.sistema.sistema import limpar_tela
-from validacoes.validacao import Validacoes
+from validacoes.validacoes_usuario import ValidacoesUsuario
+from usuarios.gerenciador import Gerenciador
 
 class TelaRecuperarSenha:
-    def __init__(self, gerenciador):
-        self.gerenciador = gerenciador
+    def __init__(self):
+        self.iniciar = True
+        self.json_usuario = "jsons/dados_pessoais/usuario.json"
+        self.gerenciador = Gerenciador(self.json_usuario)
 
     def mostrar(self):
         """Esse método exibe a tela de recuperação de senha no terminal."""
 
-        print("Informe os dados abaixo para recuperar a sua senha: ")
+        print("Informe os dados abaixo para recuperar a sua senha: \n\n")
 
-        while True:
+        while self.iniciar:
             try:
-                opcao = int(input("digite (1) Informar os dados / (2) cancelar: "))
-
+                opcao = int(input("[1]- Informar os dados | [2]- voltar: "))
                 if opcao not in [1, 2]:
-                    print("Opção inválida. Digite (1 ou 2)")
+                    limpar_tela()
                     continue
-                break
+
+                elif opcao == 2:
+                    limpar_tela()
+                    print("Voltando..")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    return
+
             except ValueError:
-                print("Digite apenas números (1 ou 2)")
+                limpar_tela()
                 continue
 
-        if opcao == 1:
-            informar_nivel = int(input("Informe seu nível de acesso: (1) Administrador | (2) Voluntário | (3) Solicitante: "))
-            informar_cpf = input("Digite o seu cpf: ")
-            informar_email = input("Digite seu e-mail: ").lower()
+            niveis = ["Administrador", "Voluntário", "Solicitante"]
 
-            nova_senha = self.gerar_nova_senha(informar_nivel, informar_cpf, informar_email)
-            if not nova_senha:
-                time.sleep(2)
+            print(f"""Informe o nível de acesso:
+                    1- {niveis[0]}
+                    2- {niveis[1]}
+                    3- {niveis[2]}
+                """)
+
+            try:
+                informar_nivel = int(input("Escolha a opção correspondente ao nível do funcionário: "))
+                if informar_nivel not in [1,2,3]:
+                    print("opção inválida")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    continue
+            except ValueError:
                 limpar_tela()
-                self.gerenciador.mudar_tela("TelaRecuperarSenha")
+                continue
 
+            try:
+                informar_cpf = input("Digite o seu cpf: ")
+                ValidacoesUsuario.validar_cpf(informar_cpf)
+
+                informar_email = input("Digite seu e-mail: ").lower()
+                ValidacoesUsuario.validar_email(informar_email)
+            except ValueError as erro:
+                limpar_tela()
+                print(erro)
+                time.sleep(1.5)
+                limpar_tela()
+                continue
+
+            if informar_nivel == 1:
+                pegar_nivel = niveis[0]
+            elif informar_nivel == 2:
+                pegar_nivel = niveis[1]
             else:
-                time.sleep(2)
-                limpar_tela()
-                print("Voltando para a tela inicial...")
-                time.sleep(2)
-                limpar_tela()
-                self.gerenciador.mudar_tela("TelaInicial")
+                pegar_nivel = niveis[2]
 
-        if opcao == 2:
-            limpar_tela()
-            print("Voltando para a Tela Inicial...")
-            time.sleep(2)
-            limpar_tela()
-            self.gerenciador.mudar_tela("TelaInicial")
+            self._gerar_nova_senha(pegar_nivel, informar_cpf, informar_email)
+            continue
 
 
     def _gerar_nova_senha(self,nivel, cpf, email):
@@ -56,64 +80,34 @@ class TelaRecuperarSenha:
 
         usuario_encontrado = None
 
-        if nivel == 1:
-            arquivo = "json/dados_funcionarios.json"
-            nivel_usuario = "Administrador"
-        elif nivel == 2:
-            arquivo = "json/dados_funcionarios.json"
-            nivel_usuario = "Voluntário"
-        elif nivel == 3:
-            arquivo = "json/dados_solicitantes.json"
-            nivel_usuario = "Solicitante"
-        else:
-            print("Nível inválido.")
-            return False
+        consultar = self.gerenciador.listar()
 
-        if not Validacoes.validar_cpf(cpf):
-            print("CPF inválido.")
-            return False
 
-        if not Validacoes.validar_email(email):
-            print("E-mail inválido.")
-            return False
-
-        with open(arquivo, "r", encoding="utf-8") as arq:
-            usuarios = json.load(arq)
-
-        email = email.strip().lower()
-        cpf = cpf.strip()
-
-        for i, user in enumerate(usuarios):
-            if user.get("nivel") == nivel_usuario and user.get("cpf") == cpf and user.get("emailCorporativo") == email:
-                usuario_encontrado = user
+        for usuario in consultar:
+            if all([usuario.get("nivel") == nivel, usuario.get("cpf") == cpf, usuario.get("email") == email]):
+                usuario_encontrado = usuario
                 break
 
         if not usuario_encontrado:
             print("Usuário não encontrado")
             return False
 
-        while True:
-            nova_senha = input("Digite sua nova senha (4 dígitos numéricos): ")
-            if len(nova_senha) != 4 or not nova_senha.isdigit():
+        while self.iniciar:
+            try:
+                nova_senha = input("Digite sua nova senha (4 dígitos numéricos): ")
+                redigitar_senha = input("Digite novamente a nova senha: ")
+                ValidacoesUsuario.validar_senha(nova_senha, redigitar_senha)
+            except ValueError as erro:
                 limpar_tela()
-                print("Formato inválido. A senha precisa ter exatamente 4 dígitos numéricos.")
-                time.sleep(2)
+                print(erro)
+                time.sleep(1.5)
                 limpar_tela()
                 continue
-            break
 
-        while True:
-            redigitar = input("Digite novamente a nova senha: ")
-            if redigitar != nova_senha:
-                print("Senhas não coincidem, tente novamente")
-                time.sleep(2)
-                continue
-            break
+            self.iniciar = False
+            continue
 
-        usuario_encontrado["senha"] = nova_senha
-
-        with open(arquivo, "w", encoding="utf-8") as arq:
-            json.dump(usuarios, arq, indent=4, ensure_ascii=False)
-
+        self.iniciar = True
+        self.gerenciador.atualizar("senha", usuario_encontrado["senha"], nova_senha)
         print("Senha alterada com sucesso!")
-        return True
+        return

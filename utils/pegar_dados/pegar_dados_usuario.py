@@ -1,6 +1,6 @@
 from utils.sistema.sistema import limpar_tela
 import time
-from validacoes.validacao import Validacoes
+from validacoes.validacoes_produtos import Validacoes
 
 
 def pegar_dados_doadores():

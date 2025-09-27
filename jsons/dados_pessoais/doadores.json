@@ -9,7 +9,7 @@
         "cidade": "Sorocaba",
         "estado": "Sp",
         "id_responsavel": 1,
-        "total_doacoes": 0
+        "total_doacoes": 20
     },
     {
         "id": 2,
@@ -21,6 +21,6 @@
         "cidade": "Sorocaba",
         "estado": "Sp",
         "id_responsavel": 1,
-        "total_doacoes": 20
+        "total_doacoes": 110
     }
 ]
