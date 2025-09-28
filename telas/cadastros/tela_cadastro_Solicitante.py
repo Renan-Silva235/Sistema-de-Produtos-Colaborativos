@@ -75,7 +75,7 @@ class TelaCadastrarSolicitante:
                                       endereco=endereco,
                                       cidade=cidade,
                                       estado=estado,
-                                      id_responsavel=self.usuario["id"])
+                                      id_responsavel=self.usuario)
 
             limpar_tela()
 
@@ -93,7 +93,7 @@ class TelaCadastrarSolicitante:
 
                 elif condicao == "s":
                     limpar_tela()
-                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_doadores, solicitante.objeto(), self.gerenciador.listar())
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_solicitantes, solicitante.objeto(), self.gerenciador.listar())
 
                     if validar:
                         print("cliente já está cadastrado no sistema.")
@@ -103,6 +103,7 @@ class TelaCadastrarSolicitante:
                         continue
 
                     self.gerenciador.cadastrar(solicitante)
+                    print("Solicitante Cadastrado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()
                     self.iniciar = False

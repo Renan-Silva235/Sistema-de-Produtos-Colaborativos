@@ -131,7 +131,14 @@ class TelaCadastrarProdutos:
             iniciar_loop = True
             while iniciar_loop:
                 try:
-                    cpf = input("Informe o cpf do Doador: ")
+                    cpf = input("Informe o cpf do Doador ou '0' para voltar: ")
+                    if len(cpf) == 1 and cpf == '0':
+                        iniciar_loop = False
+                        limpar_tela()
+                        print("Voltando...")
+                        time.sleep(1.5)
+                        limpar_tela()
+                        return
                     ValidacoesUsuario.validar_cpf(cpf)
                     todos_doadores = Gerenciador(self.json_doador).listar()
                 except ValueError as erro:

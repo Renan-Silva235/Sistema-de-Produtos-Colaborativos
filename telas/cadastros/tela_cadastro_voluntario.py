@@ -110,7 +110,7 @@ class TelaCadastrarFuncionarioVoluntario:
                         continue
 
                     self.gerenciador.cadastrar(usuario)
-                    print("Funcionário já está cadastrado no sistema.")
+                    print("Funcionário cadastrado com sucesso.")
                     time.sleep(1.5)
                     limpar_tela()
                     self.iniciar = False
