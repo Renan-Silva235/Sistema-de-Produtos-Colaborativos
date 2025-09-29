@@ -7,6 +7,7 @@ class Alimentos:
 
     def objeto(self):
         return {
+            "categoria": "Alimentícios",
             "nome_alimento": self.nome_alimento,
             "peso": self.peso,
             "validade": self.validade,
@@ -15,21 +16,16 @@ class Alimentos:
 
 
 class Medicamentos:
-    def __init__(self, nome_comercial, nome_generico, categoria, apresentacao, dosagem, validade, quantidade):
-        self.nome_comercial = nome_comercial,
-        self.nome_generico = nome_generico
-        self.categoria = categoria
-        self.apresentacao = apresentacao
+    def __init__(self, nome_medicamento, dosagem, validade, quantidade):
+        self.nome_medicamento = nome_medicamento,
         self.dosagem = dosagem
         self.validade = validade
         self.quantidade = quantidade
 
     def objeto(self):
         return {
-            "nome_comercial": self.nome_comercial,
-            "nome_generico": self.nome_generico,
-            "categoria": self.categoria,
-            "apresentacao": self.apresentacao,
+            "categoria": "Medicamentos",
+            "nome_medicamento": self.nome_medicamento,
             "dosagem": self.dosagem,
             "validade": self.validade,
             "quantidade": self.quantidade
@@ -47,6 +43,7 @@ class Vestuario:
 
     def objeto(self):
         return {
+            "categoria": "Vestuário",
             "nome_produto": self.nome_produto,
             "marca": self.marca,
             "cor": self.cor,

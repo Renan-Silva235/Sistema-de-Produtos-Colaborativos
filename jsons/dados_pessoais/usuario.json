@@ -16,7 +16,7 @@
 		"senha":	"2222"
 	}, {
 		"id":	5,
-		"nivel":	"Funcionário",
+		"nivel":	"Voluntário",
 		"nome":	"Lara",
 		"idade":	18,
 		"cpf":	"88855522233",
@@ -24,27 +24,15 @@
 		"senha":	"2222"
 	}, {
 		"id":	6,
-		"nivel":	"Funcionário",
+		"nivel":	"Voluntário",
 		"nome":	"Kauan",
 		"idade":	20,
 		"cpf":	"11177788899",
 		"email":	"kauan@email.com",
 		"senha":	"2222"
 	}, {
-		"id":	7,
-		"nivel":	"Solicitante",
-		"nome":	"Inacio Bovo",
-		"idade":	18,
-		"cpf":	"55588899922",
-		"email":	"inacio@email.com",
-		"senha":	"2222",
-		"endereco":	"rua joaquim",
-		"cidade":	"Sorocaba",
-		"estado":	"Sp",
-		"id_responsavel":	1
-	}, {
 		"id":	8,
-		"nivel":	"Funcionário",
+		"nivel":	"Voluntário",
 		"nome":	"João",
 		"idade":	32,
 		"cpf":	"44466633322",

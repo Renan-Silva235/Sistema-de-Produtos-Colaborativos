@@ -5,11 +5,11 @@ from usuarios.gerenciador import Gerenciador
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_usuario import ValidacoesUsuario
 
-class TelaCadastrarFuncionarioVoluntario:
+class TelaCadastrarVoluntario:
     def __init__(self, usuario):
         self.usuario = usuario
-        self.json_funcionario = "jsons/dados_pessoais/usuario.json"
-        self.gerenciador = Gerenciador(self.json_funcionario)
+        self.json_voluntario = "jsons/dados_pessoais/usuario.json"
+        self.gerenciador = Gerenciador(self.json_voluntario)
         self.iniciar = True
 
     def mostrar(self):
@@ -33,7 +33,7 @@ class TelaCadastrarFuncionarioVoluntario:
                 limpar_tela()
                 continue
 
-            niveis = ["Administrador", "Funcionário"]
+            niveis = ["Administrador", "Voluntário"]
 
             print(f"""Informe o nível do funcionário:
                     1- {niveis[0]}
@@ -89,7 +89,7 @@ class TelaCadastrarFuncionarioVoluntario:
             while self.iniciar:
                 print("VISUALIZAÇÃO:\n\n")
                 print("Dados do funcionário:\n\n")
-                exibir_tabela(usuario.objeto(), titulo="Solicitante")
+                exibir_tabela(usuario.objeto(), titulo="Voluntário")
                 print("\n\n")
 
                 condicao = input("Deseja realmente salvar esse cliente? (s/n): ").lower()
@@ -100,7 +100,7 @@ class TelaCadastrarFuncionarioVoluntario:
 
                 elif condicao == "s":
                     limpar_tela()
-                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_funcionario, usuario.objeto(), self.gerenciador.listar())
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_voluntario, usuario.objeto(), self.gerenciador.listar())
 
                     if validar:
                         print("Funcionário já está cadastrado no sistema.")
