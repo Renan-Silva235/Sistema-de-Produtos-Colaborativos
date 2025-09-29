@@ -1,31 +1,37 @@
 [{
 		"id":	1,
-		"categoria":	"Vestuário",
-		"nome_produto":	"Blusa",
-		"marca":	"Adidas",
-		"cor":	"Preta",
-		"tamanho":	"M",
-		"quantidade":	100,
-		"id_doador":	[1],
-		"id_responsavel":	[1]
+		"pedido":	[{
+				"id":	3,
+				"categoria":	"Alimentícios",
+				"nome_alimento":	"Arroz",
+				"peso":	"2 Kg",
+				"validade":	"14/05/2025",
+				"quantidade_pedida":	33,
+				"id_solicitante":	1,
+				"status":	"Em Análise"
+			}]
 	}, {
 		"id":	2,
-		"categoria":	"Medicamentos",
-		"nome_medicamento":	["Dipirona"],
-		"classe_terapeutica":	"Analgésico",
-		"apresentacao":	"Comprimido",
-		"dosagem":	"100 Mg",
-		"validade":	"15/02/2026",
-		"quantidade":	45,
-		"id_doador":	[2],
-		"id_responsavel":	[1]
+		"pedido":	[{
+				"id":	4,
+				"categoria":	"Alimentícios",
+				"nome_alimento":	"Arroz solito",
+				"peso":	"2 Kg",
+				"validade":	"14/05/2025",
+				"quantidade_pedida":	22,
+				"id_solicitante":	1,
+				"status":	"Em Análise"
+			}]
 	}, {
 		"id":	3,
-		"categoria":	"Alimentícios",
-		"nome_alimento":	"Arroz",
-		"peso":	"2 Kg",
-		"validade":	"14/05/2025",
-		"quantidade":	54,
-		"id_doador":	[2],
-		"id_responsavel":	[1]
+		"pedido":	[{
+				"id":	2,
+				"categoria":	"Medicamentos",
+				"nome_medicamento":	["Dipirona"],
+				"dosagem":	"100 Mg",
+				"validade":	"15/02/2026",
+				"quantidade_pedida":	4,
+				"id_solicitante":	1,
+				"status":	"Em Análise"
+			}]
 	}]

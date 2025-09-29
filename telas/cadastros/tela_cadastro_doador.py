@@ -89,7 +89,7 @@ class TelaCadastrarDoador:
                         confirmar = False
                         continue
 
-                    self.gerenciador.cadastrar(doador)
+                    self.gerenciador.cadastrar(doador.objeto())
                     print("Doador Cadastrado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()

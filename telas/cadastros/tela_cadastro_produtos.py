@@ -188,7 +188,7 @@ class TelaCadastrarProdutos:
 
                     doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
                     self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                    self.gerenciador.cadastrar(doacao)
+                    self.gerenciador.cadastrar(doacao.objeto())
                     limpar_tela()
                     print("Produto Cadastrado com Sucesso")
                     time.sleep(1.5)

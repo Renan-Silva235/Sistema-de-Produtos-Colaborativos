@@ -102,7 +102,7 @@ class TelaCadastrarSolicitante:
                         self.iniciar = False
                         continue
 
-                    self.gerenciador.cadastrar(solicitante)
+                    self.gerenciador.cadastrar(solicitante.objeto())
                     print("Solicitante Cadastrado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()
