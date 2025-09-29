@@ -73,15 +73,9 @@ class Gerenciador:
                 resultados.append(item)
 
         if not resultados:
-            return "Nenhum resultado encontrado."
+            return False
 
-        # pegar cabeçalhos das chaves do dicionário
-        cabecalhos = resultados[0].keys()
-
-        # transformar lista de dict em lista de listas
-        tabela = [list(item.values()) for item in resultados]
-
-        return tabulate(tabela, headers=cabecalhos, tablefmt="fancy_grid")
+        return resultados
 
 
 

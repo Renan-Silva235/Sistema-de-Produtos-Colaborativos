@@ -3,7 +3,7 @@ from utils.sistema.sistema import limpar_tela
 from telas.cadastros.tela_cadastro_produtos import TelaCadastrarProdutos
 from telas.cadastros.tela_cadastro_doador import TelaCadastrarDoador
 from telas.cadastros.tela_cadastro_Solicitante import TelaCadastrarSolicitante
-from telas.cadastros.tela_cadastro_voluntario import TelaCadastrarFuncionarioVoluntario
+from telas.cadastros.tela_cadastro_voluntario import TelaCadastrarVoluntario
 
 class TelaMenuCadastro:
 
@@ -45,7 +45,7 @@ class TelaMenuCadastro:
                     continue
                 elif opcao == 4:
                     limpar_tela()
-                    self.telaCadastroVoluntario = TelaCadastrarFuncionarioVoluntario(self.usuario)
+                    self.telaCadastroVoluntario = TelaCadastrarVoluntario(self.usuario)
                     self.telaCadastroVoluntario.mostrar()
                     continue
                 elif opcao == 0:

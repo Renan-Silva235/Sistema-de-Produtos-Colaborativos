@@ -12,10 +12,9 @@ class TelaCadastrarProdutos:
     def __init__(self, usuario):
         self.usuario = usuario
         self.alterar = Alteracoes()
-        self.json_medicamentos = "jsons/categorias/medicamentos.json"
-        self.json_alimentos = "jsons/categorias/alimentos.json"
-        self.json_vestuario = "jsons/categorias/vestuario.json"
+        self.json_produtos = "jsons/produtos/produtos.json"
         self.json_doador = "jsons/dados_pessoais/doadores.json"
+        self.gerenciador = Gerenciador(self.json_produtos)
         self.iniciar = True
 
     def mostrar(self):
@@ -79,15 +78,11 @@ class TelaCadastrarProdutos:
                     limpar_tela()
                     continue
 
-                gerenciador = Gerenciador(self.json_vestuario)
                 produto = Vestuario(nome_produto=tipo_roupa, marca=marca, cor=cor, tamanho=tamanho, quantidade=quantidade)
 
             elif opcao_categoria == 2:
                 try:
-                    nome_comercial = input("Nome Comercial: ").title()
-                    nome_generico = input("Nome Genérico: ").title()
-                    categoria = input("Categoria: ex (Analgésico, antibiótico) ").title()
-                    apresentacao = input("Apresentação: ex (Cápsula, Pomada, Comprimido) ").title()
+                    nome_medicamento = input("Nome do medicamento: ").title()
                     dosagem = input("Dosagem: ex(500 mg, 100mg): ").title()
                     validade = input("Digite a validade do produto utilizando '/' para separar dia/mês/ano: ")
                     ValidacoesProdutos.validar_formato_data(validade)
@@ -98,14 +93,10 @@ class TelaCadastrarProdutos:
                     limpar_tela()
                     continue
 
-                gerenciador = Gerenciador(self.json_medicamentos)
-                produto = Medicamentos(nome_comercial=nome_comercial,
-                                          nome_generico=nome_generico,
-                                          categoria=categoria,
-                                          apresentacao=apresentacao,
-                                          dosagem=dosagem,
-                                          validade=validade,
-                                          quantidade=quantidade)
+                produto = Medicamentos(nome_medicamento=nome_medicamento,
+                                        dosagem=dosagem,
+                                        validade=validade,
+                                        quantidade=quantidade)
 
             else:
                 try:
@@ -123,7 +114,6 @@ class TelaCadastrarProdutos:
                     limpar_tela()
                     continue
 
-                gerenciador = Gerenciador(self.json_alimentos)
                 produto = Alimentos(nome_alimento=alimento, peso=peso, validade=validade, quantidade=quantidade)
 
             limpar_tela()
@@ -180,81 +170,32 @@ class TelaCadastrarProdutos:
 
                 elif condicao == "s":
 
-                    if opcao_categoria == 1:
-                        limpar_tela()
-                        validar = ValidacoesProdutos.validar_cadastro_produto(self.json_vestuario, produto.objeto(), gerenciador.listar())
+                    limpar_tela()
+                    validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.gerenciador.listar())
 
-                        if validar:
-                            print("Produto já está cadastrado no sistema.")
-                            print("Foi atualizado o número de quantidades do produto.")
+                    if validar:
+                        print("Produto já está cadastrado no sistema.")
+                        print("Foi atualizado o número de quantidades do produto.")
 
-                            # produto.objeto()["id_doador"].append(doador_encontrado["id"])
-                            # produto.objeto()["id_doador"].append(doador_encontrado["id"])
-                            self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                            self.alterar.alterar_produto_existente(self.json_vestuario, validar, produto.objeto()['quantidade'], doador_encontrado["id"])
-                            time.sleep(1.5)
-                            limpar_tela()
-                            iniciar_loop = False
-                            continue
-
-                        doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
+                        # produto.objeto()["id_doador"].append(doador_encontrado["id"])
+                        # produto.objeto()["id_doador"].append(doador_encontrado["id"])
                         self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                        gerenciador.cadastrar(doacao)
-                        limpar_tela()
-                        print("Produto Cadastrado com Sucesso")
+                        self.alterar.alterar_produto_existente(self.json_produtos, validar, produto.objeto()['quantidade'], doador_encontrado["id"])
                         time.sleep(1.5)
                         limpar_tela()
                         iniciar_loop = False
                         continue
 
-                    elif opcao_categoria == 2:
-                        limpar_tela()
-                        validar = ValidacoesProdutos.validar_cadastro_produto(self.json_medicamentos, produto.objeto(), gerenciador.listar())
+                    doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
+                    self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
+                    self.gerenciador.cadastrar(doacao)
+                    limpar_tela()
+                    print("Produto Cadastrado com Sucesso")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    iniciar_loop = False
+                    continue
 
-                        if validar:
-                            print("Produto já está cadastrado no sistema.")
-                            print("Foi atualizado o número de quantidades do produto.")
-                            self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                            self.alterar.alterar_produto_existente(self.json_medicamentos, validar, produto.objeto()['quantidade'], doador_encontrado["id"])
-                            time.sleep(1.5)
-                            limpar_tela()
-                            self.iniciar = False
-                            continue
-
-                        doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
-                        self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                        gerenciador.cadastrar(doacao)
-                        limpar_tela()
-                        print("Produto Cadastrado com Sucesso")
-                        time.sleep(1.5)
-                        limpar_tela()
-
-                        iniciar_loop = False
-                        continue
-
-                    else:
-                        limpar_tela()
-                        validar = ValidacoesProdutos.validar_cadastro_produto(self.json_alimentos, produto.objeto(), gerenciador.listar())
-
-                        if validar:
-                            print("Produto já está cadastrado no sistema.")
-                            print("Foi atualizado o número de quantidades do produto.")
-                            self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                            self.alterar.alterar_produto_existente(self.json_alimentos, validar, produto.objeto()['quantidade'], doador_encontrado["id"])
-                            time.sleep(1.5)
-                            limpar_tela()
-                            iniciar_loop = False
-                            continue
-
-                        doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
-                        self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                        gerenciador.cadastrar(doacao)
-                        limpar_tela()
-                        print("Produto Cadastrado com Sucesso")
-                        time.sleep(1.5)
-                        limpar_tela()
-                        iniciar_loop = False
-                        continue
                 else:
                     limpar_tela()
                     iniciar_loop = False
