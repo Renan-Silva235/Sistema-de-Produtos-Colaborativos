@@ -50,7 +50,7 @@ class Gerenciador:
         lib.salvarNoJson.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
         lib.salvarNoJson.restype = None
 
-        json_str = json.dumps(dados.objeto())
+        json_str = json.dumps(dados)
         lib.salvarNoJson(self.arquivo.encode("utf-8"), json_str.encode("utf-8"))
 
 
