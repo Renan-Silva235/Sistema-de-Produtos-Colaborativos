@@ -1,0 +1,80 @@
+import json
+import os
+import sys
+import ctypes
+class Produtos:
+    def __init__(self):
+        self.json_produto = "jsons/produtos/produtos.json"
+
+    def consultar_produto(self, dado):
+        """
+        Realiza uma consulta nos dados salvos no json
+
+        :param dado: O valor que deve ser  procurado no json
+        :return: Uma lista com os objetos que contenham o valor procurado
+        """
+        lista = self.listar_produto()
+        resultados = []
+
+        for item in lista:
+            if any(str(dado).lower() in str(valor).lower() for valor in item.values()):
+                resultados.append(item)
+
+        if not resultados:
+            return False
+
+        return resultados
+
+    def listar_produto(self):
+        """
+        Retorna uma lista com todos os objetos salvos no json.
+
+        :return: Uma lista com todos os objetos salvos no json
+        """
+        if os.path.exists(self.json_produto):
+            with open(self.json_produto, "r", encoding="utf-8") as arq:
+                conteudo = arq.read().strip()
+                if not conteudo:
+                    return []
+                return json.loads(conteudo)
+
+        return []
+
+    def cadastrar_produto(self, dados):
+
+        """Esse método configura a função salvarNoJson que foi escrita em C, para ser reutilizada no
+            python, na função salvarNoJson abaixo, foi configurada os tipos de argumentos que a função recebe
+            (argstype) e o tipo de retorno que ela fornece (restype)."""
+
+        if sys.platform.startswith("win"):
+            libname = "salvarJson.dll"
+        elif sys.platform.startswith("linux"):
+            libname = "salvarJson.so"
+        else:
+            raise OSError("Sistema operacional não suportado")
+
+        lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../build", libname))
+        lib = ctypes.CDLL(lib_path)
+        lib.salvarNoJson.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+        lib.salvarNoJson.restype = None
+
+        json_str = json.dumps(dados)
+        lib.salvarNoJson(self.json_produto.encode("utf-8"), json_str.encode("utf-8"))
+
+
+    def atualizar_produto(self, chave, valor_atual, novo_valor):
+        """
+        Atualiza o valor de uma chave em todos os objetos que est  o salvos no json
+
+        :param chave: A chave que ser   atualizada
+        :param valor_atual: O valor atual da chave
+        :param novo_valor: O novo valor que ser   atribu do  para a chave
+        :return: None
+        """
+        dados = self.listar_produto()
+        for dado in dados:
+            if dado[chave] == valor_atual:
+                dado[chave] = novo_valor
+
+        with open(self.json_produto, "w", encoding="utf-8") as f:
+            json.dump(dados, f, indent=4, ensure_ascii=False)
