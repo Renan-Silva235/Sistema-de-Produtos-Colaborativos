@@ -56,6 +56,14 @@ class Gerenciador:
 
 
     def atualizar(self, chave, valor_atual, novo_valor):
+        """
+        Atualiza o valor de uma chave em todos os objetos que est  o salvos no json
+
+        :param chave: A chave que ser   atualizada
+        :param valor_atual: O valor atual da chave
+        :param novo_valor: O novo valor que ser   atribu do  para a chave
+        :return: None
+        """
         dados = self.listar()
         for dado in dados:
             if dado[chave] == valor_atual:
@@ -65,6 +73,12 @@ class Gerenciador:
             json.dump(dados, f, indent=4, ensure_ascii=False)
 
     def consulta(self, dado):
+        """
+        Realiza uma consulta nos dados salvos no json
+
+        :param dado: O valor que ser  procurado nos dados
+        :return: Uma lista com os objetos que contenham o valor procurado
+        """
         lista = self.listar()
         resultados = []
 

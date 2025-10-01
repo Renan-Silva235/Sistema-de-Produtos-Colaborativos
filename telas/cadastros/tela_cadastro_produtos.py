@@ -1,6 +1,7 @@
 import time
-from produto.categorias import Alimentos, Medicamentos, Vestuario
+from produto.classes_categorias import Alimentos, Medicamentos, Vestuario
 from usuarios.doadores import Doacao
+from produto.classe_produto import Produtos
 from usuarios.gerenciador import Gerenciador
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_produtos import ValidacoesProdutos
@@ -14,7 +15,7 @@ class TelaCadastrarProdutos:
         self.alterar = Alteracoes()
         self.json_produtos = "jsons/produtos/produtos.json"
         self.json_doador = "jsons/dados_pessoais/doadores.json"
-        self.gerenciador = Gerenciador(self.json_produtos)
+        self.classe_produto = Produtos()
         self.iniciar = True
 
     def mostrar(self):
@@ -171,7 +172,7 @@ class TelaCadastrarProdutos:
                 elif condicao == "s":
 
                     limpar_tela()
-                    validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.gerenciador.listar())
+                    validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.classe_produto.listar_produto())
 
                     if validar:
                         print("Produto já está cadastrado no sistema.")
@@ -188,7 +189,7 @@ class TelaCadastrarProdutos:
 
                     doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
                     self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                    self.gerenciador.cadastrar(doacao.objeto())
+                    self.classe_produto.cadastrar_produto(doacao.objeto())
                     limpar_tela()
                     print("Produto Cadastrado com Sucesso")
                     time.sleep(1.5)

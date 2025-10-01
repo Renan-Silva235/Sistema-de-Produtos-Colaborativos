@@ -5,7 +5,7 @@
 		"marca":	"Adidas",
 		"cor":	"Preta",
 		"tamanho":	"M",
-		"quantidade":	100,
+		"quantidade":	569,
 		"id_doador":	[1],
 		"id_responsavel":	[1]
 	}, {
@@ -14,7 +14,7 @@
 		"nome_medicamento":	["Dipirona"],
 		"dosagem":	"100 Mg",
 		"validade":	"15/02/2026",
-		"quantidade":	45,
+		"quantidade":	634,
 		"id_doador":	[2],
 		"id_responsavel":	[1]
 	}, {
@@ -23,7 +23,7 @@
 		"nome_alimento":	"Arroz",
 		"peso":	"2 Kg",
 		"validade":	"14/05/2025",
-		"quantidade":	54,
+		"quantidade":	117,
 		"id_doador":	[2],
 		"id_responsavel":	[1]
 	}, {
@@ -34,5 +34,15 @@
 		"validade":	"14/05/2025",
 		"quantidade":	54,
 		"id_doador":	[2],
+		"id_responsavel":	[1]
+	}, {
+		"id":	5,
+		"categoria":	"Vestuário",
+		"nome_produto":	"Calça",
+		"marca":	"Nike",
+		"cor":	"Marrom",
+		"tamanho":	"G",
+		"quantidade":	7,
+		"id_doador":	[1],
 		"id_responsavel":	[1]
 	}]

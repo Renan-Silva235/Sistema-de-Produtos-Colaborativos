@@ -1,11 +1,15 @@
 import time
 from utils.sistema.sistema import limpar_tela
 from telas.menus.tela_menu_cadastros import TelaMenuCadastro
+from telas.solicitacoes.tela_pedidos import TelaPedidos
+from usuarios.gerenciador import Gerenciador
 class TelaAdministrador:
 
     def __init__(self, usuario):
         self.usuario = usuario
         self.iniciar = True
+        self.pedidos = "jsons/solicitacoes/pedidos.json"
+        self.qtdPedidos = Gerenciador(self.pedidos).listar()
 
 
     def mostrar(self):
@@ -20,11 +24,11 @@ class TelaAdministrador:
                 Abaixo temos funcionalidades básicas
                 \n""")
 
-            print("""
+            print(f"""
                 1- Cadastros
                 2- Relatórios
                 3- Controle de Estoque
-                4- Solicitações
+                4- Solicitações ({len(self.qtdPedidos)})
                 0- Sair
                 \n""")
 
@@ -32,8 +36,8 @@ class TelaAdministrador:
                 opcao = int(input("Digite uma opção: "))
                 if opcao == 1:
                     limpar_tela()
-                    self.telaMenuCadastro = TelaMenuCadastro(self.usuario)
-                    self.telaMenuCadastro.mostrar()
+                    telaMenuCadastro = TelaMenuCadastro(self.usuario)
+                    telaMenuCadastro.mostrar()
                     continue
                 if opcao == 2:
                     print("Relatórios")
@@ -42,7 +46,8 @@ class TelaAdministrador:
                     print("Controle de Estoque")
                     continue
                 if opcao == 4:
-                    print("Solicitações")
+                    telaPedidos = TelaPedidos(self.usuario)
+                    telaPedidos.mostrar()
                     continue
                 if opcao == 0:
                     limpar_tela()
