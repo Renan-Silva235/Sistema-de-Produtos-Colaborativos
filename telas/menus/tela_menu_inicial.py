@@ -18,7 +18,6 @@ class TelaInicial:
             print("""
                     1 - Login
                     2 - Esqueceu Senha
-                    3 - Solicitar Cadastro como solicitante
                     0 - Sair
             """)
 
@@ -32,9 +31,6 @@ class TelaInicial:
                 elif opcao == 2:
                     limpar_tela()
                     self.telaRecuperarSenha.mostrar()
-                    continue
-                elif opcao == 3:
-                    print("Tela solicitar")
                     continue
                 elif opcao == 0:
                     limpar_tela()
