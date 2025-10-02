@@ -1,6 +1,6 @@
 import json
 from utils.sistema.sistema import limpar_tela
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from utils.exibir_tabela.exibir import exibir_tabela
 class TelaPedidos:
     def __init__(self, usuario):
@@ -26,10 +26,10 @@ class TelaPedidos:
         self.json_aprovados = "jsons/solicitacoes/aprovados.json"
         self.json_pedidos = "jsons/solicitacoes/pedidos.json"
         self.json_reprovados = "jsons/solicitacoes/reprovados.json"
-        self.pedidos = Gerenciador(self.json_pedidos)
-        self.aprovados = Gerenciador(self.json_aprovados)
-        self.reprovado = Gerenciador(self.json_reprovados)
-        self.estoque = Gerenciador(self.json_estoque)
+        self.pedidos = Crud(self.json_pedidos)
+        self.aprovados = Crud(self.json_aprovados)
+        self.reprovado = Crud(self.json_reprovados)
+        self.estoque = Crud(self.json_estoque)
         self.iniciar = True
         self.status = ["Aprovado", "Reprovado"]
 

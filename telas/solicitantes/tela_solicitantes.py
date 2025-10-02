@@ -1,19 +1,15 @@
 import time
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from utils.sistema.sistema import limpar_tela
 from utils.exibir_tabela.exibir import exibir_tabela
 class TelaSolicitantes:
 
     def __init__(self, usuario):
         self.usuario = usuario
-        self.json_pedidos = "jsons/solicitacoes/pedidos.json"
-        self.json_produtos = "jsons/produtos/produtos.json"
-        self.json_aprovados = "jsons/solicitacoes/aprovados.json"
-        self.json_reprovados = "jsons/solicitacoes/reprovados.json"
-        self.produtos = Gerenciador(self.json_produtos)
-        self.pedidos = Gerenciador(self.json_pedidos)
-        self.produtos_aprovados = Gerenciador(self.json_aprovados)
-        self.produtos_reprovados = Gerenciador(self.json_reprovados)
+        self.produtos = Crud("jsons/produtos/produtos.json")
+        self.pedidos = Crud("jsons/solicitacoes/pedidos.json")
+        self.produtos_aprovados = Crud("jsons/solicitacoes/aprovados.json")
+        self.produtos_reprovados = Crud("jsons/solicitacoes/reprovados.json")
         self.iniciar = True
         self.categorias = ["Vestuário", "Medicamentos", "Alimentícios"]
 
@@ -73,9 +69,9 @@ class TelaSolicitantes:
         Se o produto não for encontrado, ele exibe uma mensagem de erro e volta para a tela inicial.
         """
 
-        digitar_produto = input("Digite o nome do produto desejável: ").title()
+        escolha = input("Digite o nome do produto desejável: ").title()
 
-        consultar_produto = self.produtos.consulta(digitar_produto)
+        consultar_produto = self.produtos.consultar(escolha)
 
         if not consultar_produto:
             print("Nenhum Produto encontrado\n\n")
@@ -107,8 +103,6 @@ class TelaSolicitantes:
             print("PRODUTOS DISPONÍVEIS: \n")
 
             for produto in self.produtos.listar():
-                produto["quantidade_disponivel"] = produto["quantidade"]
-                del produto["quantidade"]
                 del produto["id_doador"]
                 del produto["id_responsavel"]
                 exibir_tabela(produto)
@@ -116,22 +110,22 @@ class TelaSolicitantes:
 
             try:
                 print("\n")
-                pegar_identificador = int(input("Digite o número do identificador do produto desejado ou '0' para voltar: "))
+                escolha = int(input("Digite o número do id do produto desejado ou '0' para voltar: "))
 
-                if pegar_identificador == 0:
+                if escolha == 0:
                     limpar_tela()
                     return
 
-
+                for pedido in self.pedidos.listar():
+                    for produto in pedido["pedido"]:
+                        if escolha == produto["id"]:
+                            print("Pedido ja enviado")
+                            time.sleep(1.5)
+                            limpar_tela()
+                            continue
 
                 for itens in self.produtos.listar():
-                    if pegar_identificador in self.pedidos.listar():
-                        print("Pedido já enviado")
-                        time.sleep(1.5)
-                        limpar_tela()
-                        continue
-
-                    if pegar_identificador == itens["id"]:
+                    if escolha == itens["id"]:
                         pegar_quantidade = int(input("digite a quantidade desejada: "))
 
                         if pegar_quantidade > itens["quantidade"]:

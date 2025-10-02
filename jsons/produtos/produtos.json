@@ -45,4 +45,32 @@
 		"quantidade":	7,
 		"id_doador":	[1],
 		"id_responsavel":	[1]
+	}, {
+		"id":	6,
+		"categoria":	"Medicamentos",
+		"nome_medicamento":	["Lorasilv"],
+		"dosagem":	"200 Mg",
+		"validade":	"15/01/2026",
+		"quantidade":	8,
+		"id_doador":	[1],
+		"id_responsavel":	[1]
+	}, {
+		"id":	7,
+		"categoria":	"Alimentícios",
+		"nome_alimento":	"Macarrão",
+		"peso":	"220 G",
+		"validade":	"11/04/2028",
+		"quantidade":	85,
+		"id_doador":	[2],
+		"id_responsavel":	[1]
+	}, {
+		"id":	8,
+		"categoria":	"Vestuário",
+		"nome_produto":	"Tênis",
+		"marca":	"Nike",
+		"cor":	"Azul",
+		"tamanho":	"40",
+		"quantidade":	2,
+		"id_doador":	[1],
+		"id_responsavel":	[1]
 	}]

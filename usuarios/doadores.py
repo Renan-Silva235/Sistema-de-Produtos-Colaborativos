@@ -1,5 +1,4 @@
-from usuarios.gerenciador import Gerenciador
-
+from crud.crud import Crud
 class Doador:
     def __init__(self, nome, idade, cpf, telefone, email, cidade, estado, id_responsavel):
         self.nome = nome
@@ -28,7 +27,7 @@ class Doador:
 
 
 class Doacao:
-    def __init__(self, id_doador: Doador, produto: dict, id_responsavel: Gerenciador):
+    def __init__(self, id_doador: Doador, produto: dict, id_responsavel: Crud):
 
         self.id_doador = id_doador["id"]
         self.produto = produto

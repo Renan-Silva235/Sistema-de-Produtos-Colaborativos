@@ -1,7 +1,7 @@
 import time
 from utils.exibir_tabela.exibir import exibir_tabela
 from usuarios.usuario import Usuario
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_usuario import ValidacoesUsuario
 
@@ -9,7 +9,7 @@ class TelaCadastrarVoluntario:
     def __init__(self, usuario):
         self.usuario = usuario
         self.json_voluntario = "jsons/dados_pessoais/usuario.json"
-        self.gerenciador = Gerenciador(self.json_voluntario)
+        self.crud = Crud(self.json_voluntario)
         self.iniciar = True
 
     def mostrar(self):

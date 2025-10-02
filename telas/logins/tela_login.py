@@ -1,5 +1,5 @@
 import time
-from usuarios.gerenciador import Gerenciador
+from usuarios.login import Login
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from utils.sistema.sistema import limpar_tela
 from telas.admin.tela_administrador import TelaAdministrador
@@ -52,14 +52,15 @@ class TelaLogin:
 
 
             if nivel == 1:
-                gerenciador = Gerenciador("jsons/dados_pessoais/usuario.json")
-                login = gerenciador.login(email=email, senha=senha)
-                if login:
+                login = Login("jsons/dados_pessoais/usuario.json")
+                autenticar = login.autenticar(email=email, senha=senha)
+
+                if autenticar:
                     limpar_tela()
                     print("Login realizado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()
-                    telaAdministrador = TelaAdministrador(login)
+                    telaAdministrador = TelaAdministrador(autenticar)
                     telaAdministrador.mostrar()
                     continue
                 else:
@@ -70,15 +71,15 @@ class TelaLogin:
                     continue
 
             elif nivel == 3:
-                gerenciador = Gerenciador("jsons/dados_pessoais/solicitantes.json")
-                login = gerenciador.login(email=email, senha=senha)
+                login = Login("jsons/dados_pessoais/solicitantes.json")
+                autenticar = login.autenticar(email=email, senha=senha)
 
-                if login:
+                if autenticar:
                     limpar_tela()
                     print("Login realizado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()
-                    telaSolicitantes = TelaSolicitantes(login)
+                    telaSolicitantes = TelaSolicitantes(autenticar)
                     telaSolicitantes.mostrar()
                     continue
                 else:

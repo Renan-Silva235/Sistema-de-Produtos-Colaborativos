@@ -1,14 +1,14 @@
 import time
 from utils.sistema.sistema import limpar_tela
 from utils.exibir_tabela.exibir import exibir_tabela
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from usuarios.doadores import Doador
 
 class TelaCadastrarDoador:
     def __init__(self, usuario):
         self.json_doadores = "jsons/dados_pessoais/doadores.json"
-        self.gerenciador = Gerenciador(self.json_doadores)
+        self.crud = Crud(self.json_doadores)
         self.iniciar = True
         self.usuario = usuario
 
@@ -79,7 +79,7 @@ class TelaCadastrarDoador:
 
                 elif condicao == "s":
                     limpar_tela()
-                    consultar = self.gerenciador.listar()
+                    consultar = self.crud.listar()
                     validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_doadores, doador.objeto(), consultar)
 
                     if validar:
@@ -89,7 +89,7 @@ class TelaCadastrarDoador:
                         confirmar = False
                         continue
 
-                    self.gerenciador.cadastrar(doador.objeto())
+                    self.crud.cadastrar(doador.objeto())
                     print("Doador Cadastrado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()

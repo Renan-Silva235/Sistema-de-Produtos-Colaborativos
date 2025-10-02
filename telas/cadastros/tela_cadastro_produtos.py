@@ -1,8 +1,7 @@
 import time
-from produto.classes_categorias import Alimentos, Medicamentos, Vestuario
+from produto.categorias import Alimentos, Medicamentos, Vestuario
 from usuarios.doadores import Doacao
-from produto.classe_produto import Produtos
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_produtos import ValidacoesProdutos
 from validacoes.validacoes_usuario import ValidacoesUsuario
@@ -15,7 +14,7 @@ class TelaCadastrarProdutos:
         self.alterar = Alteracoes()
         self.json_produtos = "jsons/produtos/produtos.json"
         self.json_doador = "jsons/dados_pessoais/doadores.json"
-        self.classe_produto = Produtos()
+        self.crud = Crud(self.json_produtos)
         self.iniciar = True
 
     def mostrar(self):
@@ -95,9 +94,9 @@ class TelaCadastrarProdutos:
                     continue
 
                 produto = Medicamentos(nome_medicamento=nome_medicamento,
-                                        dosagem=dosagem,
-                                        validade=validade,
-                                        quantidade=quantidade)
+                                       dosagem=dosagem,
+                                       validade=validade,
+                                       quantidade=quantidade)
 
             else:
                 try:
@@ -131,7 +130,7 @@ class TelaCadastrarProdutos:
                         limpar_tela()
                         return
                     ValidacoesUsuario.validar_cpf(cpf)
-                    todos_doadores = Gerenciador(self.json_doador).listar()
+                    todos_doadores = Crud(self.json_doador).listar()
                 except ValueError as erro:
                     print(erro)
                     time.sleep(1.5)
@@ -172,7 +171,7 @@ class TelaCadastrarProdutos:
                 elif condicao == "s":
 
                     limpar_tela()
-                    validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.classe_produto.listar_produto())
+                    validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.crud.listar())
 
                     if validar:
                         print("Produto já está cadastrado no sistema.")
@@ -189,7 +188,7 @@ class TelaCadastrarProdutos:
 
                     doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
                     self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
-                    self.classe_produto.cadastrar_produto(doacao.objeto())
+                    self.crud.cadastrar(doacao.objeto())
                     limpar_tela()
                     print("Produto Cadastrado com Sucesso")
                     time.sleep(1.5)

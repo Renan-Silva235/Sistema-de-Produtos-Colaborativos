@@ -1,6 +1,6 @@
 import time
 from usuarios.usuario import Solicitante
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from utils.exibir_tabela.exibir import exibir_tabela
@@ -9,7 +9,7 @@ class TelaCadastrarSolicitante:
     def __init__(self, usuario):
         self.usuario = usuario
         self.json_solicitantes = "jsons/dados_pessoais/usuario.json"
-        self.gerenciador = Gerenciador(self.json_solicitantes)
+        self.crud = Crud(self.json_solicitantes)
         self.iniciar = True
 
 
@@ -93,7 +93,7 @@ class TelaCadastrarSolicitante:
 
                 elif condicao == "s":
                     limpar_tela()
-                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_solicitantes, solicitante.objeto(), self.gerenciador.listar())
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_solicitantes, solicitante.objeto(), self.crud.listar())
 
                     if validar:
                         print("cliente já está cadastrado no sistema.")
@@ -102,7 +102,7 @@ class TelaCadastrarSolicitante:
                         self.iniciar = False
                         continue
 
-                    self.gerenciador.cadastrar(solicitante.objeto())
+                    self.crud.cadastrar(solicitante.objeto())
                     print("Solicitante Cadastrado com sucesso")
                     time.sleep(1.5)
                     limpar_tela()

@@ -38,4 +38,16 @@
 		"cpf":	"44466633322",
 		"email":	"joao@email.com",
 		"senha":	"0000"
+	}, {
+		"id":	9,
+		"nivel":	"Solicitante",
+		"nome":	"Livia",
+		"idade":	25,
+		"cpf":	"22266699988",
+		"email":	"livia@email.com",
+		"senha":	"7777",
+		"endereco":	"rua joaquina",
+		"cidade":	"Sorocaba",
+		"estado":	"Sp",
+		"id_responsavel":	1
 	}]

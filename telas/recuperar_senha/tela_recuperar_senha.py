@@ -1,13 +1,12 @@
 import time
 from utils.sistema.sistema import limpar_tela
 from validacoes.validacoes_usuario import ValidacoesUsuario
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 
 class TelaRecuperarSenha:
     def __init__(self):
         self.iniciar = True
-        self.json_usuario = "jsons/dados_pessoais/usuario.json"
-        self.gerenciador = Gerenciador(self.json_usuario)
+        self.crud = Crud("jsons/dados_pessoais/usuario.json")
 
     def mostrar(self):
         """Esse método exibe a tela de recuperação de senha no terminal."""
@@ -80,7 +79,7 @@ class TelaRecuperarSenha:
 
         usuario_encontrado = None
 
-        consultar = self.gerenciador.listar()
+        consultar = self.crud.listar()
 
 
         for usuario in consultar:
@@ -108,6 +107,6 @@ class TelaRecuperarSenha:
             continue
 
         self.iniciar = True
-        self.gerenciador.atualizar("senha", usuario_encontrado["senha"], nova_senha)
+        self.crud.atualizar("senha", usuario_encontrado["senha"], nova_senha)
         print("Senha alterada com sucesso!")
         return

@@ -2,14 +2,13 @@ import time
 from utils.sistema.sistema import limpar_tela
 from telas.menus.tela_menu_cadastros import TelaMenuCadastro
 from telas.solicitacoes.tela_pedidos import TelaPedidos
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 class TelaAdministrador:
 
     def __init__(self, usuario):
         self.usuario = usuario
         self.iniciar = True
-        self.pedidos = "jsons/solicitacoes/pedidos.json"
-        self.qtdPedidos = Gerenciador(self.pedidos).listar()
+        self.qtdPedidos = Crud("jsons/solicitacoes/pedidos.json").listar()
 
 
     def mostrar(self):
@@ -46,6 +45,7 @@ class TelaAdministrador:
                     print("Controle de Estoque")
                     continue
                 if opcao == 4:
+                    limpar_tela()
                     telaPedidos = TelaPedidos(self.usuario)
                     telaPedidos.mostrar()
                     continue
