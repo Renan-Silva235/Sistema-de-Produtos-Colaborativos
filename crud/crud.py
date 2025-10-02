@@ -1,36 +1,44 @@
-import os
 import json
-import ctypes
+import os
 import sys
-from tabulate import tabulate
-
-class Gerenciador:
+import ctypes
+class Crud:
     def __init__(self, arquivo):
-        """O construtor recebe o arquivo json que será manipulado"""
-        self.arquivo = arquivo
+        self.json = arquivo
 
+    def consultar(self, dado):
+        """
+        Realiza uma consulta nos dados salvos no json
 
-    def login(self, email, senha):
-        """Esse método recebe email e senha para fazer login no sistema"""
-        dados = self.listar()
-        for dado in dados:
-            if dado["email"] == email and dado["senha"] == senha:
-                return dado
+        :param dado: O valor que deve ser  procurado no json
+        :return: Uma lista com os objetos que contenham o valor procurado
+        """
+        lista = self.listar()
+        resultados = []
 
-        return False
+        for item in lista:
+            if any(str(dado).lower() in str(valor).lower() for valor in item.values()):
+                resultados.append(item)
 
+        if not resultados:
+            return False
+
+        return resultados
 
     def listar(self):
-        """Esse método lista todos os objetos que estão salvos no json"""
-        if os.path.exists(self.arquivo):
-            with open(self.arquivo, "r", encoding="utf-8") as arq:
+        """
+        Retorna uma lista com todos os objetos salvos no json.
+
+        :return: Uma lista com todos os objetos salvos no json
+        """
+        if os.path.exists(self.json):
+            with open(self.json, "r", encoding="utf-8") as arq:
                 conteudo = arq.read().strip()
                 if not conteudo:
-                    return []  # arquivo vazio
+                    return []
                 return json.loads(conteudo)
 
         return []
-
 
     def cadastrar(self, dados):
 
@@ -51,8 +59,7 @@ class Gerenciador:
         lib.salvarNoJson.restype = None
 
         json_str = json.dumps(dados)
-        lib.salvarNoJson(self.arquivo.encode("utf-8"), json_str.encode("utf-8"))
-
+        lib.salvarNoJson(self.json.encode("utf-8"), json_str.encode("utf-8"))
 
 
     def atualizar(self, chave, valor_atual, novo_valor):
@@ -69,29 +76,5 @@ class Gerenciador:
             if dado[chave] == valor_atual:
                 dado[chave] = novo_valor
 
-        with open(self.arquivo, "w", encoding="utf-8") as f:
+        with open(self.json, "w", encoding="utf-8") as f:
             json.dump(dados, f, indent=4, ensure_ascii=False)
-
-    def consulta(self, dado):
-        """
-        Realiza uma consulta nos dados salvos no json
-
-        :param dado: O valor que ser  procurado nos dados
-        :return: Uma lista com os objetos que contenham o valor procurado
-        """
-        lista = self.listar()
-        resultados = []
-
-        for item in lista:
-            if any(str(dado).lower() in str(valor).lower() for valor in item.values()):
-                resultados.append(item)
-
-        if not resultados:
-            return False
-
-        return resultados
-
-
-
-
-

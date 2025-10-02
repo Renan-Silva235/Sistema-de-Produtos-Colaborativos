@@ -8,6 +8,7 @@ class Usuario:
         self.email = email
         self.senha = senha
 
+
     def objeto(self):
         return {
             "nivel": self.nivel,

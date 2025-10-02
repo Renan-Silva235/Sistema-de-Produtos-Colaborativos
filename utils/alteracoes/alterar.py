@@ -1,10 +1,10 @@
 import json
-from usuarios.gerenciador import Gerenciador
+from crud.crud import Crud
 class Alteracoes:
 
 
     def alterar_estoque(self, caminho_arquivo, produto_id, quantidade_alterar):
-        consulta = Gerenciador(caminho_arquivo).listar()
+        consulta = Crud(caminho_arquivo).listar()
 
         if not consulta:
             return False
@@ -28,7 +28,7 @@ class Alteracoes:
         """Esse método atualiza o número de doações feitas pelo usuário somando o que ele já havia doado pela
         quantidade total de produtos que ele está doando no momento."""
 
-        todos_doadores = Gerenciador("jsons/dados_pessoais/doadores.json").listar()
+        todos_doadores = Crud("jsons/dados_pessoais/doadores.json").listar()
 
         atualizado = False
         for doador in todos_doadores:
@@ -47,7 +47,7 @@ class Alteracoes:
     def alterar_produto_existente(self, caminho_arquivo, id_produto, quantidade, id_doador):
         """Atualiza quantidade e adiciona o id do doador no produto já existente."""
 
-        consulta = Gerenciador(caminho_arquivo).listar()
+        consulta = Crud(caminho_arquivo).listar()
 
         for item in consulta:
             if item["id"] == id_produto:
