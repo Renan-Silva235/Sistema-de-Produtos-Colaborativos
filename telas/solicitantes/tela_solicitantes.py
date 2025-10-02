@@ -141,7 +141,8 @@ class TelaSolicitantes:
                         del itens["id_doador"]
                         del itens["id_responsavel"]
                         itens["quantidade_pedida"] = pegar_quantidade
-                        itens["id_solicitante"] = self.usuario["id"]
+                        itens["solicitante"] = self.usuario["nome"]
+                        itens["cpf_solicitante"] = self.usuario["cpf"]
                         itens["status"] = "Em Análise"
 
                         chave_pedido = f"pedido"
@@ -177,17 +178,17 @@ class TelaSolicitantes:
 
         for pedido in meus_pedidos:
             for produto in pedido["pedido"]:
-                if produto["id_solicitante"] == self.usuario["id"]:
+                if produto["cpf_solicitante"] == self.usuario["cpf"]:
                     exibir_tabela(produto)
 
         for aprovado in self.produtos_aprovados.listar():
             for produto in aprovado["pedido"]:
-                if produto["id_solicitante"] == self.usuario["id"]:
+                if produto["cpf_solicitante"] == self.usuario["cpf"]:
                     exibir_tabela(produto)
 
         for reprovado in self.produtos_reprovados.listar():
             for produto in reprovado["pedido"]:
-                if produto["id_solicitante"] == self.usuario["id"]:
+                if produto["cpf_solicitante"] == self.usuario["cpf"]:
                     exibir_tabela(produto)
 
 
