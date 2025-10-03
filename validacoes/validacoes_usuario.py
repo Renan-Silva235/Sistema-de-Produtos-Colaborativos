@@ -25,6 +25,7 @@ class ValidacoesUsuario:
 
     @staticmethod
     def validar_idade(idade):
+        """Valida idade (apenas inteiros)."""
         if not isinstance(idade, int) or idade < 0:
             raise ValueError("Idade Inválida")
         return True

@@ -4,6 +4,14 @@ class Alteracoes:
 
 
     def alterar_estoque(self, caminho_arquivo, produto_id, quantidade_alterar):
+        """
+        Altera a quantidade de um produto no estoque.
+
+        :param caminho_arquivo: O caminho do arquivo json que contém o estoque.
+        :param produto_id: O id do produto que vai ser alterado.
+        :param quantidade_alterar: A quantidade a ser alterada no produto.
+        :return: True se a quantidade for alterada, False caso contrário.
+        """
         consulta = Crud(caminho_arquivo).listar()
 
         if not consulta:

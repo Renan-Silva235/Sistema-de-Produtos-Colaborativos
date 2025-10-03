@@ -1,6 +1,12 @@
 from tabulate import tabulate
 
 def exibir_tabela(dados, titulo=""):
+    """
+    Exibe uma tabela com base nos dados informados.
+
+    :param dados: Pode ser um dicionário, uma lista de dicionários ou uma lista simples.
+    :param titulo: O título da tabela, default é vazio.
+    """
     print(f"\n{titulo}\n")
 
     if isinstance(dados, dict):
