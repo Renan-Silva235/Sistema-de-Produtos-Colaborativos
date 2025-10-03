@@ -5,11 +5,11 @@ class Login:
         self.arquivo = arquivo
 
 
-    def autenticar(self, email, senha):
+    def autenticar(self, nivel, email, senha):
         """Esse método recebe email e senha para fazer login no sistema"""
         dados = Crud(self.arquivo).listar()
         for dado in dados:
-            if dado["email"] == email and dado["senha"] == senha:
+            if dado["nivel"] == nivel and dado["email"] == email and dado["senha"] == senha:
                 return dado
 
         return False

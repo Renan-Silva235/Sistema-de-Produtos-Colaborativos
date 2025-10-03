@@ -1,13 +1,1 @@
-[{
-		"id":	2,
-		"pedido":	[{
-				"id":	7,
-				"categoria":	"Alimentícios",
-				"nome_alimento":	"Macarrão",
-				"peso":	"220 G",
-				"validade":	"11/04/2028",
-				"quantidade_pedida":	15,
-				"id_solicitante":	1,
-				"status":	"Em Análise"
-			}]
-	}]
+[]

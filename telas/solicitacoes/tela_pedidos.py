@@ -1,108 +1,137 @@
 import json
+import time
+from utils.exibir_tabela.exibir import exibir_tabela
 from utils.sistema.sistema import limpar_tela
 from crud.crud import Crud
-from utils.exibir_tabela.exibir import exibir_tabela
+
 class TelaPedidos:
     def __init__(self, usuario):
         """
-        Inicializa a tela de pedidos solicitados.
-
-        Recebe o usuário e seus respectivos arquivos json que serão manipulados.
-
-        self.usuario: o usuário que está acessando a tela
-        self.json_estoque: o caminho do arquivo json que contém os produtos em estoque
-        self.json_aprovados: o caminho do arquivo json que contém os produtos aprovados
-        self.json_pedidos: o caminho do arquivo json que contém os produtos pedidos
-        self.json_reprovados: o caminho do arquivo json que contém os produtos reprovados
-        self.pedidos: o gerenciador do arquivo json que contém os produtos pedidos
-        self.aprovados: o gerenciador do arquivo json que contém os produtos aprovados
-        self.reprovado: o gerenciador do arquivo json que contém os produtos reprovados
-        self.estoque: o gerenciador do arquivo json que contém os produtos em estoque
-        self.iniciar: um booleano que indica se a tela deve ser exibida novamente
-        self.status: uma lista que contém os status possíveis para um produto (aprovado ou reprovado)
+        Inicializa a tela de pedidos.
         """
         self.usuario = usuario
-        self.json_estoque = "jsons/produtos/produtos.json"
-        self.json_aprovados = "jsons/solicitacoes/aprovados.json"
-        self.json_pedidos = "jsons/solicitacoes/pedidos.json"
-        self.json_reprovados = "jsons/solicitacoes/reprovados.json"
-        self.pedidos = Crud(self.json_pedidos)
-        self.aprovados = Crud(self.json_aprovados)
-        self.reprovado = Crud(self.json_reprovados)
-        self.estoque = Crud(self.json_estoque)
-        self.iniciar = True
-        self.status = ["Aprovado", "Reprovado"]
+        self.aprovados = Crud("jsons/solicitacoes/aprovados.json")
+        self.reprovados = Crud("jsons/solicitacoes/reprovados.json")
+        self.pedidos = Crud("jsons/solicitacoes/pedidos.json")
+
+
 
     def mostrar(self):
         """
         Mostra a tela de pedidos solicitados no terminal.
 
-        Exibe todos os produtos solicitados e permite ao usuário aprovar ou reprovar o pedido.
-        Se o usuário aprovar o pedido, o produto é adicionado à lista de aprovados e sua quantidade é atualizada no estoque.
-        Se o usuário reprovar o pedido, o produto é removido da lista de pedidos.
+        Exibe todos os pedidos solicitados e permite ao usuário digitar o identificador do pedido desejado.
+        Se o pedido for encontrado, ele exibe as informações do pedido e as quantidades disponíveis.
+        Se o pedido não for encontrado, ele exibe uma mensagem de erro e volta para a tela inicial.
+
+        Permite ao usuário aprovar ou reprovar o pedido.
         """
-        while self.iniciar:
+        while True:
+            limpar_tela()
+
+            if not self.pedidos.listar():
+                print("Não há pedidos no momento.")
+                input("Tecle enter para voltar")
+                limpar_tela()
+                return
+
+
             print("PEDIDOS SOLICITADOS: \n\n")
 
             for pedido in self.pedidos.listar():
                 for produto in pedido["pedido"]:
                     exibir_tabela(produto)
 
-            pegar_id = int(input("\nDigite o número do Id correspondente ou '0' para voltar: "))
+            try:
+                pegar_id = int(input("\nDigite o número do Id correspondente ou '0' para voltar: "))
 
-            if pegar_id == 0:
+                if pegar_id == 0:
+                    limpar_tela()
+                    print("Voltando...")
+                    time.sleep(1.5)
+                    limpar_tela()
+                    return
+            except ValueError:
                 limpar_tela()
-                return
+                continue
 
+            encontrado = False
             for pedido in self.pedidos.listar():
                 for produto in pedido["pedido"]:
                     if pegar_id == produto["id"]:
-                        status = int(input("""
-                                           Digite a opção com a ação desejada:
-                                           1- Aprovado
-                                           2- reprovado
-                                           0- voltar
+                        encontrado = True
+                        break
+                if encontrado:
+                    break
 
-                                           opção: """))
+            if not encontrado:
+                print("Pedido não encontrado.")
+                continue
 
-                        if status == 1:
+            status = input("""
+                                Digite a opção com a ação desejada:
+                                1- Aprovado
+                                2- Reprovado
+                                0- Voltar
 
-                            produto["id_responsavel"] = self.usuario["id"]
-                            produto["status"] = self.status[0]
-                            del pedido["id"]
-                            self.aprovados.cadastrar(pedido)
+                                opção: """)
 
-                            for itens in self.estoque.listar():
-                                if pegar_id == itens["id"]:
-                                    estoque_atualizado = itens["quantidade"] - produto["quantidade_pedida"]
-                                    # alterar = Alteracoes()
-                                    self.estoque.atualizar("id", itens["quantidade"], estoque_atualizado)
-                                    # alterar.alterar_estoque(self.json_estoque, pegar_id, estoque_atualizado)
+            if status == "1":
+                self._aprovar_pedido(pegar_id)
+            elif status == "2":
+                self._reprovar_pedido(pegar_id)
+            elif status == "0":
+                return
 
-                            pedidos = [p for p in self.pedidos.listar() if p.get("id") != pegar_id]
+    def _aprovar_pedido(self, id):
+        """
+        Aprova um pedido de acordo com o id.
+        """
+        pedidos = self.pedidos.listar()
+        for pedido in pedidos:
+            for produto in pedido["pedido"]:
+                if produto["id"] == id:
+                    produto["responsavel"] = self.usuario["nome"]
+                    produto["status"] = "Aprovado"
+                    pedido_copia = pedido.copy()
+                    del pedido_copia["id"]
+                    self.aprovados.cadastrar(pedido_copia)
+                    pedido["pedido"].remove(produto)
 
-                            with open(self.json_pedidos, "w", encoding="utf-8") as f:
-                                json.dump(pedidos, f, indent=4, ensure_ascii=False)
+                    if not pedido["pedido"]:
+                        pedidos.remove(pedido)
 
-                            break
+                    with open(self.pedidos.json, "w", encoding="utf-8") as f:
+                        json.dump(pedidos, f, ensure_ascii=False, indent=4)
 
-                        elif status == 2:
-                            produto["id_responsavel"] = self.usuario["id"]
-                            produto["status"] = self.status[1]
-                            self.reprovado.cadastrar(pedido)
+                    return
 
-                            pedidos = [p for p in self.pedidos.listar() if p.get("id") != pegar_id]
+    def _reprovar_pedido(self, id):
+        """
+        Reprova um pedido de acordo com o id.
+        """
+        pedidos = self.pedidos.listar()
+        for pedido in pedidos:
+            for produto in pedido["pedido"]:
+                if produto["id"] == id:
+                    produto["responsavel"] = self.usuario["nome"]
+                    produto["status"] = "Reprovado"
+                    pedido_copia = pedido.copy()
+                    del pedido_copia["id"]
+                    self.reprovados.cadastrar(pedido_copia)
+                    pedido["pedido"].remove(produto)
 
-                            with open(self.json_reprovados, "w", encoding="utf-8") as f:
-                                json.dump(pedidos, f, indent=4, ensure_ascii=False)
+                    if not pedido["pedido"]:
+                        pedidos.remove(pedido)
 
-                            continue
-                        elif status == 0:
-                            limpar_tela()
-                            break
+                    with open(self.pedidos.json, "w", encoding="utf-8") as f:
+                        json.dump(pedidos, f, ensure_ascii=False, indent=4)
 
-
+                    return
 
 
-# tela = TelaPedidos("Renan")
-# tela.mostrar()
+
+
+
+
+
