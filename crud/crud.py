@@ -68,7 +68,7 @@ class Crud:
 
         :param chave: A chave que ser   atualizada
         :param valor_atual: O valor atual da chave
-        :param novo_valor: O novo valor que ser   atribu do  para a chave
+        :param novo_valor: O novo valor que ser   atribuído  para a chave
         :return: None
         """
         dados = self.listar()

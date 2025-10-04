@@ -3,6 +3,8 @@ import time
 from utils.exibir_tabela.exibir import exibir_tabela
 from utils.sistema.sistema import limpar_tela
 from crud.crud import Crud
+from utils.alteracoes.alterar import Alteracoes
+from crud.crud import Crud
 
 class TelaPedidos:
     def __init__(self, usuario):
@@ -13,7 +15,7 @@ class TelaPedidos:
         self.aprovados = Crud("jsons/solicitacoes/aprovados.json")
         self.reprovados = Crud("jsons/solicitacoes/reprovados.json")
         self.pedidos = Crud("jsons/solicitacoes/pedidos.json")
-
+        self.produtos = Crud("jsons/produtos/produtos.json")
 
 
     def mostrar(self):
@@ -88,8 +90,15 @@ class TelaPedidos:
         Aprova um pedido de acordo com o id.
         """
         pedidos = self.pedidos.listar()
+
         for pedido in pedidos:
             for produto in pedido["pedido"]:
+                for item in self.produtos.listar():
+                    if produto["id"] == item["id"]:
+                        estoque_atualizado = item["quantidade"] - produto["quantidade_pedida"]
+                        self.produtos.atualizar("quantidade", item["quantidade"], estoque_atualizado)
+
+
                 if produto["id"] == id:
                     produto["responsavel"] = self.usuario["nome"]
                     produto["status"] = "Aprovado"
