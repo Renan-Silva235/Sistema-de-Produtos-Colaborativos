@@ -41,7 +41,9 @@ class Doador:
             "cidade": self.cidade,
             "estado": self.estado,
             "id_responsavel": self.id_responsavel,
-            "total_doacoes": self.total_doacoes
+            "total_doacoes": self.total_doacoes,
+            "status":"ativo"
+
         }
 
 
