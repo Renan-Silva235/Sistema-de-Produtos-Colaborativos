@@ -32,7 +32,8 @@ class Usuario:
             "idade": self.idade,
             "cpf": self.cpf,
             "email": self.email,
-            "senha": self.senha
+            "senha": self.senha,
+            "status": "ativo"
         }
 
 
@@ -71,7 +72,8 @@ class Solicitante(Usuario):
             "endereco": self.endereco,
             "cidade": self.cidade,
             "estado": self.estado,
-            "id_responsavel": self.id_responsavel
+            "id_responsavel": self.id_responsavel,
+            "status": "ativo"
         })
 
         return dados

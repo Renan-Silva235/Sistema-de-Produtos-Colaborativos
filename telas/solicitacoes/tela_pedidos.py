@@ -3,7 +3,6 @@ import time
 from utils.exibir_tabela.exibir import exibir_tabela
 from utils.sistema.sistema import limpar_tela
 from crud.crud import Crud
-from utils.alteracoes.alterar import Alteracoes
 from crud.crud import Crud
 
 class TelaPedidos:

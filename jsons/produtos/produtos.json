@@ -2,136 +2,50 @@
     {
         "id": 1,
         "categoria": "Vestuário",
-        "nome_produto": "Blusa",
+        "nome_produto": "Camiseta",
         "marca": "Adidas",
         "cor": "Preta",
         "tamanho": "M",
-        "quantidade": 569,
+        "quantidade": 45,
         "id_doador": [
             1
         ],
         "id_responsavel": [
             1
-        ]
-    },
-    {
-        "id": 2,
-        "categoria": "Medicamentos",
-        "nome_medicamento": [
-            "Dipirona"
         ],
-        "dosagem": "100 Mg",
-        "validade": "15/02/2026",
-        "quantidade": 634,
-        "id_doador": [
-            2
-        ],
-        "id_responsavel": [
-            1
-        ]
+        "status": "ativo",
+        "data_registrada": "05/10/2025 11:03:43"
     },
     {
         "id": 3,
         "categoria": "Alimentícios",
         "nome_alimento": "Arroz",
-        "peso": "2 Kg",
-        "validade": "14/05/2025",
-        "quantidade": 117,
-        "id_doador": [
-            2
-        ],
-        "id_responsavel": [
-            1
-        ]
-    },
-    {
-        "id": 2,
-        "categoria": "Alimentícios",
-        "nome_alimento": "Arroz solito",
-        "peso": "2 Kg",
-        "validade": "14/05/2025",
-        "quantidade": 54,
-        "id_doador": [
-            2
-        ],
-        "id_responsavel": [
-            1
-        ]
-    },
-    {
-        "id": 5,
-        "categoria": "Vestuário",
-        "nome_produto": "Calça",
-        "marca": "Nike",
-        "cor": "Marrom",
-        "tamanho": "G",
-        "quantidade": 2,
+        "peso": "5 Kg",
+        "validade": "15/08/2025",
+        "quantidade": 31,
         "id_doador": [
             1
         ],
         "id_responsavel": [
             1
-        ]
+        ],
+        "status": "ativo",
+        "data_registrada": "05/10/2025 11:04:49"
     },
     {
-        "id": 6,
+        "id": 4,
         "categoria": "Medicamentos",
-        "nome_medicamento": [
-            "Lorasilv"
-        ],
-        "dosagem": "200 Mg",
-        "validade": "15/01/2026",
-        "quantidade": 8,
+        "nome_medicamento": "Lorasilv",
+        "dosagem": "222 Mg",
+        "validade": "15/05/2026",
+        "quantidade": 5,
         "id_doador": [
             1
         ],
         "id_responsavel": [
             1
-        ]
-    },
-    {
-        "id": 7,
-        "categoria": "Alimentícios",
-        "nome_alimento": "Macarrão",
-        "peso": "220 G",
-        "validade": "11/04/2028",
-        "quantidade": 85,
-        "id_doador": [
-            2
         ],
-        "id_responsavel": [
-            1
-        ]
-    },
-    {
-        "id": 8,
-        "categoria": "Vestuário",
-        "nome_produto": "Tênis",
-        "marca": "Nike",
-        "cor": "Azul",
-        "tamanho": "40",
-        "quantidade": 2,
-        "id_doador": [
-            1
-        ],
-        "id_responsavel": [
-            1
-        ]
-    },
-    {
-        "id": 9,
-        "categoria": "Medicamentos",
-        "nome_medicamento": [
-            "Benegrip"
-        ],
-        "dosagem": "20 G",
-        "validade": "14/05/2025",
-        "quantidade": 4,
-        "id_doador": [
-            1
-        ],
-        "id_responsavel": [
-            1
-        ]
+        "status": "ativo",
+        "data_registrada": "05/10/2025 11:17:25"
     }
 ]

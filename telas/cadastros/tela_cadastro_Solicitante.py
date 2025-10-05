@@ -8,7 +8,7 @@ from utils.exibir_tabela.exibir import exibir_tabela
 class TelaCadastrarSolicitante:
     def __init__(self, usuario):
         self.usuario = usuario
-        self.json_solicitantes = "jsons/dados_pessoais/usuario.json"
+        self.json_solicitantes = "jsons/dados_pessoais/solicitantes.json"
         self.crud = Crud(self.json_solicitantes)
         self.iniciar = True
 

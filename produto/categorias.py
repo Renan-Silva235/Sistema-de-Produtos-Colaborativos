@@ -17,7 +17,7 @@ class Alimentos:
 
 class Medicamentos:
     def __init__(self, nome_medicamento, dosagem, validade, quantidade):
-        self.nome_medicamento = nome_medicamento,
+        self.nome_medicamento = nome_medicamento
         self.dosagem = dosagem
         self.validade = validade
         self.quantidade = quantidade

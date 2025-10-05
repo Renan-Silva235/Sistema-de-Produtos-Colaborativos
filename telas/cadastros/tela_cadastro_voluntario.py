@@ -100,7 +100,7 @@ class TelaCadastrarVoluntario:
 
                 elif condicao == "s":
                     limpar_tela()
-                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_voluntario, usuario.objeto(), self.gerenciador.listar())
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_voluntario, usuario.objeto(), self.crud.listar())
 
                     if validar:
                         print("Funcionário já está cadastrado no sistema.")
@@ -109,7 +109,7 @@ class TelaCadastrarVoluntario:
                         self.iniciar = False
                         continue
 
-                    self.gerenciador.cadastrar(usuario.objeto())
+                    self.crud.cadastrar(usuario.objeto())
                     print("Funcionário cadastrado com sucesso.")
                     time.sleep(1.5)
                     limpar_tela()

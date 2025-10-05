@@ -1,60 +1,62 @@
-[
-    {
-        "id": 1,
-        "nivel": "Administrador",
-        "nome": "Renan",
-        "idade": 24,
-        "cpf": "44847011899",
-        "email": "renan@email.com",
-        "senha": "1111"
-    },
-    {
-        "id": 4,
-        "nivel": "Administrador",
-        "nome": "Gustavo",
-        "idade": 28,
-        "cpf": "55566633322",
-        "email": "gustavo@email.com",
-        "senha": "2222"
-    },
-    {
-        "id": 5,
-        "nivel": "Voluntário",
-        "nome": "Lara",
-        "idade": 18,
-        "cpf": "88855522233",
-        "email": "lara@email.com",
-        "senha": "2222"
-    },
-    {
-        "id": 6,
-        "nivel": "Voluntário",
-        "nome": "Kauan",
-        "idade": 20,
-        "cpf": "11177788899",
-        "email": "kauan@email.com",
-        "senha": "2222"
-    },
-    {
-        "id": 8,
-        "nivel": "Voluntário",
-        "nome": "João",
-        "idade": 32,
-        "cpf": "44466633322",
-        "email": "joao@email.com",
-        "senha": "0000"
-    },
-    {
-        "id": 9,
-        "nivel": "Solicitante",
-        "nome": "Livia",
-        "idade": 25,
-        "cpf": "22266699988",
-        "email": "livia@email.com",
-        "senha": "7777",
-        "endereco": "rua joaquina",
-        "cidade": "Sorocaba",
-        "estado": "Sp",
-        "id_responsavel": 1
-    }
-]
+[{
+		"id":	1,
+		"nivel":	"Administrador",
+		"nome":	"Renan",
+		"idade":	24,
+		"cpf":	"44847011899",
+		"email":	"renan@email.com",
+		"senha":	"1111"
+	}, {
+		"id":	4,
+		"nivel":	"Administrador",
+		"nome":	"Gustavo",
+		"idade":	28,
+		"cpf":	"55566633322",
+		"email":	"gustavo@email.com",
+		"senha":	"2222"
+	}, {
+		"id":	5,
+		"nivel":	"Voluntário",
+		"nome":	"Lara",
+		"idade":	18,
+		"cpf":	"88855522233",
+		"email":	"lara@email.com",
+		"senha":	"2222"
+	}, {
+		"id":	6,
+		"nivel":	"Voluntário",
+		"nome":	"Kauan",
+		"idade":	20,
+		"cpf":	"11177788899",
+		"email":	"kauan@email.com",
+		"senha":	"2222"
+	}, {
+		"id":	8,
+		"nivel":	"Voluntário",
+		"nome":	"João",
+		"idade":	32,
+		"cpf":	"44466633322",
+		"email":	"joao@email.com",
+		"senha":	"0000"
+	}, {
+		"id":	9,
+		"nivel":	"Solicitante",
+		"nome":	"Livia",
+		"idade":	25,
+		"cpf":	"22266699988",
+		"email":	"livia@email.com",
+		"senha":	"7777",
+		"endereco":	"rua joaquina",
+		"cidade":	"Sorocaba",
+		"estado":	"Sp",
+		"id_responsavel":	1
+	}, {
+		"id":	10,
+		"nivel":	"Administrador",
+		"nome":	"Gustavo Pereira",
+		"idade":	28,
+		"cpf":	"77755566688",
+		"email":	"gustavopereira@email.com",
+		"senha":	"1111",
+		"status":	"ativo"
+	}]

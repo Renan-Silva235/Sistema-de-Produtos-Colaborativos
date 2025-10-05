@@ -5,13 +5,13 @@ from tabulate import tabulate
 class TelaRelatorio:
     def __init__(self):
         self.produtosEstoque = Crud("jsons/produtos/produtos.json")
-        
+
     def mostrar(self):
         while True:
             print("======= Relatórios =======\n")
             self.produtosMaisPedidos()
             print("\n")
-            self.quantidadeProdutosCategoria()  
+            self.quantidadeProdutosCategoria()
             print("\n")
             self.totalProdutosDoados()
             print("\n")
@@ -30,9 +30,9 @@ class TelaRelatorio:
             except ValueError:
                 limpar_tela()
                 continue
-        print("\n==========================")
+            print("\n==========================")
 
-        
+
 
     def quantidadeProdutosCategoria(self):
         produtos = self.produtosEstoque.listar()
@@ -45,8 +45,8 @@ class TelaRelatorio:
                 categorias[categoria] = 1
         tabela = [[categoria, quantidade] for categoria, quantidade in categorias.items()]
         tabela.append(["Total de produtos cadastrados", len(produtos)])
-        print(tabulate(tabela, headers=["Categoria", "Quantidade"], tablefmt="fancy_grid"))  
-        
+        print(tabulate(tabela, headers=["Categoria", "Quantidade"], tablefmt="fancy_grid"))
+
 
 
     def tabelaProdutosPorCategoria(self, categoria=None):
@@ -61,7 +61,7 @@ class TelaRelatorio:
 
         print(f"\nProdutos da categoria: {categoria}")
         print(tabulate(tabela, headers=colunas, tablefmt="fancy_grid"))
-    
+
     def visualizarProdutosPorCategoria(self):
         while True:
             print("1 - Medicamentos")
@@ -93,17 +93,17 @@ class TelaRelatorio:
     def totalProdutosDoados(self):
 
         contador = 0
-        
+
         pedidos_aprovados = Crud("jsons/solicitacoes/aprovados.json")
-        
+
         for pedido in pedidos_aprovados.listar():
             for produto in pedido.get("pedido", []):
-                
+
                 contador += produto.get("quantidade_pedida", 0)
 
         tabela = [["Total de Produtos Doados", contador]]
         print(tabulate(tabela, tablefmt="fancy_grid"))
-    
+
     def produtosMaisPedidos(self):
         """
         Analisa os pedidos aprovados e reprovados e exibe um ranking dos produtos mais pedidos pelos solicitantes.
@@ -112,37 +112,37 @@ class TelaRelatorio:
         pedidos_aprovados = Crud("jsons/solicitacoes/aprovados.json")
         pedidos_reprovados = Crud("jsons/solicitacoes/reprovados.json")
         id_contagem = {}
-        
+
         # Conta quantas vezes cada ID de produto aparece nos pedidos aprovados
         for pedido in pedidos_aprovados.listar():
             for produto in pedido.get("pedido", []):
                 produto_id = produto.get("id", "")
-                
+
                 if produto_id in id_contagem:
                     id_contagem[produto_id] += 1
                 else:
                     id_contagem[produto_id] = 1
-        
+
         # Conta quantas vezes cada ID de produto aparece nos pedidos reprovados
         for pedido in pedidos_reprovados.listar():
             for produto in pedido.get("pedido", []):
                 produto_id = produto.get("id", "")
-                
+
                 if produto_id in id_contagem:
                     id_contagem[produto_id] += 1
                 else:
                     id_contagem[produto_id] = 1
-        
+
         if not id_contagem:
             print("Nenhum produto foi pedido ainda.")
             return
-        
+
         # Ordena os IDs por frequência (maior para menor)
         ids_ordenados = sorted(id_contagem.items(), key=lambda x: x[1], reverse=True)
-        
+
         # Busca os nomes dos produtos no estoque
         produtos_estoque = self.produtosEstoque.listar()
-        
+
         # Cria a tabela com os IDs mais pedidos e seus nomes
         tabela = []
         for i, (produto_id, frequencia) in enumerate(ids_ordenados, 1):
@@ -159,13 +159,13 @@ class TelaRelatorio:
                     elif categoria == "Vestuário":
                         nome_produto = produto.get("nome_produto", "Produto sem nome")
                     break
-            
+
             tabela.append([i, produto_id, nome_produto, frequencia])
-        
+
         print("\n=== RANKING DOS PRODUTOS MAIS PEDIDOS ===")
         print(tabulate(tabela, headers=["Posição", "ID", "Nome do Produto", "Total de Solicitações"], tablefmt="fancy_grid"))
-        
-        
+
+
 
 
 # p1 = TelaRelatorio()
