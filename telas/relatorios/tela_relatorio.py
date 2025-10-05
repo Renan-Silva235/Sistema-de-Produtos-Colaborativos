@@ -168,5 +168,5 @@ class TelaRelatorio:
         
 
 
-p1 = TelaRelatorio()
-p1.mostrar()
+# p1 = TelaRelatorio()
+# p1.mostrar()
