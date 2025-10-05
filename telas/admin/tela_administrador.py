@@ -3,6 +3,8 @@ from utils.sistema.sistema import limpar_tela
 from telas.menus.tela_menu_cadastros import TelaMenuCadastro
 from telas.solicitacoes.tela_pedidos import TelaPedidos
 from crud.crud import Crud
+from telas.relatorios.tela_relatorio import TelaRelatorio
+
 class TelaAdministrador:
 
     def __init__(self, usuario):
@@ -39,7 +41,10 @@ class TelaAdministrador:
                     telaMenuCadastro.mostrar()
                     continue
                 if opcao == 2:
-                    print("Relatórios")
+                    limpar_tela()
+                    telaRelatorio = TelaRelatorio()
+                    telaRelatorio.mostrar()
+
                     continue
                 if opcao == 3:
                     print("Controle de Estoque")
