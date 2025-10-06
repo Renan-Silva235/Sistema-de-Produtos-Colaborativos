@@ -6,7 +6,7 @@
         "marca": "Adidas",
         "cor": "Preta",
         "tamanho": "M",
-        "quantidade": 45,
+        "quantidade": 55,
         "id_doador": [
             1
         ],
@@ -21,7 +21,7 @@
         "categoria": "Alimentícios",
         "nome_alimento": "Arroz",
         "peso": "5 Kg",
-        "validade": "15/08/2025",
+        "validade": "07/10/2025",
         "quantidade": 31,
         "id_doador": [
             1

@@ -1,10 +1,12 @@
 from utils.sistema.sistema import limpar_tela
 from crud.crud import Crud
 from tabulate import tabulate
+from datetime import datetime
 
 class TelaRelatorio:
     def __init__(self):
         self.produtosEstoque = Crud("jsons/produtos/produtos.json")
+        self.doadoresCrud = Crud("jsons/dados_pessoais/doadores.json")
 
     def mostrar(self):
         while True:
@@ -16,11 +18,17 @@ class TelaRelatorio:
             self.totalProdutosDoados()
             print("\n")
             print("1 - Visualizar Tabelas por Categoria")
+            print("2 - Relatório de doações por período")
+            print("3 - Relatório de doações por doador")
             try:
                 verCategoria = int(input("Digite uma das opções acima ou 0 para sair: "))
                 limpar_tela()
                 if verCategoria == 1:
                     self.visualizarProdutosPorCategoria()
+                elif verCategoria == 2:
+                    self.relatorioDoacoesPorPeriodo()
+                elif verCategoria == 3:
+                    self.relatorioDoacoesPorDoador()
                 elif verCategoria == 0:
                     limpar_tela()
                     return
@@ -168,5 +176,122 @@ class TelaRelatorio:
 
 
 
-# p1 = TelaRelatorio()
-# p1.mostrar()
+    def _parse_data_ddmmyyyy(self, texto):
+        try:
+            return datetime.strptime(texto.strip(), "%d/%m/%Y")
+        except Exception:
+            return None
+
+    def _nome_produto(self, produto):
+        categoria = produto.get("categoria", "")
+        if categoria == "Medicamentos":
+            valor = produto.get("nome_medicamento")
+            return valor[0] if isinstance(valor, list) and valor else (valor or "Produto sem nome")
+        if categoria == "Alimentícios":
+            return produto.get("nome_alimento", "Produto sem nome")
+        if categoria == "Vestuário":
+            return produto.get("nome_produto", "Produto sem nome")
+        return "Produto sem nome"
+
+    def relatorioDoacoesPorPeriodo(self):
+        print("=== RELATÓRIO DE DOAÇÕES POR PERÍODO ===")
+        print("Informe as datas no formato dd/mm/aaaa")
+        inicio_txt = input("Data inicial: ")
+        fim_txt = input("Data final:   ")
+
+        dt_inicio = self._parse_data_ddmmyyyy(inicio_txt)
+        dt_fim = self._parse_data_ddmmyyyy(fim_txt)
+
+        if not dt_inicio or not dt_fim or dt_fim < dt_inicio:
+            print("Período inválido. Use dd/mm/aaaa e verifique se a data final não é menor que a inicial.")
+            return
+
+        # Ajusta para início e fim do dia
+        dt_inicio = datetime(dt_inicio.year, dt_inicio.month, dt_inicio.day, 0, 0, 0)
+        dt_fim = datetime(dt_fim.year, dt_fim.month, dt_fim.day, 23, 59, 59)
+
+        itens = self.produtosEstoque.listar()
+        if not itens:
+            print("Não há doações registradas.")
+            return
+
+        linhas = []
+        total_quantidade = 0
+
+        for item in itens:
+            data_txt = item.get("data_registrada")
+            if not data_txt:
+                continue
+            try:
+                dt_item = datetime.strptime(data_txt, "%d/%m/%Y %H:%M:%S")
+            except Exception:
+                continue
+
+            if dt_inicio <= dt_item <= dt_fim:
+                nome = self._nome_produto(item)
+                linhas.append([
+                    item.get("id"),
+                    item.get("categoria", ""),
+                    nome,
+                    item.get("quantidade", 0),
+                    data_txt
+                ])
+                total_quantidade += item.get("quantidade", 0)
+
+        if not linhas:
+            print("Nenhuma doação encontrada no período informado.")
+            return
+
+        print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Quantidade", "Data Registrada"], tablefmt="fancy_grid"))
+        print(tabulate([["Total de itens doados no período", total_quantidade]], tablefmt="fancy_grid"))
+
+    def relatorioDoacoesPorDoador(self):
+        print("=== RELATÓRIO DE DOAÇÕES POR DOADOR ===")
+        chave = input("Informe o nome ou CPF do doador: ").strip()
+
+        doadores = self.doadoresCrud.listar()
+        if not doadores:
+            print("Não há doadores cadastrados.")
+            return
+
+        doador_encontrado = None
+        for d in doadores:
+            if str(d.get("cpf", "")).strip() == chave or str(d.get("nome", "")).strip().lower() == chave.lower():
+                doador_encontrado = d
+                break
+
+        if not doador_encontrado:
+            print("Doador não encontrado. Pesquise pelo nome exato ou CPF.")
+            return
+
+        doador_id = doador_encontrado.get("id")
+        itens = self.produtosEstoque.listar()
+        if not itens:
+            print("Não há doações registradas.")
+            return
+
+        linhas = []
+        total_quantidade = 0
+
+        for item in itens:
+            ids_doadores = item.get("id_doador", []) or []
+            if doador_id in ids_doadores:
+                nome = self._nome_produto(item)
+                linhas.append([
+                    item.get("id"),
+                    item.get("categoria", ""),
+                    nome,
+                    item.get("quantidade", 0),
+                    item.get("data_registrada", "")
+                ])
+                total_quantidade += item.get("quantidade", 0)
+
+        if not linhas:
+            print("Esse doador ainda não possui doações registradas.")
+            return
+
+        titulo = f"Doações do doador: {doador_encontrado.get('nome')} (CPF: {doador_encontrado.get('cpf')})"
+        print(titulo)
+        print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Quantidade", "Data Registrada"], tablefmt="fancy_grid"))
+        print(tabulate([["Total de itens doados (todas as entradas)", total_quantidade]], tablefmt="fancy_grid"))
+

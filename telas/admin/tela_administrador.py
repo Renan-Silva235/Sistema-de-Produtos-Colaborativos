@@ -2,8 +2,9 @@ import time
 from utils.sistema.sistema import limpar_tela
 from telas.menus.tela_menu_cadastros import TelaMenuCadastro
 from telas.solicitacoes.tela_pedidos import TelaPedidos
-from crud.crud import Crud
 from telas.relatorios.tela_relatorio import TelaRelatorio
+from telas.controleEstoque.telaControleEstoque import TelaControleEstoque
+from crud.crud import Crud
 
 class TelaAdministrador:
 
@@ -29,7 +30,7 @@ class TelaAdministrador:
                 1- Cadastros
                 2- Relatórios
                 3- Controle de Estoque
-                4- Solicitações ({len(self.qtdPedidos)})
+                4- Solicitações de pedidos ({len(self.qtdPedidos)})
                 0- Sair
                 \n""")
 
@@ -47,7 +48,9 @@ class TelaAdministrador:
 
                     continue
                 if opcao == 3:
-                    print("Controle de Estoque")
+                    limpar_tela()
+                    telaControleEstoque = TelaControleEstoque()
+                    telaControleEstoque.mostrar()
                     continue
                 if opcao == 4:
                     limpar_tela()
