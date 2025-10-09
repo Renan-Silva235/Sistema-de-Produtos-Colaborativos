@@ -1,6 +1,7 @@
 import time
 from crud.crud import Crud
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
+from utils.exibir_tabela.exibir import CriarTabelas
 from tabulate import tabulate
 from utils.alteracoes.alterar import Alteracoes
 from datetime import datetime, timedelta
@@ -21,62 +22,72 @@ class TelaControleEstoque:
             except Exception:
                 alertas_um_dia = 0
             print("CONTROLE DE ESTOQUE:\n")
-            print("""
+            print(f"""
                     1 - Listar estoque completo
                     2 - Filtrar por categoria
-                    3 - Buscar produto por ID
+                    3 - Consultar produto
                     4 - Registrar entrada (adicionar quantidade)
                     5 - Registrar saída (retirar quantidade)
                     6 - Itens com baixa de estoque
-            """)
-            # Imprime a opção 7 com contador dinâmico de alertas (itens que vencem amanhã)
-            print(f"                    7 - Alertas de validade próxima ou vencida ({alertas_um_dia})")
-            print("""
+                    7 - Alertas de validade próxima ou vencida ({alertas_um_dia})
+                    8 - Atualizar validade do produto
+                    9 - Ativar/Inativar produto
                     0 - Voltar
-            """)
+                """)
 
             try:
                 opcao = int(input("Digite uma das opções acima: "))
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             if opcao == 1:
-                limpar_tela()
+                Sistema.limpar_tela()
+                print("Executando listar_estoque()...")
                 self.listar_estoque()
+                input("\nPressione Enter para continuar...")
+                Sistema.limpar_tela()
                 continue
             elif opcao == 2:
-                limpar_tela()
+                Sistema.limpar_tela()
                 self.filtrar_por_categoria()
                 continue
             elif opcao == 3:
-                limpar_tela()
-                self.buscar_por_id()
+                Sistema.limpar_tela()
+                self._consultar_produto()
                 continue
             elif opcao == 4:
-                limpar_tela()
+                Sistema.limpar_tela()
                 self.registrar_entrada()
                 continue
             elif opcao == 5:
-                limpar_tela()
+                Sistema.limpar_tela()
                 self.registrar_saida()
                 continue
             elif opcao == 6:
-                limpar_tela()
+                Sistema.limpar_tela()
                 self.itens_baixa_estoque()
                 continue
             elif opcao == 7:
-                limpar_tela()
+                Sistema.limpar_tela()
                 self.alertas_validade()
                 continue
+            elif opcao == 8:
+                Sistema.limpar_tela()
+                self.atualizar_validade()
+                continue
+            elif opcao == 9:
+                Sistema.limpar_tela()
+                self.ativar_inativar_produto()
+                continue
             elif opcao == 0:
-                limpar_tela()
+                Sistema.limpar_tela()
                 print("Voltando...")
                 time.sleep(1.2)
-                limpar_tela()
+                Sistema.limpar_tela()
                 return
             else:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
     def _nome_produto(self, produto):
@@ -91,23 +102,13 @@ class TelaControleEstoque:
         return "Sem nome"
 
     def listar_estoque(self):
-        itens = self.crud.listar()
-        if not itens:
-            print("Não há itens no estoque.")
+        produtos = self.crud.listar()
+        if not produtos:
+            print("Não há produto no estoque.")
             return
 
-        linhas = []
-        for item in itens:
-            linhas.append([
-                item.get("id"),
-                item.get("categoria", ""),
-                self._nome_produto(item),
-                item.get("quantidade", 0),
-                item.get("validade", ""),
-                item.get("data_registrada", "")
-            ])
-
-        print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Qtd", "Validade", "Data"], tablefmt="fancy_grid"))
+        for item in produtos:
+            CriarTabelas.exibir_tabela(item)
 
     def filtrar_por_categoria(self):
         print("1 - Medicamentos")
@@ -116,7 +117,7 @@ class TelaControleEstoque:
         try:
             op = int(input("Selecione a categoria: "))
         except ValueError:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
 
         categoria = None
@@ -127,7 +128,7 @@ class TelaControleEstoque:
         elif op == 3:
             categoria = "Vestuário"
         else:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
 
         itens = [i for i in self.crud.listar() if i.get("categoria") == categoria]
@@ -135,38 +136,29 @@ class TelaControleEstoque:
             print(f"Nenhum item encontrado em '{categoria}'.")
             return
 
-        linhas = []
-        for item in itens:
-            linhas.append([
-                item.get("id"),
-                item.get("categoria", ""),
-                self._nome_produto(item),
-                item.get("quantidade", 0),
-                item.get("validade", "")
-            ])
-        print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Qtd", "Validade"], tablefmt="fancy_grid"))
+        CriarTabelas.exibir_tabela(itens)
 
-    def buscar_por_id(self):
+    def _consultar_produto(self):
         try:
-            pid = int(input("Informe o ID do produto: "))
+            pid = input("Informe o que deseja consultar: ")
         except ValueError:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
 
-        itens = self.crud.listar()
-        for item in itens:
-            if item.get("id") == pid:
-                linhas = [[k, v] for k, v in item.items()]
-                print(tabulate(linhas, headers=["Campo", "Valor"], tablefmt="fancy_grid"))
-                return
-        print("Produto não encontrado.")
+        produtos = self.crud.consultar(pid)
+        if not produtos:
+            print("Produto não encontrado.")
+            return
+
+        for produto in produtos:
+            CriarTabelas.exibir_tabela(produto)
 
     def registrar_entrada(self):
         try:
             pid = int(input("ID do produto: "))
             qtd = int(input("Quantidade a adicionar: "))
         except ValueError:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
         if qtd <= 0:
             print("Quantidade deve ser positiva.")
@@ -186,7 +178,7 @@ class TelaControleEstoque:
             pid = int(input("ID do produto: "))
             qtd = int(input("Quantidade a retirar: "))
         except ValueError:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
         if qtd <= 0:
             print("Quantidade deve ser positiva.")
@@ -214,7 +206,7 @@ class TelaControleEstoque:
         try:
             limite = int(input("Exibir itens com quantidade menor ou igual a: "))
         except ValueError:
-            limpar_tela()
+            Sistema.limpar_tela()
             return
         itens = [i for i in self.crud.listar() if i.get("quantidade", 0) <= limite]
         if not itens:
@@ -240,38 +232,43 @@ class TelaControleEstoque:
         proximos = []
 
         for item in itens:
-            validade_txt = item.get("validade")
-            if not validade_txt:
+            if item.get("status") == "inativo":
                 continue
-            try:
-                validade = datetime.strptime(validade_txt, "%d/%m/%Y").date()
-            except Exception:
-                continue
+            if item.get("status") == "ativo":
 
-            linha = [
-                item.get("id"),
-                item.get("categoria", ""),
-                self._nome_produto(item),
-                item.get("quantidade", 0),
-                validade_txt
-            ]
+                validade_txt = item.get("validade")
+                if not validade_txt:
+                    continue
+                try:
+                    validade = datetime.strptime(validade_txt, "%d/%m/%Y").date()
+                except Exception:
+                    continue
 
-            if validade < hoje:
-                vencidos.append(linha)
-            elif validade == amanha:
-                proximos.append(linha)
+                if validade < hoje:
+                    vencidos.append(item)
+                elif validade == amanha:
+                    proximos.append(item)
 
         if not vencidos and not proximos:
-            print("Nenhum item vencido ou com validade próxima no período informado.")
+            Sistema.limpar_tela()
+            print("Nenhum produto vencido ou com validade próxima no período informado.")
+            input("Tecle enter para voltar")
+            Sistema.limpar_tela()
             return
 
         if vencidos:
+            Sistema.limpar_tela()
             print("\n=== ITENS VENCIDOS ===")
-            print(tabulate(vencidos, headers=["ID", "Categoria", "Produto", "Qtd", "Validade"], tablefmt="fancy_grid"))
+            CriarTabelas.exibir_tabela(vencidos)
+            input("Tecle enter para voltar")
+            Sistema.limpar_tela()
 
         if proximos:
+            Sistema.limpar_tela()
             print("\n=== ITENS COM VALIDADE PRÓXIMA ===")
-            print(tabulate(proximos, headers=["ID", "Categoria", "Produto", "Qtd", "Validade"], tablefmt="fancy_grid"))
+            CriarTabelas.exibir_tabela(proximos)
+            input("Tecle enter para voltar")
+            Sistema.limpar_tela()
 
     def _contar_alertas_um_dia(self):
         """Conta quantos itens têm validade igual a amanhã (alerta de 1 dia)."""
@@ -279,16 +276,89 @@ class TelaControleEstoque:
         itens = self.crud.listar()
         contador = 0
         for item in itens:
-            validade_txt = item.get("validade")
-            if not validade_txt:
+            if item.get("status") == "inativo":
                 continue
-            try:
-                validade = datetime.strptime(validade_txt, "%d/%m/%Y").date()
-            except Exception:
-                continue
-            if validade == amanha:
-                contador += 1
+
+            if item.get("status") == "ativo":
+
+                validade_txt = item.get("validade")
+                if not validade_txt:
+                    continue
+                try:
+                    validade = datetime.strptime(validade_txt, "%d/%m/%Y").date()
+                except Exception:
+                    continue
+                if validade == amanha:
+                    contador += 1
         return contador
+
+    def atualizar_validade(self):
+        """Atualiza a validade de um produto."""
+        try:
+            pid = int(input("ID do produto: "))
+        except ValueError:
+            print("ID inválido.")
+            return
+
+        # Verifica se o produto existe
+        itens = self.crud.listar()
+        produto_existe = any(item.get("id") == pid for item in itens)
+        if not produto_existe:
+            print("Produto não encontrado.")
+            return
+
+        print("Digite a nova validade no formato dd/mm/aaaa:")
+        nova_validade = input("Nova validade: ").strip()
+
+        # Valida o formato da data
+        try:
+            datetime.strptime(nova_validade, "%d/%m/%Y")
+        except ValueError:
+            print("Formato de data inválido. Use dd/mm/aaaa")
+            return
+
+        # Atualiza a validade
+        self.crud.atualizar(pid, "validade", nova_validade)
+        print("Validade atualizada com sucesso.")
+
+    def ativar_inativar_produto(self):
+        """Ativa ou inativa um produto."""
+        try:
+            pid = int(input("ID do produto: "))
+        except ValueError:
+            print("ID inválido.")
+            return
+
+        # Verifica se o produto existe
+        itens = self.crud.listar()
+        produto = next((item for item in itens if item.get("id") == pid), None)
+
+        if not produto:
+            print("Produto não encontrado.")
+            return
+
+        status_atual = produto.get("status", "ativo")
+        print(f"Status atual: {status_atual}")
+        print("1 - Ativar")
+        print("2 - Inativar")
+
+        try:
+            opcao = int(input("Escolha uma opção: "))
+        except ValueError:
+            print("Opção inválida.")
+            return
+
+        if opcao == 1:
+            novo_status = "ativo"
+        elif opcao == 2:
+            novo_status = "inativo"
+        else:
+            print("Opção inválida.")
+            return
+
+        # ✅ usa o método genérico agora
+        self.crud.atualizar(pid, "status", novo_status)
+        print(f"Produto {novo_status} com sucesso.")
 
 
 

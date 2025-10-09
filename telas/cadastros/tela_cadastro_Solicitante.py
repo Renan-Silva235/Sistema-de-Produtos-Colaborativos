@@ -1,9 +1,9 @@
 import time
-from usuarios.usuario import Solicitante
+from usuarios.usuario import Cliente
 from crud.crud import Crud
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from validacoes.validacoes_usuario import ValidacoesUsuario
-from utils.exibir_tabela.exibir import exibir_tabela
+from utils.exibir_tabela.exibir import CriarTabelas
 
 class TelaCadastrarSolicitante:
     def __init__(self, usuario):
@@ -14,24 +14,24 @@ class TelaCadastrarSolicitante:
 
 
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de um novo cliente(Solicitante) no terminal."""
+        """Esse método exibe a tela de cadastro de um novo Cliente no terminal."""
 
         while self.iniciar:
             try:
                 continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
                 if continuar_ou_não not in [1, 2]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif continuar_ou_não == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando..")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             print("\n\nINFORME OS DADOS DO CLIENTE:\n\n")
@@ -62,59 +62,58 @@ class TelaCadastrarSolicitante:
             except ValueError as erro:
                 print(erro)
                 time.sleep(1.5)
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
 
-            solicitante = Solicitante(nivel="Solicitante",
-                                      nome=nome,
-                                      idade=idade,
-                                      cpf=cpf,
-                                      email=email,
-                                      senha=senha,
-                                      endereco=endereco,
-                                      cidade=cidade,
-                                      estado=estado,
-                                      id_responsavel=self.usuario)
+            cliente = Cliente(nome=nome,
+                              idade=idade,
+                              cpf=cpf,
+                              email=email,
+                              senha=senha,
+                              endereco=endereco,
+                              cidade=cidade,
+                              estado=estado,
+                              id_responsavel=self.usuario)
 
-            limpar_tela()
+            Sistema.limpar_tela()
 
             while self.iniciar:
                 print("VISUALIZAÇÃO:\n\n")
                 print("Dados do cliente:\n\n")
-                exibir_tabela(solicitante.objeto(), titulo="Solicitante")
+                CriarTabelas.exibir_tabela(cliente.objeto(), titulo="Cliente")
                 print("\n\n")
 
                 condicao = input("Deseja realmente salvar esse cliente? (s/n): ").lower()
 
                 if condicao not in ["s", "n"]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif condicao == "s":
-                    limpar_tela()
-                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_solicitantes, solicitante.objeto(), self.crud.listar())
+                    Sistema.limpar_tela()
+                    validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_solicitantes, cliente.objeto(), self.crud.listar())
 
                     if validar:
                         print("cliente já está cadastrado no sistema.")
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         self.iniciar = False
                         continue
 
-                    self.crud.cadastrar(solicitante.objeto())
-                    print("Solicitante Cadastrado com sucesso")
+                    self.crud.cadastrar(cliente.objeto())
+                    print("Cliente cadastrado com sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self.iniciar = False
                     continue
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     time.sleep(1.5)
                     self.iniciar = False
                     continue
 
             self.iniciar = True
-            limpar_tela()
+            Sistema.limpar_tela()
             continue
 

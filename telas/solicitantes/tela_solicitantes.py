@@ -1,7 +1,7 @@
 import time
 from crud.crud import Crud
-from utils.sistema.sistema import limpar_tela
-from utils.exibir_tabela.exibir import exibir_tabela
+from utils.sistema.sistema import Sistema
+from utils.exibir_tabela.exibir import CriarTabelas
 class TelaSolicitantes:
 
     def __init__(self, usuario):
@@ -32,32 +32,32 @@ class TelaSolicitantes:
                 opcao = int(input("Digite uma das opções acima: "))
 
                 if opcao == 1:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self._consultar_produtos()
                     continue
 
                 elif opcao == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self._fazer_pedido()
                     continue
 
                 elif opcao == 3:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self._status_pedidos()
                     continue
 
                 elif opcao == 0:
                     if opcao == 0:
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         print("Voltando...")
                         time.sleep(1.2)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         return
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
     def _consultar_produtos(self):
@@ -82,12 +82,12 @@ class TelaSolicitantes:
             del item["quantidade"]
             del item["id_doador"]
             del item["id_responsavel"]
-            exibir_tabela(item)
+            CriarTabelas.exibir_tabela(item)
 
 
         print("\n\n")
         input("Pressione enter para voltar")
-        limpar_tela()
+        Sistema.limpar_tela()
         return
 
     def _fazer_pedido(self):
@@ -103,9 +103,11 @@ class TelaSolicitantes:
             print("PRODUTOS DISPONÍVEIS: \n")
 
             for produto in self.produtos.listar():
-                del produto["id_doador"]
-                del produto["id_responsavel"]
-                exibir_tabela(produto)
+                if produto["status"] == "ativo":
+                    del produto["id_doador"]
+                    del produto["id_responsavel"]
+                    del produto["status"]
+                    CriarTabelas.exibir_tabela(produto)
 
 
             try:
@@ -113,26 +115,27 @@ class TelaSolicitantes:
                 escolha = int(input("Digite o número do id do produto desejado ou '0' para voltar: "))
 
                 if escolha == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
 
                 for pedido in self.pedidos.listar():
                     for produto in pedido["pedido"]:
                         if escolha == produto["id"]:
+                            Sistema.limpar_tela()
                             print("Pedido ja enviado")
                             time.sleep(1.5)
-                            limpar_tela()
-                            continue
+                            Sistema.limpar_tela()
+                            return
 
                 for itens in self.produtos.listar():
                     if escolha == itens["id"]:
                         pegar_quantidade = int(input("digite a quantidade desejada: "))
 
                         if pegar_quantidade > itens["quantidade"]:
-                            limpar_tela()
+                            Sistema.limpar_tela()
                             print("Quantidade excedeu a quantidade total de produtos.")
                             time.sleep(1.5)
-                            limpar_tela()
+                            Sistema.limpar_tela()
                             continue
 
 
@@ -152,10 +155,10 @@ class TelaSolicitantes:
 
 
                         self.pedidos.cadastrar(pedido)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         print("Pedido enviado")
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         break
 
                     # else:
@@ -163,7 +166,7 @@ class TelaSolicitantes:
 
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
     def _status_pedidos(self):
@@ -179,27 +182,24 @@ class TelaSolicitantes:
         for pedido in meus_pedidos:
             for produto in pedido["pedido"]:
                 if produto["cpf_solicitante"] == self.usuario["cpf"]:
-                    exibir_tabela(produto)
+                    CriarTabelas.exibir_tabela(produto)
 
         for aprovado in self.produtos_aprovados.listar():
             for produto in aprovado["pedido"]:
                 if produto["cpf_solicitante"] == self.usuario["cpf"]:
-                    exibir_tabela(produto)
+                    CriarTabelas.exibir_tabela(produto)
 
         for reprovado in self.produtos_reprovados.listar():
             for produto in reprovado["pedido"]:
                 if produto["cpf_solicitante"] == self.usuario["cpf"]:
-                    exibir_tabela(produto)
+                    CriarTabelas.exibir_tabela(produto)
 
 
         input("\nTecle enter para voltar")
-        limpar_tela()
+        Sistema.limpar_tela()
         return
 
 
 
 
 
-
-# tela = TelaSolicitantes()
-# tela.mostrar()

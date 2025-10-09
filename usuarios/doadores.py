@@ -1,5 +1,5 @@
 from crud.crud import Crud
-from utils.sistema.sistema import data_hora_atual
+from utils.sistema.sistema import Sistema
 class Doador:
     def __init__(self, nome, idade, cpf, telefone, email, cidade, estado, id_responsavel):
         """
@@ -73,7 +73,7 @@ class Doacao:
             "id_doador": [self.id_doador],
             "id_responsavel":[self.id_responsavel],
             "status": "ativo",
-            "data_registrada": data_hora_atual()
+            "data_registrada": Sistema.data_hora_atual()
         })
 
         return dados

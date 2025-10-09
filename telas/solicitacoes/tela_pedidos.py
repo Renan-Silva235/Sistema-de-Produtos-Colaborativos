@@ -1,8 +1,7 @@
 import json
 import time
-from utils.exibir_tabela.exibir import exibir_tabela
-from utils.sistema.sistema import limpar_tela
-from crud.crud import Crud
+from utils.exibir_tabela.exibir import CriarTabelas
+from utils.sistema.sistema import Sistema
 from crud.crud import Crud
 
 class TelaPedidos:
@@ -28,12 +27,12 @@ class TelaPedidos:
         Permite ao usuário aprovar ou reprovar o pedido.
         """
         while True:
-            limpar_tela()
+            Sistema.limpar_tela()
 
             if not self.pedidos.listar():
                 print("Não há pedidos no momento.")
                 input("Tecle enter para voltar")
-                limpar_tela()
+                Sistema.limpar_tela()
                 return
 
 
@@ -41,19 +40,19 @@ class TelaPedidos:
 
             for pedido in self.pedidos.listar():
                 for produto in pedido["pedido"]:
-                    exibir_tabela(produto)
+                    CriarTabelas.exibir_tabela(produto)
 
             try:
                 pegar_id = int(input("\nDigite o número do Id correspondente ou '0' para voltar: "))
 
                 if pegar_id == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando...")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             encontrado = False
@@ -95,7 +94,7 @@ class TelaPedidos:
                 for item in self.produtos.listar():
                     if produto["id"] == item["id"]:
                         estoque_atualizado = item["quantidade"] - produto["quantidade_pedida"]
-                        self.produtos.atualizar("quantidade", item["quantidade"], estoque_atualizado)
+                        self.produtos.atualizar(item["id"], "quantidade", estoque_atualizado)
 
 
                 if produto["id"] == id:

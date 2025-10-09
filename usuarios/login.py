@@ -5,7 +5,7 @@ class Login:
         self.arquivo = arquivo
 
 
-    def autenticar(self, nivel, email, senha):
+    def autenticar(self, email, senha):
 
         """
         Realiza a autenticação de um usuário com base nos dados do json
@@ -17,7 +17,7 @@ class Login:
         """
         dados = Crud(self.arquivo).listar()
         for dado in dados:
-            if dado["nivel"] == nivel and dado["email"] == email and dado["senha"] == senha:
+            if dado["email"] == email and dado["senha"] == senha:
                 return dado
 
         return False

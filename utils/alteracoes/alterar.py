@@ -91,5 +91,55 @@ class Alteracoes:
             f.write("[\n" + ",\n".join(partes) + "\n]")
 
 
+    def alterar_validade_produto(self, caminho_arquivo, produto_id, nova_validade):
+        """
+        Altera a validade de um produto específico pelo ID.
+
+        :param caminho_arquivo: O caminho do arquivo json que contém o estoque.
+        :param produto_id: O id do produto que vai ser alterado.
+        :param nova_validade: A nova validade no formato dd/mm/aaaa.
+        :return: True se a validade for alterada, False caso contrário.
+        """
+        itens = Crud(caminho_arquivo).listar()
+
+        if not itens:
+            return False
+
+        # Busca e atualiza apenas o produto com o ID específico
+        for item in itens:
+            if item.get("id") == produto_id:
+                item["validade"] = nova_validade
+                # Salva o arquivo atualizado
+                with open(caminho_arquivo, "w") as arquivo:
+                    json.dump(itens, arquivo, indent=4, ensure_ascii=False)
+                return True
+
+        return False
+
+
+    def alterar_status_produto(self, caminho_arquivo, produto_id, novo_status):
+        """
+        Altera o status de um produto específico pelo ID.
+
+        :param caminho_arquivo: O caminho do arquivo json que contém o estoque.
+        :param produto_id: O id do produto que vai ser alterado.
+        :param novo_status: O novo status ("ativo" ou "inativo").
+        :return: True se o status for alterado, False caso contrário.
+        """
+        itens = Crud(caminho_arquivo).listar()
+
+        if not itens:
+            return False
+
+        # Busca e atualiza apenas o produto com o ID específico
+        for item in itens:
+            if item.get("id") == produto_id:
+                item["status"] = novo_status
+                # Salva o arquivo atualizado
+                with open(caminho_arquivo, "w") as arquivo:
+                    json.dump(itens, arquivo, indent=4, ensure_ascii=False)
+                return True
+
+        return False
 
 

@@ -62,19 +62,16 @@ class Crud:
         lib.salvarNoJson(self.json.encode("utf-8"), json_str.encode("utf-8"))
 
 
-    def atualizar(self, chave, valor_atual, novo_valor):
+    def atualizar(self, id_produto, chave, novo_valor):
         """
-        Atualiza o valor de uma chave em todos os objetos que est  o salvos no json
-
-        :param chave: A chave que ser   atualizada
-        :param valor_atual: O valor atual da chave
-        :param novo_valor: O novo valor que ser   atribuído  para a chave
-        :return: None
+        Atualiza o valor de uma chave em um produto específico (pelo ID).
         """
         dados = self.listar()
         for dado in dados:
-            if dado[chave] == valor_atual:
+            if dado["id"] == id_produto:
                 dado[chave] = novo_valor
+                break  # para após atualizar o produto certo
 
         with open(self.json, "w", encoding="utf-8") as f:
             json.dump(dados, f, indent=4, ensure_ascii=False)
+

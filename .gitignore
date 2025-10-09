@@ -6,5 +6,5 @@ __pycache__
 teste_pandas.py
 .env/
 anotacoes.txt
-
+./diagrama_caso_uso/*.drawio
 

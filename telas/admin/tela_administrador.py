@@ -1,5 +1,5 @@
 import time
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from telas.menus.tela_menu_cadastros import TelaMenuCadastro
 from telas.solicitacoes.tela_pedidos import TelaPedidos
 from telas.relatorios.tela_relatorio import TelaRelatorio
@@ -37,37 +37,37 @@ class TelaAdministrador:
             try:
                 opcao = int(input("Digite uma opção: "))
                 if opcao == 1:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaMenuCadastro = TelaMenuCadastro(self.usuario)
                     telaMenuCadastro.mostrar()
                     continue
                 if opcao == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaRelatorio = TelaRelatorio()
                     telaRelatorio.mostrar()
 
                     continue
                 if opcao == 3:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaControleEstoque = TelaControleEstoque()
                     telaControleEstoque.mostrar()
                     continue
                 if opcao == 4:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaPedidos = TelaPedidos(self.usuario)
                     telaPedidos.mostrar()
                     continue
                 if opcao == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando a tela inicial...")
                     time.sleep(2)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Opção Inválida")
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue

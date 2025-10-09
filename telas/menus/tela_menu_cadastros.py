@@ -1,5 +1,5 @@
 import time
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from telas.cadastros.tela_cadastro_produtos import TelaCadastrarProdutos
 from telas.cadastros.tela_cadastro_doador import TelaCadastrarDoador
 from telas.cadastros.tela_cadastro_Solicitante import TelaCadastrarSolicitante
@@ -29,36 +29,36 @@ class TelaMenuCadastro:
             try:
                 opcao = int(input("Digite uma opção: "))
                 if opcao == 1:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self.telaCadastroProduto = TelaCadastrarProdutos(self.usuario)
                     self.telaCadastroProduto.mostrar()
                     continue
                 elif opcao == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self.telaCadastroDoador = TelaCadastrarDoador(self.usuario)
                     self.telaCadastroDoador.mostrar()
                     continue
                 elif opcao == 3:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self.telaCadastroSolicitante = TelaCadastrarSolicitante(self.usuario)
                     self.telaCadastroSolicitante.mostrar()
                     continue
                 elif opcao == 4:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     self.telaCadastroVoluntario = TelaCadastrarVoluntario(self.usuario)
                     self.telaCadastroVoluntario.mostrar()
                     continue
                 elif opcao == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando para tela de Admin...")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Opção Inválida")
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 

@@ -1,6 +1,6 @@
 import time
-from utils.sistema.sistema import limpar_tela
-from utils.exibir_tabela.exibir import exibir_tabela
+from utils.sistema.sistema import Sistema
+from utils.exibir_tabela.exibir import CriarTabelas
 from crud.crud import Crud
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from usuarios.doadores import Doador
@@ -19,18 +19,18 @@ class TelaCadastrarDoador:
             try:
                 continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
                 if continuar_ou_não not in [1, 2]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif continuar_ou_não == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando..")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             print("\n\nINFORME OS DADOS DO DOADOR:\n\n")
@@ -54,51 +54,51 @@ class TelaCadastrarDoador:
                 ValidacoesUsuario.validar_telefone(telefone)
 
             except ValueError as erro:
-                limpar_tela()
+                Sistema.limpar_tela()
                 print(erro)
                 time.sleep(1.5)
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             doador = Doador(nome=nome, idade=idade, cpf=cpf, telefone=telefone, email=email, cidade=cidade, estado=estado, id_responsavel=self.usuario["id"])
 
-            limpar_tela()
+            Sistema.limpar_tela()
 
             confirmar = True
             while confirmar:
                 print("VISUALIZAÇÃO:\n\n")
                 print("Dados do Doador:\n\n")
-                exibir_tabela(doador.objeto(), titulo="Doador")
+                CriarTabelas.exibir_tabela(doador.objeto(), titulo="Doador")
                 print("\n\n")
 
                 condicao = input("Deseja realmente salvar esse doador? (s/n): ").lower()
 
                 if condicao not in ["s", "n"]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif condicao == "s":
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     consultar = self.crud.listar()
                     validar = ValidacoesUsuario.validar_cadastro_usuario(self.json_doadores, doador.objeto(), consultar)
 
                     if validar:
                         print("Doador já está cadastrado no sistema.")
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         confirmar = False
                         continue
 
                     self.crud.cadastrar(doador.objeto())
                     print("Doador Cadastrado com sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     confirmar = False
                     continue
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     time.sleep(1.5)
                     confirmar = False
                     continue
 
-            limpar_tela()
+            Sistema.limpar_tela()

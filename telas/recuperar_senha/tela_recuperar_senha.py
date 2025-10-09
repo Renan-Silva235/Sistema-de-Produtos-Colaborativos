@@ -1,5 +1,5 @@
 import time
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from crud.crud import Crud
 
@@ -17,37 +17,36 @@ class TelaRecuperarSenha:
             try:
                 opcao = int(input("[1]- Informar os dados | [2]- voltar: "))
                 if opcao not in [1, 2]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif opcao == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando..")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
-            niveis = ["Administrador", "Voluntário", "Solicitante"]
+            niveis = ["Funcionario", "Cliente"]
 
             print(f"""Informe o nível de acesso:
                     1- {niveis[0]}
                     2- {niveis[1]}
-                    3- {niveis[2]}
                 """)
 
             try:
                 informar_nivel = int(input("Escolha a opção correspondente ao nível do funcionário: "))
-                if informar_nivel not in [1,2,3]:
+                if informar_nivel not in [1,2]:
                     print("opção inválida")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             try:
@@ -57,18 +56,17 @@ class TelaRecuperarSenha:
                 informar_email = input("Digite seu e-mail: ").lower()
                 ValidacoesUsuario.validar_email(informar_email)
             except ValueError as erro:
-                limpar_tela()
+                Sistema.limpar_tela()
                 print(erro)
                 time.sleep(1.5)
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             if informar_nivel == 1:
                 pegar_nivel = niveis[0]
             elif informar_nivel == 2:
                 pegar_nivel = niveis[1]
-            else:
-                pegar_nivel = niveis[2]
+
 
             self._gerar_nova_senha(pegar_nivel, informar_cpf, informar_email)
             continue
@@ -79,17 +77,29 @@ class TelaRecuperarSenha:
 
         usuario_encontrado = None
 
-        consultar = self.crud.listar()
+        funcionarios = Crud("jsons/dados_pessoais/usuario.json")
+        clientes = Crud("jsons/dados_pessoais/solicitantes.json")
+
+        if nivel == "Funcionario":
+            for funcionario in funcionarios.listar():
+                if all([funcionario.get("cpf") == cpf, funcionario.get("email") == email]):
+                    usuario_encontrado = funcionario
+                    break
+
+        elif nivel == "Cliente":
+            for cliente in clientes.listar():
+                if all([cliente.get("cpf") == cpf, cliente.get("email") == email]):
+                    usuario_encontrado = cliente
+                    break
 
 
-        for usuario in consultar:
-            if all([usuario.get("nivel") == nivel, usuario.get("cpf") == cpf, usuario.get("email") == email]):
-                usuario_encontrado = usuario
-                break
 
         if not usuario_encontrado:
+            Sistema.limpar_tela()
             print("Usuário não encontrado")
-            return False
+            time.sleep(1.5)
+            Sistema.limpar_tela()
+            return
 
         while self.iniciar:
             try:
@@ -97,16 +107,17 @@ class TelaRecuperarSenha:
                 redigitar_senha = input("Digite novamente a nova senha: ")
                 ValidacoesUsuario.validar_senha(nova_senha, redigitar_senha)
             except ValueError as erro:
-                limpar_tela()
+                Sistema.limpar_tela()
                 print(erro)
                 time.sleep(1.5)
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             self.iniciar = False
             continue
 
         self.iniciar = True
-        self.crud.atualizar("senha", usuario_encontrado["senha"], nova_senha)
-        print("Senha alterada com sucesso!")
-        return
+        if nivel == "Funcionario":
+            funcionarios.atualizar(usuario_encontrado["id"], "senha", nova_senha)
+        elif nivel == "Cliente":
+            clientes.atualizar(usuario_encontrado["id"], "senha", nova_senha)

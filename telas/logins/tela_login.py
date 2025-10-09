@@ -1,17 +1,20 @@
 import time
 from usuarios.login import Login
+from usuarios.usuario import PerfilUsuario
 from validacoes.validacoes_usuario import ValidacoesUsuario
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from telas.admin.tela_administrador import TelaAdministrador
 from telas.solicitantes.tela_solicitantes import TelaSolicitantes
 from telas.voluntario.tela_voluntario import TelaVoluntario
+from telas.voluntario.tela_entregador import TelaEntregador
 
 class TelaLogin:
 
     def __init__(self):
+        self.perfil = PerfilUsuario()
         self.validar = ValidacoesUsuario()
         self.iniciar = True
-        self.niveis = ["Administrador", "Voluntário", "Solicitante"]
+        self.niveis = ["Funcionário", "Cliente"]
 
 
     def mostrar(self):
@@ -22,20 +25,20 @@ class TelaLogin:
             print("LOGIN")
             try:
                 try:
-                    nivel = int(input(f"Informe a opção do seu nível: (1- {self.niveis[0]}, 2- {self.niveis[1]}, 3- {self.niveis[2]}, 0- sair): "))
-                    if nivel not in [1,2,3,0]:
-                        limpar_tela()
+                    nivel = int(input(f"Informe a opção do seu nível: (1- {self.niveis[0]}, 2- {self.niveis[1]},  0- sair): "))
+                    if nivel not in [1,2,0]:
+                        Sistema.limpar_tela()
                         continue
 
                     elif nivel == 0:
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         print("Saindo...")
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         return
 
                 except ValueError:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 email = input("Digite seu email: ").lower()
@@ -45,7 +48,7 @@ class TelaLogin:
                 ValidacoesUsuario.validar_senha(senha)
 
             except ValueError as erro:
-                limpar_tela()
+                Sistema.limpar_tela()
                 print(erro)
                 continue
 
@@ -53,88 +56,57 @@ class TelaLogin:
 
             if nivel == 1:
                 login = Login("jsons/dados_pessoais/usuario.json")
-                autenticar = login.autenticar(self.niveis[0], email=email, senha=senha)
+                autenticar = login.autenticar(email=email, senha=senha)
 
-                if autenticar:
-                    limpar_tela()
+                if autenticar["cargo"] == "Administrador":
+                    Sistema.limpar_tela()
                     print("Login realizado com sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaAdministrador = TelaAdministrador(autenticar)
                     telaAdministrador.mostrar()
                     continue
-                else:
-                    limpar_tela()
-                    print("Login Inválido")
-                    time.sleep(1)
-                    limpar_tela()
-                    continue
-
-            elif nivel == 2:
-                login = Login("jsons/dados_pessoais/usuario.json")
-                autenticar = login.autenticar(self.niveis[1], email=email, senha=senha)
-
-                if autenticar:
-                    limpar_tela()
+                elif autenticar["cargo"] == "Atendente":
+                    Sistema.limpar_tela()
                     print("Login realizado com sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     telaVoluntario = TelaVoluntario(autenticar)
                     telaVoluntario.mostrar()
                     continue
-                else:
-                    limpar_tela()
-                    print("Login Inválido")
-                    time.sleep(1)
-                    limpar_tela()
-                    continue
 
-            elif nivel == 3:
-                login = Login("jsons/dados_pessoais/solicitantes.json")
-                autenticar = login.autenticar(self.niveis[2], email=email, senha=senha)
-
-                if autenticar:
-                    limpar_tela()
+                elif autenticar["cargo"] == "Entregador":
+                    Sistema.limpar_tela()
                     print("Login realizado com sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
-                    telaSolicitantes = TelaSolicitantes(autenticar)
-                    telaSolicitantes.mostrar()
+                    Sistema.limpar_tela()
+                    telaEntregador = TelaEntregador(autenticar)
+                    telaEntregador.mostrar()
                     continue
+
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Login Inválido")
                     time.sleep(1)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
+            elif nivel == 2:
+                login = Login("jsons/dados_pessoais/solicitantes.json")
+                autenticar = login.autenticar(email=email, senha=senha)
 
-            # elif login["nivel"] == niveis[1]:
+                if autenticar:
+                    Sistema.limpar_tela()
+                    print("Login realizado com sucesso")
+                    time.sleep(1.5)
+                    Sistema.limpar_tela()
+                    telaSolicitante = TelaSolicitantes(autenticar)
+                    telaSolicitante.mostrar()
+                    continue
+                else:
+                    Sistema.limpar_tela()
+                    print("Login Inválido")
+                    time.sleep(1)
+                    Sistema.limpar_tela()
+                    continue
 
-            #     limpar_tela()
-            #     print("Login realizado com sucesso")
-            #     time.sleep(1.5)
-            #     limpar_tela()
-            #     self.telaAdministrador.mostrar(login)
-            # if login["nivel"] == niveis[0]:
-            #     limpar_tela()
-            #     print("Login realizado com sucesso")
-            #     time.sleep(1.5)
-            #     limpar_tela()
-            #     self.telaAdministrador.mostrar(login)
-
-            # else:
-            #     limpar_tela()
-            #     print("Login Inválido")
-            #     time.sleep(1)
-            #     limpar_tela()
-            #     continue
-            # if nivel == 1:
-                # self.gerenciador.mudar_tela("TelaAdministrador")
-                # return
-            # elif nivel == 2:
-                # print("")
-                # self.tela_voluntario(TelaVoluntario)
-            # elif nivel == 3:
-            #     print("")
-                # self.gerenciador.mudar_tela(TelaSolicitante)

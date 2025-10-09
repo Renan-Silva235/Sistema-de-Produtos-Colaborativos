@@ -1,6 +1,12 @@
-class Usuario:
+class PerfilUsuario:
+    def __init__(self):
+        self.administrador = "Administrador"
+        self.atendente = "Atendente"
+        self.entregador = "Entregador"
 
-    def __init__(self, nivel, nome, idade, cpf, email, senha):
+class Funcionario:
+
+    def __init__(self, cargo, nome, idade, cpf, email, senha):
         """
         Inicializa um novo objeto do tipo Usuario.
 
@@ -12,7 +18,7 @@ class Usuario:
         :param senha: A senha do usuário
         :return: None
         """
-        self.nivel = nivel
+        self.cargo = cargo
         self.nome = nome
         self.idade = idade
         self.cpf = cpf
@@ -27,7 +33,7 @@ class Usuario:
         :return: Um dicionário com as informações do usuário.
         """
         return {
-            "nivel": self.nivel,
+            "cargo": self.cargo,
             "nome": self.nome,
             "idade": self.idade,
             "cpf": self.cpf,
@@ -38,24 +44,29 @@ class Usuario:
 
 
 
-class Solicitante(Usuario):
-    def __init__(self, nivel, nome, idade, cpf, email, senha, endereco, cidade, estado, id_responsavel):
-        """
-        Inicializa um novo objeto do tipo Solicitante.
+class Cliente:
+    def __init__(self, nome, idade, cpf, email, senha, endereco, cidade, estado, id_responsavel):
 
-        :param nivel: O nível do usuário (Solicitante)
-        :param nome: O nome do usuário
-        :param idade: A idade do usuário
-        :param cpf: O CPF do usuário
-        :param email: O email do usuário
-        :param senha: A senha do usuário
-        :param Endereco: O endereço do usuário
-        :param cidade: A cidade em que o usuário reside
-        :param estado: O estado em que o usuário reside
-        :param id_responsavel: O ID do responsável pelo usuário
+
+        """
+        Inicializa um novo objeto do tipo Cliente.
+
+        :param nome: O nome do cliente
+        :param idade: A idade do cliente
+        :param cpf: O CPF do cliente
+        :param email: O email do cliente
+        :param senha: A senha do cliente
+        :param endereco: O endereço do cliente
+        :param cidade: A cidade em que o cliente reside
+        :param estado: O estado em que o cliente reside
+        :param id_responsavel: O ID do responsável pelo cliente
         :return: None
         """
-        super().__init__(nivel, nome, idade, cpf, email, senha)
+        self.nome = nome
+        self.idade = idade
+        self.cpf = cpf
+        self.email = email
+        self.senha = senha
         self.endereco = endereco
         self.cidade = cidade
         self.estado = estado
@@ -67,16 +78,19 @@ class Solicitante(Usuario):
 
         :return: Um dicionário com as informações do solicitante.
         """
-        dados = super().objeto()
-        dados.update({
+        return {
+            "nome": self.nome,
+            "idade": self.idade,
+            "cpf": self.cpf,
+            "email": self.email,
+            "senha": self.senha,
             "endereco": self.endereco,
             "cidade": self.cidade,
             "estado": self.estado,
             "id_responsavel": self.id_responsavel,
             "status": "ativo"
-        })
+        }
 
-        return dados
 
 
 

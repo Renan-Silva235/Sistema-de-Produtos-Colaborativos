@@ -1,4 +1,4 @@
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from crud.crud import Crud
 from tabulate import tabulate
 from datetime import datetime
@@ -22,7 +22,7 @@ class TelaRelatorio:
             print("3 - Relatório de doações por doador")
             try:
                 verCategoria = int(input("Digite uma das opções acima ou 0 para sair: "))
-                limpar_tela()
+                Sistema.limpar_tela()
                 if verCategoria == 1:
                     self.visualizarProdutosPorCategoria()
                 elif verCategoria == 2:
@@ -30,13 +30,13 @@ class TelaRelatorio:
                 elif verCategoria == 3:
                     self.relatorioDoacoesPorDoador()
                 elif verCategoria == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
             print("\n==========================")
 
@@ -87,14 +87,14 @@ class TelaRelatorio:
                 elif opcao == 3:
                     self.tabelaProdutosPorCategoria("Vestuário")
                 elif opcao == 0:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
 

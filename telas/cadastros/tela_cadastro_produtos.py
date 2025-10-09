@@ -2,11 +2,11 @@ import time
 from produto.categorias import Alimentos, Medicamentos, Vestuario
 from usuarios.doadores import Doacao
 from crud.crud import Crud
-from utils.sistema.sistema import limpar_tela
+from utils.sistema.sistema import Sistema
 from validacoes.validacoes_produtos import ValidacoesProdutos
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from utils.alteracoes.alterar import Alteracoes
-from utils.exibir_tabela.exibir import exibir_tabela
+from utils.exibir_tabela.exibir import CriarTabelas
 
 class TelaCadastrarProdutos:
     def __init__(self, usuario):
@@ -24,18 +24,18 @@ class TelaCadastrarProdutos:
             try:
                 continuar_ou_não = int(input("[1]- Informar os dados | [2]- voltar: "))
                 if continuar_ou_não not in [1, 2]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif continuar_ou_não == 2:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Voltando..")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     return
 
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
             print("\n\nINFORME AS INFORMAÇÕES DO PRODUTO DOADO:\n\n")
@@ -52,10 +52,10 @@ class TelaCadastrarProdutos:
                 opcao_categoria = int(input("Digite a opção corresponde a categoria do produto que você quer cadastrar: "))
                 if opcao_categoria not in [1,2,3]:
                     print("opção inválida")
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
             except ValueError:
-                limpar_tela()
+                Sistema.limpar_tela()
                 continue
 
 
@@ -75,7 +75,7 @@ class TelaCadastrarProdutos:
                 except ValueError as erro:
                     print(erro)
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 produto = Vestuario(nome_produto=tipo_roupa, marca=marca, cor=cor, tamanho=tamanho, quantidade=quantidade)
@@ -90,7 +90,7 @@ class TelaCadastrarProdutos:
                 except ValueError as erro:
                     print(erro)
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 produto = Medicamentos(nome_medicamento=nome_medicamento,
@@ -111,12 +111,12 @@ class TelaCadastrarProdutos:
                 except ValueError as erro:
                     print(erro)
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 produto = Alimentos(nome_alimento=alimento, peso=peso, validade=validade, quantidade=quantidade)
 
-            limpar_tela()
+            Sistema.limpar_tela()
 
             iniciar_loop = True
             while iniciar_loop:
@@ -124,17 +124,17 @@ class TelaCadastrarProdutos:
                     cpf = input("Informe o cpf do Doador ou '0' para voltar: ")
                     if len(cpf) == 1 and cpf == '0':
                         iniciar_loop = False
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         print("Voltando...")
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         return
                     ValidacoesUsuario.validar_cpf(cpf)
                     todos_doadores = Crud(self.json_doador).listar()
                 except ValueError as erro:
                     print(erro)
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 doador_encontrado = None
@@ -146,31 +146,31 @@ class TelaCadastrarProdutos:
                 if doador_encontrado is None:
                     print("Nenhum doador encontrado")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
 
-            limpar_tela()
+            Sistema.limpar_tela()
 
             iniciar_loop = True
             while iniciar_loop:
                 print("VISUALIZAÇÃO:\n\n")
                 print("Dados do Doador:\n\n")
-                exibir_tabela(doador_encontrado, titulo="Doador")
+                CriarTabelas.exibir_tabela(doador_encontrado, titulo="Doador")
                 print("\n")
                 print("---------------------------------------------------------------\n\n")
                 print("Dados do Produto Doado:\n\n")
-                exibir_tabela(produto.objeto(), titulo="Produto")
+                CriarTabelas.exibir_tabela(produto.objeto(), titulo="Produto")
 
                 condicao = input("\n\nDeseja realmente salvar esse produto? (s/n): ").lower()
 
                 if condicao not in ["s", "n"]:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     continue
 
                 elif condicao == "s":
 
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     validar = ValidacoesProdutos.validar_cadastro_produto(self.json_produtos, produto.objeto(), self.crud.listar())
 
                     if validar:
@@ -182,24 +182,24 @@ class TelaCadastrarProdutos:
                         self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
                         self.alterar.alterar_produto_existente(self.json_produtos, validar, produto.objeto()['quantidade'], doador_encontrado["id"])
                         time.sleep(1.5)
-                        limpar_tela()
+                        Sistema.limpar_tela()
                         iniciar_loop = False
                         continue
 
                     doacao = Doacao(doador_encontrado, produto.objeto(), self.usuario)
                     self.alterar.alterar_total_doacoes(cpf, produto.objeto()["quantidade"])
                     self.crud.cadastrar(doacao.objeto())
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     print("Produto Cadastrado com Sucesso")
                     time.sleep(1.5)
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     iniciar_loop = False
                     continue
 
                 else:
-                    limpar_tela()
+                    Sistema.limpar_tela()
                     iniciar_loop = False
                     continue
 
-            limpar_tela()
+            Sistema.limpar_tela()
             continue
