@@ -3,8 +3,22 @@ from crud.crud import Crud
 from utils.exibir_tabela.exibir import CriarTabelas
 from utils.sistema.sistema import Sistema
 from tabulate import tabulate
+
+
 class TelaEntregador:
+    """
+    Classe responsável pela tela do entregador.
+
+    Permite que entregadores visualizem pedidos aprovados e registrem
+    o status da entrega (finalizada ou cancelada), movendo o pedido para o histórico.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela do entregador.
+
+        :param usuario: Dicionário com os dados do entregador logado
+        """
         self.usuario = usuario
         self.iniciar = True
         self.aprovadosJson = "jsons/solicitacoes/aprovados.json"
@@ -12,6 +26,14 @@ class TelaEntregador:
         self.historico = Crud("jsons/solicitacoes/historico.json")
 
     def mostrar(self):
+        """
+        Exibe o menu principal do entregador no terminal.
+
+        Lista todos os pedidos aprovados que estão aguardando entrega e permite
+        registrar o status da entrega (finalizada ou cancelada).
+
+        :return: None
+        """
         while self.iniciar:
 
             print("PEDIDOS APROVADOS PARA ENTREGA\n")
@@ -50,6 +72,14 @@ class TelaEntregador:
                 continue
 
     def _registrar_entrega(self):
+        """
+        Registra o status de uma entrega.
+
+        Solicita o código do pedido, permite escolher entre entrega finalizada
+        ou cancelada, e move o pedido do arquivo de aprovados para o histórico.
+
+        :return: None
+        """
 
         try:
             pegar_id_pedido = int(input("Digite o código do pedido: "))

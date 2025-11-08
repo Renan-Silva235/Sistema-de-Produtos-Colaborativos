@@ -2,13 +2,36 @@ from utils.sistema.sistema import Sistema
 from crud.crud import Crud
 from tabulate import tabulate
 from datetime import datetime
+from validacoes.validacoes_produtos import ValidacoesProdutos
+import time
+
 
 class TelaRelatorio:
+    """
+    Classe responsável pela tela de relatórios do sistema.
+
+    Fornece diversos relatórios sobre produtos, doações, categorias e estatísticas
+    do sistema, incluindo produtos mais pedidos, doações por período e por doador.
+    """
+
     def __init__(self):
+        """
+        Inicializa a tela de relatórios.
+        """
         self.produtosEstoque = Crud("jsons/produtos/produtos.json")
         self.doadoresCrud = Crud("jsons/dados_pessoais/doadores.json")
 
     def mostrar(self):
+        """
+        Exibe o menu principal de relatórios no terminal.
+
+        Apresenta estatísticas gerais e opções para visualizar relatórios detalhados:
+        - Visualizar tabelas por categoria
+        - Relatório de doações por período
+        - Relatório de doações por doador
+
+        :return: None
+        """
         while True:
             print("======= Relatórios =======\n")
             self.produtosMaisPedidos()
@@ -24,10 +47,13 @@ class TelaRelatorio:
                 verCategoria = int(input("Digite uma das opções acima ou 0 para sair: "))
                 Sistema.limpar_tela()
                 if verCategoria == 1:
+                    Sistema.limpar_tela()
                     self.visualizarProdutosPorCategoria()
                 elif verCategoria == 2:
+                    Sistema.limpar_tela()
                     self.relatorioDoacoesPorPeriodo()
                 elif verCategoria == 3:
+                    Sistema.limpar_tela()
                     self.relatorioDoacoesPorDoador()
                 elif verCategoria == 0:
                     Sistema.limpar_tela()
@@ -43,6 +69,14 @@ class TelaRelatorio:
 
 
     def quantidadeProdutosCategoria(self):
+        """
+        Exibe a quantidade de produtos por categoria.
+
+        Conta quantos produtos existem em cada categoria (Medicamentos, Alimentícios, Vestuário)
+        e exibe o total de produtos cadastrados.
+
+        :return: None
+        """
         produtos = self.produtosEstoque.listar()
         categorias = {}
         for produto in produtos:
@@ -58,6 +92,12 @@ class TelaRelatorio:
 
 
     def tabelaProdutosPorCategoria(self, categoria=None):
+        """
+        Exibe uma tabela com todos os produtos de uma categoria específica.
+
+        :param categoria: String com o nome da categoria (Medicamentos, Alimentícios ou Vestuário)
+        :return: None
+        """
         produtos_categoria = [item for item in self.produtosEstoque.listar() if item.get('categoria') == categoria]
         if not produtos_categoria:
             print(f"Nenhum produto encontrado na categoria '{categoria}'.")
@@ -71,6 +111,13 @@ class TelaRelatorio:
         print(tabulate(tabela, headers=colunas, tablefmt="fancy_grid"))
 
     def visualizarProdutosPorCategoria(self):
+        """
+        Permite visualizar produtos filtrados por categoria.
+
+        Solicita a categoria desejada e exibe todos os produtos dessa categoria.
+
+        :return: None
+        """
         while True:
             print("1 - Medicamentos")
             print("2 - Alimentícios")
@@ -99,6 +146,13 @@ class TelaRelatorio:
 
 
     def totalProdutosDoados(self):
+        """
+        Calcula e exibe o total de produtos doados.
+
+        Soma todas as quantidades pedidas de produtos aprovados para doação.
+
+        :return: None
+        """
 
         contador = 0
 
@@ -176,13 +230,32 @@ class TelaRelatorio:
 
 
 
-    def _parse_data_ddmmyyyy(self, texto):
+    def formato_data(self, texto):
+        """
+        Converte uma string de data no formato dd/mm/aaaa para objeto datetime.
+
+        :param texto: String com a data no formato dd/mm/aaaa
+        :return: Objeto datetime se a conversão for bem-sucedida, None caso contrário
+        """
         try:
             return datetime.strptime(texto.strip(), "%d/%m/%Y")
         except Exception:
             return None
 
+    def _parse_data_ddmmyyyy(self, texto):
+        """
+        Compatibilidade: retorna um datetime a partir de string dd/mm/aaaa
+        ou None em caso de formato inválido.
+        """
+        return self.formato_data(texto)
+
     def _nome_produto(self, produto):
+        """
+        Retorna o nome do produto baseado na sua categoria.
+
+        :param produto: Dicionário com os dados do produto
+        :return: String com o nome do produto ou "Produto sem nome" se não encontrado
+        """
         categoria = produto.get("categoria", "")
         if categoria == "Medicamentos":
             valor = produto.get("nome_medicamento")
@@ -194,58 +267,88 @@ class TelaRelatorio:
         return "Produto sem nome"
 
     def relatorioDoacoesPorPeriodo(self):
-        print("=== RELATÓRIO DE DOAÇÕES POR PERÍODO ===")
-        print("Informe as datas no formato dd/mm/aaaa")
-        inicio_txt = input("Data inicial: ")
-        fim_txt = input("Data final:   ")
+        """
+        Gera relatório de doações por período.
 
-        dt_inicio = self._parse_data_ddmmyyyy(inicio_txt)
-        dt_fim = self._parse_data_ddmmyyyy(fim_txt)
+        Solicita uma data inicial e final, e exibe todas as doações registradas
+        nesse período, incluindo o total de itens doados.
 
-        if not dt_inicio or not dt_fim or dt_fim < dt_inicio:
-            print("Período inválido. Use dd/mm/aaaa e verifique se a data final não é menor que a inicial.")
-            return
-
-        # Ajusta para início e fim do dia
-        dt_inicio = datetime(dt_inicio.year, dt_inicio.month, dt_inicio.day, 0, 0, 0)
-        dt_fim = datetime(dt_fim.year, dt_fim.month, dt_fim.day, 23, 59, 59)
-
-        itens = self.produtosEstoque.listar()
-        if not itens:
-            print("Não há doações registradas.")
-            return
-
-        linhas = []
-        total_quantidade = 0
-
-        for item in itens:
-            data_txt = item.get("data_registrada")
-            if not data_txt:
-                continue
+        :return: None
+        """
+        while True:
+            print("=== RELATÓRIO DE DOAÇÕES POR PERÍODO ===")
+            print("Informe as datas no formato dd/mm/aaaa")
             try:
-                dt_item = datetime.strptime(data_txt, "%d/%m/%Y %H:%M:%S")
-            except Exception:
+                inicio_txt = input("Data inicial: ")
+                ValidacoesProdutos.validar_formato_data(inicio_txt)
+                fim_txt = input("Data final:   ")
+                ValidacoesProdutos.validar_formato_data(fim_txt)
+            except ValueError as error:
+                Sistema.limpar_tela()
+                print(error)
+                time.sleep(1.5)
+                Sistema.limpar_tela()
                 continue
 
-            if dt_inicio <= dt_item <= dt_fim:
-                nome = self._nome_produto(item)
-                linhas.append([
-                    item.get("id"),
-                    item.get("categoria", ""),
-                    nome,
-                    item.get("quantidade", 0),
-                    data_txt
-                ])
-                total_quantidade += item.get("quantidade", 0)
 
-        if not linhas:
-            print("Nenhuma doação encontrada no período informado.")
+            dt_inicio = self._parse_data_ddmmyyyy(inicio_txt)
+            dt_fim = self._parse_data_ddmmyyyy(fim_txt)
+
+            if not dt_inicio or not dt_fim or dt_fim < dt_inicio:
+                print("Período inválido. Use dd/mm/aaaa e verifique se a data final não é menor que a inicial.")
+                return
+
+            # Ajusta para início e fim do dia
+            dt_inicio = datetime(dt_inicio.year, dt_inicio.month, dt_inicio.day, 0, 0, 0)
+            dt_fim = datetime(dt_fim.year, dt_fim.month, dt_fim.day, 23, 59, 59)
+
+            itens = self.produtosEstoque.listar()
+            if not itens:
+                print("Não há doações registradas.")
+                return
+
+            linhas = []
+            total_quantidade = 0
+
+            for item in itens:
+                data_txt = item.get("data_registrada")
+                if not data_txt:
+                    continue
+                try:
+                    dt_item = datetime.strptime(data_txt, "%d/%m/%Y %H:%M:%S")
+                except Exception:
+                    continue
+
+                if dt_inicio <= dt_item <= dt_fim:
+                    nome = self._nome_produto(item)
+                    linhas.append([
+                        item.get("id"),
+                        item.get("categoria", ""),
+                        nome,
+                        item.get("quantidade", 0),
+                        data_txt
+                    ])
+                    total_quantidade += item.get("quantidade", 0)
+
+            if not linhas:
+                print("Nenhuma doação encontrada no período informado.")
+                return
+
+            print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Quantidade", "Data Registrada"], tablefmt="fancy_grid"))
+            print(tabulate([["Total de itens doados no período", total_quantidade]], tablefmt="fancy_grid"))
+            input("tecle enter para voltar")
+            Sistema.limpar_tela()
             return
-
-        print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Quantidade", "Data Registrada"], tablefmt="fancy_grid"))
-        print(tabulate([["Total de itens doados no período", total_quantidade]], tablefmt="fancy_grid"))
 
     def relatorioDoacoesPorDoador(self):
+        """
+        Gera relatório de doações por doador.
+
+        Solicita o nome ou CPF do doador e exibe todas as doações realizadas por ele,
+        incluindo o total de itens doados.
+
+        :return: None
+        """
         print("=== RELATÓRIO DE DOAÇÕES POR DOADOR ===")
         chave = input("Informe o nome ou CPF do doador: ").strip()
 
@@ -294,4 +397,7 @@ class TelaRelatorio:
         print(titulo)
         print(tabulate(linhas, headers=["ID", "Categoria", "Produto", "Quantidade", "Data Registrada"], tablefmt="fancy_grid"))
         print(tabulate([["Total de itens doados (todas as entradas)", total_quantidade]], tablefmt="fancy_grid"))
+        input("Tecle enter para voltar")
+        Sistema.limpar_tela()
+        return
 

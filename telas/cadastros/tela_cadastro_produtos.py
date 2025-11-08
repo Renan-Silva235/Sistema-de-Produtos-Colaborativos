@@ -8,8 +8,21 @@ from validacoes.validacoes_usuario import ValidacoesUsuario
 from utils.alteracoes.alterar import Alteracoes
 from utils.exibir_tabela.exibir import CriarTabelas
 
+
 class TelaCadastrarProdutos:
+    """
+    Classe responsável pela tela de cadastro de produtos.
+
+    Permite cadastrar novos produtos no sistema (Alimentícios, Medicamentos ou Vestuário),
+    associando-os a um doador. Verifica se o produto já está cadastrado antes de salvar.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela de cadastro de produtos.
+
+        :param usuario: Dicionário com os dados do usuário responsável pelo cadastro
+        """
         self.usuario = usuario
         self.alterar = Alteracoes()
         self.json_produtos = "jsons/produtos/produtos.json"
@@ -18,7 +31,15 @@ class TelaCadastrarProdutos:
         self.iniciar = True
 
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de produtos no terminal."""
+        """
+        Exibe a tela de cadastro de produtos no terminal.
+
+        Solicita a categoria do produto, os dados específicos da categoria,
+        valida as informações, associa a um doador, exibe uma pré-visualização
+        e permite confirmar o cadastro. Se o produto já existir, atualiza a quantidade.
+
+        :return: None
+        """
 
         while self.iniciar:
             try:

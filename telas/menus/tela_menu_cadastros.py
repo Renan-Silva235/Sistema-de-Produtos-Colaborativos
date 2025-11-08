@@ -5,15 +5,38 @@ from telas.cadastros.tela_cadastro_doador import TelaCadastrarDoador
 from telas.cadastros.tela_cadastro_Solicitante import TelaCadastrarSolicitante
 from telas.cadastros.tela_cadastro_voluntario import TelaCadastrarVoluntario
 
+
 class TelaMenuCadastro:
+    """
+    Classe responsável pelo menu de cadastros do sistema.
+
+    Fornece acesso às telas de cadastro de produtos, doadores, solicitantes e voluntários.
+    """
 
     def __init__(self, usuario):
+        """
+        Inicializa o menu de cadastros.
+
+        :param usuario: Dicionário com os dados do usuário administrador
+        """
         self.usuario = usuario
         self.iniciar = True
 
     def mostrar(self):
-        """Esse método exibe um menu com diferentes tipos de cadastros que o admin
-         pode fazer no terminal."""
+        """
+        Exibe o menu de cadastros no terminal.
+
+        Apresenta um menu com as opções de cadastro disponíveis:
+        - Cadastrar Produto
+        - Cadastrar Doador
+        - Cadastrar Solicitante
+        - Cadastrar Voluntário
+        - Voltar
+
+        Direciona para a tela de cadastro apropriada conforme a escolha do usuário.
+
+        :return: None
+        """
 
 
         while self.iniciar:

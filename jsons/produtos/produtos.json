@@ -1,0 +1,102 @@
+[
+    {
+        "id": 1,
+        "categoria": "Vestuário",
+        "nome_produto": "Meia",
+        "marca": "Adidas",
+        "cor": "Preto",
+        "tamanho": "M",
+        "quantidade": 7,
+        "id_responsavel": [
+            1
+        ],
+        "status": "ativo",
+        "data_registrada": "09/10/2025 17:29:51",
+        "id_doador": [
+            1
+        ]
+    },
+    {
+        "id": 2,
+        "categoria": "Medicamentos",
+        "nome_medicamento": "Dipirona",
+        "dosagem": "100 Mg",
+        "validade": "15/05/2026",
+        "quantidade": 10,
+        "id_responsavel": [
+            1
+        ],
+        "status": "ativo",
+        "data_registrada": "09/10/2025 17:30:21",
+        "id_doador": [
+            1
+        ]
+    },
+    {
+        "id": 3,
+        "categoria": "Alimentícios",
+        "nome_alimento": "Arroz",
+        "peso": "5 Kg",
+        "validade": "15/03/2027",
+        "quantidade": 5,
+        "id_responsavel": [
+            1
+        ],
+        "status": "ativo",
+        "data_registrada": "09/10/2025 17:30:48",
+        "id_doador": [
+            1
+        ]
+    },
+    {
+        "id": 4,
+        "categoria": "Vestuário",
+        "nome_produto": "Blusa",
+        "marca": "Nike",
+        "cor": "Branca",
+        "tamanho": "M",
+        "quantidade": 8,
+        "id_responsavel": [
+            1
+        ],
+        "status": "ativo",
+        "data_registrada": "13/10/2025 21:06:59",
+        "id_doador": [
+            1
+        ]
+    },
+    {
+        "id": 5,
+        "categoria": "Vestuário",
+        "nome_produto": "Meia",
+        "marca": "Nike",
+        "cor": "Preto",
+        "tamanho": "M",
+        "quantidade": 18,
+        "id_responsavel": [
+            1
+        ],
+        "status": "ativo",
+        "data_registrada": "07/11/2025 11:08:59",
+        "id_doador": [
+            1
+        ]
+    },
+    {
+        "id": 6,
+        "categoria": "Vestuário",
+        "nome_produto": "Calça",
+        "marca": "Nike",
+        "cor": "Amerelo",
+        "tamanho": "M",
+        "quantidade": 12,
+        "id_doador": [
+            1
+        ],
+        "id_responsavel": [
+            1
+        ],
+        "status": "inativo",
+        "data_registrada": "07/11/2025 21:40:04"
+    }
+]

@@ -5,15 +5,36 @@ from crud.crud import Crud
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from usuarios.doadores import Doador
 
+
 class TelaCadastrarDoador:
+    """
+    Classe responsável pela tela de cadastro de doadores.
+
+    Permite cadastrar novos doadores no sistema, validando os dados informados
+    e verificando se o doador já está cadastrado antes de salvar.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela de cadastro de doador.
+
+        :param usuario: Dicionário com os dados do usuário responsável pelo cadastro
+        """
         self.json_doadores = "jsons/dados_pessoais/doadores.json"
         self.crud = Crud(self.json_doadores)
         self.iniciar = True
         self.usuario = usuario
 
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de produtos no terminal."""
+        """
+        Exibe a tela de cadastro de doador no terminal.
+
+        Solicita os dados do doador (nome, idade, CPF, cidade, estado, email, telefone),
+        valida as informações, exibe uma pré-visualização e permite confirmar o cadastro.
+        Verifica se o doador já está cadastrado antes de salvar.
+
+        :return: None
+        """
 
         while self.iniciar:
             try:

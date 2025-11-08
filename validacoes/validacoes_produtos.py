@@ -3,22 +3,46 @@ from datetime import datetime
 
 
 class ValidacoesProdutos:
+    """
+    Classe responsável por validar dados de produtos.
+
+    Contém métodos estáticos para validar cadastro de produtos, formato de data,
+    peso, tamanho de vestuário e outras validações relacionadas a produtos.
+    """
 
     @staticmethod
-    def validar_cadastro_produto(caminho_arquivo, objeto, consulta):
-        """Valida se o produto já está cadastrado na categoria correspondente."""
+    def validar_cadastro_produto(_caminho_arquivo, objeto, consulta):
+        """
+        Verifica se o produto já está cadastrado no sistema baseado na categoria e campos específicos.
+
+        Para cada categoria (Alimentícios, Medicamentos, Vestuário), compara os campos relevantes
+        do objeto fornecido com os produtos já cadastrados na lista de consulta.
+
+        :param _caminho_arquivo: Caminho do arquivo JSON (não utilizado, mantido para compatibilidade)
+        :param objeto: Dicionário com os dados do produto a ser verificado. Deve conter 'categoria'
+                      e os campos específicos da categoria:
+                      - Alimentícios: nome_alimento, peso, validade
+                      - Medicamentos: nome_medicamento, dosagem, validade
+                      - Vestuário: nome_produto, marca, cor, tamanho
+        :param consulta: Lista de dicionários com os produtos já cadastrados no sistema
+        :return: ID do produto se já estiver cadastrado, False caso contrário
+        """
 
         regras = {
-            "jsons/categorias/alimentos.json": ["nome_alimento", "peso", "validade"],
-            "jsons/categorias/medicamentos.json": ["nome_comercial", "nome_generico", "categoria", "dosagem", "validade"],
-            "jsons/categorias/vestuario.json": ["nome_produto", "cor", "marca", "tamanho"],
+            "Alimentícios": ["nome_alimento", "peso", "validade"],
+            "Medicamentos": ["nome_medicamento", "dosagem", "validade"],
+            "Vestuário": ["nome_produto", "marca", "cor", "tamanho"],
         }
 
-        campos = regras.get(caminho_arquivo)
+        categoria = objeto.get("categoria")
+        campos = regras.get(categoria)
         if not campos:
             return False
 
         for consultado in consulta:
+            if consultado.get("categoria") != categoria:
+                continue
+
             if all(consultado.get(campo) == objeto.get(campo) for campo in campos):
                 return consultado["id"]
 
@@ -27,7 +51,13 @@ class ValidacoesProdutos:
 
     @staticmethod
     def validar_formato_data(data):
-        """Valida se a string de data está no formato esperado (dd/mm/yyyy)."""
+        """
+        Valida se a string de data está no formato correto (dd/mm/aaaa).
+
+        :param data: String com a data a ser validada no formato dd/mm/aaaa
+        :return: True se a data estiver no formato correto
+        :raises ValueError: Se a data não estiver no formato dd/mm/aaaa
+        """
         try:
             datetime.strptime(data, "%d/%m/%Y")  # tenta converter
             return True
@@ -69,7 +99,15 @@ class ValidacoesProdutos:
 
     @staticmethod
     def validar_tamanho_vestuario(tamanho):
-        """Faz a validação do tamanho de roupa ou calçado"""
+        """
+        Valida se o tamanho de vestuário está no formato correto.
+
+        Aceita tamanhos de roupas (P, M, G, GG) ou números para calçados.
+
+        :param tamanho: String com o tamanho a ser validado
+        :return: True se o tamanho for válido
+        :raises ValueError: Se o tamanho estiver vazio ou não corresponder aos formatos aceitos
+        """
 
         if tamanho == "":
             raise ValueError("Campo Tamanho está vazio")

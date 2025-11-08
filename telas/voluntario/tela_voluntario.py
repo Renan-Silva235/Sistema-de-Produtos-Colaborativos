@@ -6,8 +6,22 @@ from telas.cadastros.tela_cadastro_produtos import TelaCadastrarProdutos
 from telas.cadastros.tela_cadastro_Solicitante import TelaCadastrarSolicitante
 from telas.controleEstoque.telaControleEstoque import TelaControleEstoque
 from utils.exibir_tabela.exibir import CriarTabelas
+
+
 class TelaVoluntario:
+    """
+    Classe responsável pela tela do voluntário (atendente).
+
+    Permite que atendentes cadastrem produtos, doadores e solicitantes,
+    visualizem pedidos aprovados e acessem o controle de estoque.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela do voluntário.
+
+        :param usuario: Dicionário com os dados do voluntário logado
+        """
         self.usuario = usuario
         self.iniciar = True
         self.crud = Crud("jsons/dados_pessoais/usuario.json")
@@ -15,9 +29,18 @@ class TelaVoluntario:
         self.produtos = Crud("jsons/produtos/produtos.json")
 
     def mostrar(self):
-
         """
-        Mostra a tela de menu do voluntário no terminal.
+        Exibe o menu principal do voluntário no terminal.
+
+        Apresenta as opções disponíveis:
+        - Cadastrar produto
+        - Cadastrar doador
+        - Cadastrar solicitante
+        - Ver pedidos aprovados
+        - Controle de estoque
+        - Sair
+
+        :return: None
         """
         while self.iniciar:
             print(f"Voluntário: {self.usuario['nome']}\n\n")
@@ -26,7 +49,7 @@ class TelaVoluntario:
                 1 - cadastrar produto
                 2 - cadastrar doador
                 3 - cadastrar solicitante
-                4 - ver pedidos
+                4 - ver pedidos aprovados
                 5 - controle de estoque
                 0 - sair
             """)
@@ -75,7 +98,12 @@ class TelaVoluntario:
 
     def _ver_pedidos(self):
         """
-        Mostra todos os pedidos aprovados no terminal.
+        Exibe todos os pedidos aprovados no terminal.
+
+        Lista todos os produtos de pedidos que foram aprovados pela administração,
+        permitindo que o voluntário visualize os pedidos que precisam ser preparados.
+
+        :return: None
         """
         for pedido in self.pedidos_aprovados.listar():
             for produto in pedido["pedido"]:

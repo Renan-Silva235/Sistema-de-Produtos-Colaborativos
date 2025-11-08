@@ -1,6 +1,13 @@
 from tabulate import tabulate
 
+
 class CriarTabelas:
+    """
+    Classe responsável por criar e exibir tabelas formatadas no terminal.
+
+    Utiliza a biblioteca tabulate para exibir dados em formato de tabela,
+    suportando dicionários, listas de dicionários e listas simples.
+    """
 
     @staticmethod
     def exibir_tabela(dados, titulo=""):

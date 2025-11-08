@@ -8,17 +8,33 @@ from telas.solicitantes.tela_solicitantes import TelaSolicitantes
 from telas.voluntario.tela_voluntario import TelaVoluntario
 from telas.voluntario.tela_entregador import TelaEntregador
 
+
 class TelaLogin:
+    """
+    Classe responsável pela tela de login do sistema.
+
+    Permite autenticação de funcionários (Administrador, Atendente, Entregador)
+    e clientes (solicitantes), direcionando para a tela apropriada após o login.
+    """
 
     def __init__(self):
+        """
+        Inicializa a tela de login.
+        """
         self.perfil = PerfilUsuario()
         self.validar = ValidacoesUsuario()
         self.iniciar = True
         self.niveis = ["Funcionário", "Cliente"]
 
-
     def mostrar(self):
-        """Esse método exibe a tela de login no terminal."""
+        """
+        Exibe a tela de login no terminal.
+
+        Solicita o nível do usuário (Funcionário ou Cliente), email e senha,
+        valida as credenciais e direciona para a tela apropriada conforme o cargo.
+
+        :return: None
+        """
 
 
         while self.iniciar:

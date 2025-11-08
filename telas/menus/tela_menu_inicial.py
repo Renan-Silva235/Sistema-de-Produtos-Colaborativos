@@ -2,15 +2,33 @@ import time
 from utils.sistema.sistema import Sistema
 from telas.logins.tela_login import TelaLogin
 from telas.recuperar_senha.tela_recuperar_senha import TelaRecuperarSenha
+
+
 class TelaInicial:
+    """
+    Classe responsável pela tela inicial do sistema.
+
+    Primeira tela exibida ao iniciar o programa, oferecendo opções de login,
+    recuperação de senha ou saída do sistema.
+    """
 
     def __init__(self):
+        """
+        Inicializa a tela inicial.
+        """
         self.iniciar = True
         self.telaLogin = TelaLogin()
         self.telaRecuperarSenha = TelaRecuperarSenha()
 
     def mostrar(self):
-        """Esse método exibe tela Inicial no terminal."""
+        """
+        Exibe a tela inicial no terminal.
+
+        Apresenta um menu com as opções: Login, Esqueceu Senha e Sair.
+        Direciona para a tela apropriada conforme a escolha do usuário.
+
+        :return: None
+        """
 
         while self.iniciar:
             print("TELA INICIAL:")

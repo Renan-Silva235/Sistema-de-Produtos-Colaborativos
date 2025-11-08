@@ -3,13 +3,31 @@ from utils.sistema.sistema import Sistema
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from crud.crud import Crud
 
+
 class TelaRecuperarSenha:
+    """
+    Classe responsável pela tela de recuperação de senha.
+
+    Permite que usuários (funcionários ou clientes) recuperem suas senhas
+    informando CPF e email, e definam uma nova senha.
+    """
+
     def __init__(self):
+        """
+        Inicializa a tela de recuperação de senha.
+        """
         self.iniciar = True
         self.crud = Crud("jsons/dados_pessoais/usuario.json")
 
     def mostrar(self):
-        """Esse método exibe a tela de recuperação de senha no terminal."""
+        """
+        Exibe a tela de recuperação de senha no terminal.
+
+        Solicita o nível do usuário (Funcionário ou Cliente), CPF e email,
+        verifica se o usuário existe e permite definir uma nova senha.
+
+        :return: None
+        """
 
         print("Informe os dados abaixo para recuperar a sua senha: \n\n")
 
@@ -72,8 +90,18 @@ class TelaRecuperarSenha:
             continue
 
 
-    def _gerar_nova_senha(self,nivel, cpf, email):
-        """Esse método abre um campo para o usuário digitar a nova senha."""
+    def _gerar_nova_senha(self, nivel, cpf, email):
+        """
+        Gera uma nova senha para o usuário após validação.
+
+        Verifica se o usuário existe com base no nível, CPF e email informados.
+        Se encontrado, solicita uma nova senha e atualiza no sistema.
+
+        :param nivel: String com o nível do usuário ("Funcionario" ou "Cliente")
+        :param cpf: String com o CPF do usuário
+        :param email: String com o email do usuário
+        :return: None
+        """
 
         usuario_encontrado = None
 

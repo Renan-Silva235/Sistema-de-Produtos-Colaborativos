@@ -5,16 +5,37 @@ from utils.sistema.sistema import Sistema
 from validacoes.validacoes_usuario import ValidacoesUsuario
 from utils.exibir_tabela.exibir import CriarTabelas
 
+
 class TelaCadastrarSolicitante:
+    """
+    Classe responsável pela tela de cadastro de solicitantes (clientes).
+
+    Permite cadastrar novos solicitantes no sistema, validando os dados informados
+    e verificando se o solicitante já está cadastrado antes de salvar.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela de cadastro de solicitante.
+
+        :param usuario: Dicionário com os dados do usuário responsável pelo cadastro
+        """
         self.usuario = usuario
         self.json_solicitantes = "jsons/dados_pessoais/solicitantes.json"
         self.crud = Crud(self.json_solicitantes)
         self.iniciar = True
 
-
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de um novo Cliente no terminal."""
+        """
+        Exibe a tela de cadastro de solicitante no terminal.
+
+        Solicita os dados do solicitante (nome, idade, CPF, endereço, cidade, estado,
+        telefone, email, senha), valida as informações, exibe uma pré-visualização
+        e permite confirmar o cadastro. Verifica se o solicitante já está cadastrado
+        antes de salvar.
+
+        :return: None
+        """
 
         while self.iniciar:
             try:
@@ -111,7 +132,7 @@ class TelaCadastrarSolicitante:
                     Sistema.limpar_tela()
                     time.sleep(1.5)
                     self.iniciar = False
-                    continue
+                    continuec
 
             self.iniciar = True
             Sistema.limpar_tela()

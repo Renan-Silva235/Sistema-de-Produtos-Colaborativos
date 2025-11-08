@@ -5,8 +5,21 @@ from crud.crud import Crud
 from utils.sistema.sistema import Sistema
 from validacoes.validacoes_usuario import ValidacoesUsuario
 
+
 class TelaCadastrarVoluntario:
+    """
+    Classe responsável pela tela de cadastro de voluntários (funcionários).
+
+    Permite cadastrar novos funcionários no sistema (Administrador, Atendente ou Entregador),
+    validando os dados informados e verificando se o funcionário já está cadastrado antes de salvar.
+    """
+
     def __init__(self, usuario):
+        """
+        Inicializa a tela de cadastro de voluntário.
+
+        :param usuario: Dicionário com os dados do usuário responsável pelo cadastro
+        """
         self.usuario = usuario
         self.perfil = PerfilUsuario()
         self.json_voluntario = "jsons/dados_pessoais/usuario.json"
@@ -14,7 +27,15 @@ class TelaCadastrarVoluntario:
         self.iniciar = True
 
     def mostrar(self):
-        """Esse método exibe a tela de cadastro de um novo cliente(Solicitante) no terminal."""
+        """
+        Exibe a tela de cadastro de voluntário no terminal.
+
+        Solicita o cargo do funcionário (Administrador, Atendente ou Entregador) e seus dados
+        (nome, idade, CPF, email, senha), valida as informações, exibe uma pré-visualização
+        e permite confirmar o cadastro. Verifica se o funcionário já está cadastrado antes de salvar.
+
+        :return: None
+        """
 
         while self.iniciar:
             try:

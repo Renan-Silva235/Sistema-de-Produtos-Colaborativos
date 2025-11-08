@@ -1,0 +1,2 @@
+Classe RodarPrograma:
+Responsável por servir como ponto de entrada da aplicação. Contém o método estático run() que instancia a TelaInicial e invoca seu método mostrar() para iniciar o loop principal da interface.

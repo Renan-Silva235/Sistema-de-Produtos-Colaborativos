@@ -1,6 +1,13 @@
 from crud.crud import Crud
 from utils.sistema.sistema import Sistema
+
+
 class Doador:
+    """
+    Classe que representa um doador do sistema.
+
+    Armazena informações sobre doadores que realizam doações de produtos.
+    """
     def __init__(self, nome, idade, cpf, telefone, email, cidade, estado, id_responsavel):
         """
         Inicializa um novo objeto do tipo Doador.
@@ -42,21 +49,24 @@ class Doador:
             "estado": self.estado,
             "id_responsavel": self.id_responsavel,
             "total_doacoes": self.total_doacoes,
-            "status":"ativo"
 
         }
 
 
 class Doacao:
-    def __init__(self, id_doador: Doador, produto: dict, id_responsavel: Crud):
+    """
+    Classe que representa uma doação realizada no sistema.
 
+    Armazena informações sobre a doação, incluindo o doador, produto e responsável.
+    """
+
+    def __init__(self, id_doador: Doador, produto: dict, id_responsavel: Crud):
         """
         Inicializa um novo objeto do tipo Doacao.
 
-        :param id_doador: O id do doador que realizou a doacao
-        :param produto: Um dicionario contendo as informacoes do produto doado
-        :param id_responsavel: O id do responsavel pela doacao
-        :return: None
+        :param id_doador: Dicionário com os dados do doador (utiliza o campo 'id')
+        :param produto: Dicionário contendo as informações do produto doado
+        :param id_responsavel: Dicionário com os dados do responsável (utiliza o campo 'id')
         """
         self.id_doador = id_doador["id"]
         self.produto = produto
@@ -77,6 +87,3 @@ class Doacao:
         })
 
         return dados
-
-
-

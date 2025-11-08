@@ -4,10 +4,20 @@ from utils.exibir_tabela.exibir import CriarTabelas
 from utils.sistema.sistema import Sistema
 from crud.crud import Crud
 
+
 class TelaPedidos:
+    """
+    Classe responsável pela tela de gerenciamento de pedidos.
+
+    Permite ao administrador visualizar pedidos solicitados, aprovar ou reprovar pedidos,
+    atualizando o estoque quando necessário.
+    """
+
     def __init__(self, usuario):
         """
         Inicializa a tela de pedidos.
+
+        :param usuario: Dicionário com os dados do usuário administrador
         """
         self.usuario = usuario
         self.aprovados = Crud("jsons/solicitacoes/aprovados.json")
@@ -85,7 +95,13 @@ class TelaPedidos:
 
     def _aprovar_pedido(self, id):
         """
-        Aprova um pedido de acordo com o id.
+        Aprova um pedido e atualiza o estoque.
+
+        Remove a quantidade pedida do estoque do produto, move o pedido
+        para a lista de aprovados e remove da lista de pedidos pendentes.
+
+        :param id: Inteiro com o ID do produto do pedido a ser aprovado
+        :return: None
         """
         pedidos = self.pedidos.listar()
 
@@ -115,7 +131,13 @@ class TelaPedidos:
 
     def _reprovar_pedido(self, id):
         """
-        Reprova um pedido de acordo com o id.
+        Reprova um pedido.
+
+        Move o pedido para a lista de reprovados e remove da lista de pedidos pendentes.
+        Não altera o estoque do produto.
+
+        :param id: Inteiro com o ID do produto do pedido a ser reprovado
+        :return: None
         """
         pedidos = self.pedidos.listar()
         for pedido in pedidos:

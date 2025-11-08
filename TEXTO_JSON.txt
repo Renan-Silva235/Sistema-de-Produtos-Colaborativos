@@ -1,0 +1,50 @@
+JSON como Tecnologia de Persistência de Dados
+
+Introdução
+
+JSON (JavaScript Object Notation) é um formato de dados leve e legível por humanos, amplamente utilizado para armazenamento e intercâmbio de informações. JSON foi projetado para ser simples, autodescritivo e independente de linguagem de programação, tornando-se uma solução eficiente para persistência de dados em aplicações.
+
+Uso de JSON no Sistema
+
+No sistema de gerenciamento de doações, JSON é utilizado como formato único para armazenamento de todos os dados do sistema. A arquitetura adota uma abordagem baseada em arquivos JSON separados por contexto funcional, organizando os dados de forma lógica e facilitando a manutenção.
+
+Os dados são organizados em arquivos distintos: um arquivo para doadores, outro para solicitantes, um para funcionários, um arquivo centralizado para todos os produtos (independentemente da categoria), e arquivos separados para gerenciar o ciclo de vida das solicitações (pedidos pendentes, aprovados, reprovados e histórico de entregas).
+
+Cada arquivo JSON segue a estrutura de array de objetos, onde cada objeto representa uma entidade do sistema. Esta abordagem, conforme discutido por Lutz (2013), facilita a serialização e desserialização de dados, permitindo operações eficientes de leitura e escrita.
+
+Operações com JSON
+
+O sistema implementa operações CRUD (Create, Read, Update, Delete) sobre os arquivos JSON. A leitura utiliza a biblioteca padrão do Python para converter strings JSON em estruturas de dados nativas, permitindo manipulação direta dos dados. Conforme Summerfield (2010), a biblioteca JSON do Python fornece métodos eficientes para conversão entre formatos JSON e estruturas de dados da linguagem.
+
+A operação de criação utiliza uma abordagem híbrida, combinando Python e C através de uma biblioteca compilada. Esta integração, conforme Beazley & Jones (2020), permite otimizar operações críticas de escrita, garantindo desempenho adequado mesmo com aumento no volume de dados. O processo de criação lê o arquivo existente, gera automaticamente um identificador único sequencial, adiciona o novo objeto ao array e salva o arquivo atualizado.
+
+As operações de atualização carregam todo o conteúdo do arquivo em memória, localizam o registro através de seu identificador, realizam a modificação necessária e sobrescrevem o arquivo completo. Esta estratégia, conforme Ramalho (2015), é adequada para sistemas de médio porte onde o volume de dados permanece gerenciável.
+
+A consulta implementa busca textual genérica que percorre todos os objetos, comparando o termo de busca com todos os valores, independentemente do campo. Esta abordagem oferece flexibilidade ao usuário, permitindo encontrar registros através de qualquer informação disponível.
+
+Estrutura de Dados
+
+Os produtos são armazenados em um único arquivo utilizando estrutura polimórfica baseada no campo categoria. Cada categoria (Alimentícios, Medicamentos, Vestuário) possui campos específicos, mas todos compartilham campos comuns como identificador, quantidade, status e data de registro. Esta abordagem, conforme Fowler (2019), segue o padrão de Single Table Inheritance, onde diferentes tipos são armazenados na mesma estrutura, diferenciados por campos discriminadores.
+
+Os usuários são separados em arquivos distintos conforme seu papel no sistema, facilitando a manutenção de permissões e regras específicas. Esta separação, seguindo o princípio de responsabilidade única discutido por Martin (2017), melhora a organização e segurança do sistema.
+
+Vantagens e Considerações
+
+JSON oferece simplicidade, legibilidade e portabilidade, facilitando depuração e manutenção. A ausência de necessidade de servidor de banco de dados reduz a complexidade de configuração. Conforme Lutz (2013), sistemas baseados em arquivos JSON são mais simples de instalar e manter.
+
+No entanto, sistemas baseados em JSON têm limitações de escalabilidade para grandes volumes de dados e não oferecem suporte nativo a transações ou controle de concorrência. Para o escopo atual do sistema, JSON representa uma escolha técnica adequada que equilibra simplicidade, manutenibilidade e eficiência.
+
+Referências Bibliográficas
+
+BEAZLEY, David; JONES, Brian K. Python Cookbook: Recipes for Mastering Python 3. 3. ed. Sebastopol: O'Reilly Media, 2020.
+
+FOWLER, Martin. Patterns of Enterprise Application Architecture. Boston: Addison-Wesley Professional, 2019.
+
+LUTZ, Mark. Learning Python: Powerful Object-Oriented Programming. 5. ed. Sebastopol: O'Reilly Media, 2013.
+
+MARTIN, Robert C. Clean Architecture: A Craftsman's Guide to Software Structure and Design. Boston: Prentice Hall, 2017.
+
+RAMALHO, Luciano. Fluent Python: Clear, Concise, and Effective Programming. Sebastopol: O'Reilly Media, 2015.
+
+SUMMERFIELD, Mark. Programming in Python 3: A Complete Introduction to the Python Language. 2. ed. Boston: Addison-Wesley Professional, 2010.
+

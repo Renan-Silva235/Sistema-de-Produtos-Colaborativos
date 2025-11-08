@@ -1,6 +1,14 @@
 import json
 from crud.crud import Crud
+
+
 class Alteracoes:
+    """
+    Classe responsável por realizar alterações em dados do sistema.
+
+    Fornece métodos para alterar estoque de produtos, total de doações,
+    produtos existentes, validade e status de produtos.
+    """
 
 
     def alterar_estoque(self, caminho_arquivo, produto_id, quantidade_alterar):
@@ -32,9 +40,17 @@ class Alteracoes:
             return False
 
 
-    def alterar_total_doacoes(self,cpf, quantidade):
-        """Esse método atualiza o número de doações feitas pelo usuário somando o que ele já havia doado pela
-        quantidade total de produtos que ele está doando no momento."""
+    def alterar_total_doacoes(self, cpf, quantidade):
+        """
+        Atualiza o número total de doações feitas por um doador.
+
+        Soma a quantidade fornecida ao total de doações já realizadas pelo doador
+        identificado pelo CPF.
+
+        :param cpf: String com o CPF do doador
+        :param quantidade: Inteiro com a quantidade de produtos sendo doados
+        :return: True se a atualização for bem-sucedida, False caso contrário
+        """
 
         todos_doadores = Crud("jsons/dados_pessoais/doadores.json").listar()
 
@@ -53,7 +69,19 @@ class Alteracoes:
 
 
     def alterar_produto_existente(self, caminho_arquivo, id_produto, quantidade, id_doador):
-        """Atualiza quantidade e adiciona o id do doador no produto já existente."""
+        """
+        Atualiza a quantidade de um produto existente e adiciona o ID do doador.
+
+        Soma a quantidade fornecida à quantidade atual do produto e adiciona o ID
+        do doador à lista de doadores do produto, se ainda não estiver presente.
+        Realiza formatação especial do JSON para manter o id_doador como lista inline.
+
+        :param caminho_arquivo: String com o caminho do arquivo JSON de produtos
+        :param id_produto: Inteiro com o ID do produto a ser atualizado
+        :param quantidade: Inteiro com a quantidade a ser adicionada ao produto
+        :param id_doador: Inteiro com o ID do doador a ser adicionado
+        :return: None
+        """
 
         consulta = Crud(caminho_arquivo).listar()
 

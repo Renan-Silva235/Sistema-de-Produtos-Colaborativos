@@ -1,25 +1,12 @@
 [{
 		"id":	1,
-		"nome":	"Aline Santos",
-		"idade":	33,
-		"cpf":	"22233344455",
-		"email":	"aline@email.com",
-		"senha":	"6666",
-		"endereco":	"rua maria",
-		"cidade":	"Sorocaba",
-		"estado":	"Sp",
-		"id_responsavel":	1,
-		"status":	"ativo"
-	}, {
-		"id":	2,
 		"nome":	"Inacio Bovo",
 		"idade":	18,
-		"cpf":	"11144466688",
+		"cpf":	"77744411122",
 		"email":	"inacio@email.com",
-		"senha":	"3333",
-		"endereco":	"rua maria",
+		"senha":	"4444",
+		"endereco":	"rua joaquim",
 		"cidade":	"Sorocaba",
 		"estado":	"Sp",
-		"id_responsavel":	1,
-		"status":	"ativo"
+		"id_responsavel":	1
 	}]

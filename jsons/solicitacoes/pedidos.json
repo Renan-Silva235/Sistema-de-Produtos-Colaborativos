@@ -1,1 +1,31 @@
-[]
+[{
+		"id":	1,
+		"pedido":	[{
+				"id":	4,
+				"categoria":	"Vestuário",
+				"nome_produto":	"Blusa",
+				"marca":	"Nike",
+				"cor":	"Branca",
+				"tamanho":	"M",
+				"status":	"Em Análise",
+				"data_registrada":	"13/10/2025 21:06:59",
+				"quantidade_pedida":	4,
+				"solicitante":	"Inacio Bovo",
+				"cpf_solicitante":	"11144466688"
+			}]
+	}, {
+		"id":	2,
+		"pedido":	[{
+				"id":	5,
+				"categoria":	"Vestuário",
+				"nome_produto":	"Meia",
+				"marca":	"Nike",
+				"cor":	"Preto",
+				"tamanho":	"M",
+				"status":	"Em Análise",
+				"data_registrada":	"07/11/2025 11:08:59",
+				"quantidade_pedida":	5,
+				"solicitante":	"Aline Santos",
+				"cpf_solicitante":	"22233344455"
+			}]
+	}]

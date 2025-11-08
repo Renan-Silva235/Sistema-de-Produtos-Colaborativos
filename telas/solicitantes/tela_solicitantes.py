@@ -2,9 +2,22 @@ import time
 from crud.crud import Crud
 from utils.sistema.sistema import Sistema
 from utils.exibir_tabela.exibir import CriarTabelas
+
+
 class TelaSolicitantes:
+    """
+    Classe responsável pela tela do solicitante (cliente).
+
+    Permite que solicitantes consultem produtos disponíveis, façam pedidos
+    e visualizem o status de seus pedidos (em análise, aprovados ou reprovados).
+    """
 
     def __init__(self, usuario):
+        """
+        Inicializa a tela do solicitante.
+
+        :param usuario: Dicionário com os dados do solicitante logado
+        """
         self.usuario = usuario
         self.produtos = Crud("jsons/produtos/produtos.json")
         self.pedidos = Crud("jsons/solicitacoes/pedidos.json")
@@ -14,6 +27,17 @@ class TelaSolicitantes:
         self.categorias = ["Vestuário", "Medicamentos", "Alimentícios"]
 
     def mostrar(self):
+        """
+        Exibe o menu principal do solicitante no terminal.
+
+        Apresenta as opções disponíveis:
+        - Consultar Produto
+        - Fazer pedido
+        - Ver status dos pedidos
+        - Voltar
+
+        :return: None
+        """
 
         print(f"Solicitante: {self.usuario["nome"]}\n\n")
         while self.iniciar:
@@ -62,11 +86,12 @@ class TelaSolicitantes:
 
     def _consultar_produtos(self):
         """
-        Mostra a tela de consultar produtos no terminal.
+        Consulta produtos por nome.
 
-        Exibe todos os produtos disponíveis e permite ao usuário digitar o nome do produto desejável.
-        Se o produto for encontrado, ele exibe as informações do produto e as quantidades disponíveis.
-        Se o produto não for encontrado, ele exibe uma mensagem de erro e volta para a tela inicial.
+        Permite buscar produtos pelo nome e exibe as informações do produto encontrado,
+        incluindo a quantidade disponível.
+
+        :return: None
         """
 
         escolha = input("Digite o nome do produto desejável: ").title()
@@ -91,13 +116,14 @@ class TelaSolicitantes:
         return
 
     def _fazer_pedido(self):
-
         """
-        Mostra a tela de fazer pedido no terminal.
+        Permite fazer um pedido de produtos.
 
-        Exibe todos os produtos disponíveis e permite ao usuário digitar o identificador do produto desejado.
-        Se o produto for encontrado, ele exibe as informações do produto e as quantidades disponíveis.
-        Se o produto não for encontrado, ele exibe uma mensagem de erro e volta para a tela inicial.
+        Exibe todos os produtos disponíveis (status "ativo"), solicita o ID do produto
+        e a quantidade desejada, verifica se há estoque suficiente e cria um pedido
+        com status "Em Análise".
+
+        :return: None
         """
         while True:
             print("PRODUTOS DISPONÍVEIS: \n")
@@ -171,9 +197,12 @@ class TelaSolicitantes:
 
     def _status_pedidos(self):
         """
-        Mostra a tela de status de pedidos solicitados no terminal.
+        Exibe o status dos pedidos do solicitante.
 
-        Aqui o usuário apenas visualiza se o pedido dele está ainda em análise ou se foi aprovado ou reprovado.
+        Lista todos os pedidos do solicitante logado, mostrando pedidos em análise,
+        aprovados e reprovados.
+
+        :return: None
         """
         print("Solicitações enviadas: \n\n")
 

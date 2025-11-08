@@ -2,8 +2,22 @@ import json
 import os
 import sys
 import ctypes
+
+
 class Crud:
+    """
+    Classe responsável por operações CRUD (Create, Read, Update, Delete) em arquivos JSON.
+
+    Fornece métodos para listar, consultar, cadastrar e atualizar dados armazenados em arquivos JSON.
+    Utiliza uma biblioteca em C compilada (salvarJson.dll/.so) para salvar dados.
+    """
+
     def __init__(self, arquivo):
+        """
+        Inicializa um objeto Crud com o caminho do arquivo JSON a ser manipulado.
+
+        :param arquivo: String com o caminho do arquivo JSON
+        """
         self.json = arquivo
 
     def consultar(self, dado):
@@ -41,10 +55,17 @@ class Crud:
         return []
 
     def cadastrar(self, dados):
+        """
+        Cadastra novos dados no arquivo JSON utilizando uma biblioteca compilada em C.
 
-        """Esse método configura a função salvarNoJson que foi escrita em C, para ser reutilizada no
-            python, na função salvarNoJson abaixo, foi configurada os tipos de argumentos que a função recebe
-            (argstype) e o tipo de retorno que ela fornece (restype)."""
+        Este método configura a função salvarNoJson escrita em C para ser utilizada em Python.
+        Os tipos de argumentos (argstype) e o tipo de retorno (restype) são configurados
+        para garantir compatibilidade entre Python e C.
+
+        :param dados: Dicionário com os dados a serem cadastrados no JSON
+        :return: None
+        :raises OSError: Se o sistema operacional não for suportado (Windows ou Linux)
+        """
 
         if sys.platform.startswith("win"):
             libname = "salvarJson.dll"
@@ -64,7 +85,12 @@ class Crud:
 
     def atualizar(self, id_produto, chave, novo_valor):
         """
-        Atualiza o valor de uma chave em um produto específico (pelo ID).
+        Atualiza o valor de uma chave em um item específico do JSON pelo ID.
+
+        :param id_produto: Inteiro com o ID do item a ser atualizado
+        :param chave: String com o nome da chave a ser atualizada
+        :param novo_valor: Novo valor a ser atribuído à chave
+        :return: None
         """
         dados = self.listar()
         for dado in dados:

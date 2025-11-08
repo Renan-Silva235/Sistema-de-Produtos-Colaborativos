@@ -6,4 +6,28 @@
 		"cpf":	"44847011899",
 		"email":	"renan@email.com",
 		"senha":	"1111"
+	}, {
+		"id":	2,
+		"cargo":	"Atendente",
+		"nome":	"Lara",
+		"idade":	18,
+		"cpf":	"77788899966",
+		"email":	"lara@email.com",
+		"senha":	"2222"
+	}, {
+		"id":	3,
+		"cargo":	"Entregador",
+		"nome":	"Gabriel",
+		"idade":	23,
+		"cpf":	"11122233355",
+		"email":	"gabriel@email.com",
+		"senha":	"3333"
+	}, {
+		"id":	4,
+		"cargo":	"Administrador",
+		"nome":	"Gustavo",
+		"idade":	28,
+		"cpf":	"33366699988",
+		"email":	"gustavo@email.com",
+		"senha":	"1111"
 	}]

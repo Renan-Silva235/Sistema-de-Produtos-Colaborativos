@@ -1,0 +1,57 @@
+[{
+		"id":	1,
+		"pedido":	[{
+				"id":	1,
+				"categoria":	"Vestuário",
+				"nome_produto":	"Meia",
+				"marca":	"Adidas",
+				"cor":	"Preto",
+				"tamanho":	"M",
+				"status":	"Aprovado",
+				"data_registrada":	"09/10/2025 17:29:51",
+				"quantidade_pedida":	2,
+				"solicitante":	"Inacio Bovo",
+				"cpf_solicitante":	"11144466688",
+				"responsavel":	"Renan"
+			}],
+		"status_entrega":	"finalizado",
+		"id_entregador":	3,
+		"codigo_pedido":	1
+	}, {
+		"id":	2,
+		"pedido":	[{
+				"id":	2,
+				"categoria":	"Medicamentos",
+				"nome_medicamento":	"Dipirona",
+				"dosagem":	"100 Mg",
+				"validade":	"15/05/2026",
+				"status":	"Aprovado",
+				"data_registrada":	"09/10/2025 17:30:21",
+				"quantidade_pedida":	5,
+				"solicitante":	"Inacio Bovo",
+				"cpf_solicitante":	"11144466688",
+				"responsavel":	"Renan"
+			}],
+		"status_entrega":	"finalizado",
+		"id_entregador":	3,
+		"codigo_pedido":	2
+	}, {
+		"id":	3,
+		"pedido":	[{
+				"id":	1,
+				"categoria":	"Vestuário",
+				"nome_produto":	"Meia",
+				"marca":	"Adidas",
+				"cor":	"Preto",
+				"tamanho":	"M",
+				"status":	"Aprovado",
+				"data_registrada":	"09/10/2025 17:29:51",
+				"quantidade_pedida":	1,
+				"solicitante":	"Inacio Bovo",
+				"cpf_solicitante":	"11144466688",
+				"responsavel":	"Renan"
+			}],
+		"status_entrega":	"finalizado",
+		"id_entregador":	3,
+		"codigo_pedido":	1
+	}]
